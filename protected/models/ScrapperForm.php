@@ -13,13 +13,12 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class ContactForm extends Model
+class ScrapperForm extends Model
 {
-	public $name;
-	public $email;
-	public $subject;
-	public $body;
-	public $verifyCode;
+	public $court;
+	public $scrap_type;
+	public $start_date;
+	public $end_date;
 
 	/**
 	 *
@@ -31,18 +30,14 @@ class ContactForm extends Model
 			// name, email, subject and body are required
 			[
 				[
-					'name',
-					'email',
-					'subject',
-					'body'
+					'court',
+					'scrap_type',
+					'start_date',
+					'end_date'
 				],
 				'required'
 			],
-			// email has to be a valid email address
-			[
-				'email',
-				'email'
-			]
+			
 			/*
 		 * // verifyCode needs to be entered correctly
 		 * [

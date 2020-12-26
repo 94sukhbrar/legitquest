@@ -1,6 +1,6 @@
-<select class="form-control">
+<select class="form-control" name="ScrapperForm[court]">
     <option>Select Court </option>
-    <option value="scupreme_court">Supreme Court </option>
+    <option value="supreme_court">Supreme Court </option>
     <option value="allahabad_high_court">Allahabad High Court </option>
     <option value="andhra_pradesh_high_court">Andhra Pradesh High Court </option>
     <option value="bombay_high_court">Bombay High Court </option>

@@ -1,9 +1,10 @@
 <?php
 
 /**
-*@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
-*@author     : Ram mohamad Singh< er.amudeep@gmail.com >
-*/
+ *@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
+ *@author     : Ram mohamad Singh< er.amudeep@gmail.com >
+ */
+
 namespace app\controllers;
 
 use app\components\TActiveForm;
@@ -12,7 +13,7 @@ use app\models\ContactForm;
 use app\models\EmailQueue;
 use app\models\User;
 use Yii;
- use app\components\filters\AccessControl;
+use app\components\filters\AccessControl;
 use yii\web\Response;
 use app\modules\page\models\Page;
 use bizley\contenttools\actions\UploadAction;
@@ -80,7 +81,7 @@ class SiteController extends TController
     public function actionIndex()
     {
         $this->updateMenuItems();
-        if (! \Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest) {
             if (User::isAdmin()) {
                 $this->layout = User::LAYOUT_MAIN;
                 return $this->redirect('dashboard');

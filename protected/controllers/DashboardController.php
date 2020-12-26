@@ -1,15 +1,18 @@
 <?php
 
 /**
-*@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
-*@author     : Ram mohamad Singh< er.amudeep@gmail.com >
-*/
+ *@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
+ *@author     : Ram mohamad Singh< er.amudeep@gmail.com >
+ */
+
 namespace app\controllers;
 
 use app\components\TController;
 use app\models\User;
- use app\components\filters\AccessControl;
+use app\components\filters\AccessControl;
+use app\models\ScrapperForm;
 use app\models\Setting;
+use Yii;
 
 class DashboardController extends TController
 {
@@ -50,8 +53,24 @@ class DashboardController extends TController
     public function actionScrapper()
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
-       
-        return $this->render('scrapper');
+        // return $this->render('scrapper');
+       /*  print_r(Yii::$app->request->post());
+        die('ss'); */
+
+        $model = new ScrapperForm;
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return TActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {
+          
+            $data = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=".$model->start_date."&higher_date=".$model->end_date."&limit=20&offset=80&target=JU";
+            echo"<pre>";
+            print_r($data);die;
+        }
+        return $this->render('scrapper', [
+            'model' => $model
+        ]);
     }
 
     public static function MonthlySignups()
@@ -59,7 +78,7 @@ class DashboardController extends TController
         $date = new \DateTime();
         $date->modify('-12  months');
         $count = array();
-        for ($i = 1; $i <= 12; $i ++) {
+        for ($i = 1; $i <= 12; $i++) {
             $date->modify('+1 months');
             $month = $date->format('Y-m');
 
@@ -69,10 +88,10 @@ class DashboardController extends TController
                 $month
             ])
                 ->andWhere([
-                '!=',
-                'role_id',
-                User::ROLE_ADMIN
-            ])
+                    '!=',
+                    'role_id',
+                    User::ROLE_ADMIN
+                ])
                 ->count();
         }
         return $count;
