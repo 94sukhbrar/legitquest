@@ -1,0 +1,36 @@
+#sidebar-menu ul li a .uim-svg {
+    min-width: 28px;
+    text-align: center;
+    height: auto;
+}
+#sidebar-menu ul li a .uim-svg img {
+    display: block;
+    margin: 0 auto;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    color: #313548;
+}
+.dashboard-card .icon svg{
+    height: 35px;
+    width: 35px;
+}
+.dashboard-card .icon img{
+    width: 30px;
+}
+#sidebar-menu ul li a:hover {
+    color: #232530;
+}
+.dashboard-card{
+    border-top: 5px solid #b4bfee;
+}
+.dropdown-menu .dropdown-item i{
+    color: #3051d3;
+}
+
+.notification-dropdown {
+    min-width: 300px;
+}
+.action-toolbar .btn {
+    font-weight: 700;
+    font-size: 14px;
+}

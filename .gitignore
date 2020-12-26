@@ -1,0 +1,9 @@
+.settings
+.project
+/assets/
+/.buildpath
+/protected/vendor
+/protected/runtime/
+/protected/uploads/
+tests/_output/*
+/vendor
