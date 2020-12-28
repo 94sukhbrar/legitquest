@@ -3,9 +3,13 @@
         <div class="form-group row">
             <label class="col-md-2 col-form-label">Select Court</label>
             <div class="col-md-10">
-                <?php echo $this->render('state_list'); ?>
+           <?= $this->render('state_list')?>
             </div>
         </div>
     </div>
 </div>
-<?php echo $this->render('_grid'); ?>
+<?php 
+use app\components\TGridView;
+
+echo $this->render('_grid',['model'=>$model]); ?>
+

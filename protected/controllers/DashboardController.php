@@ -39,22 +39,37 @@ class DashboardController extends TController
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($model = null)
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
-        $this->updateMenuItems();
-        $smtpConfig = isset(\Yii::$app->settings) ? \Yii::$app->settings->smtp : null;
-        if (empty($smtpConfig)) {
-            Setting::setDefaultConfig();
+        if (!empty($model)) {
+
+            return $this->render('index', [
+                'model' => $model
+            ]);
+        } else {
+            $url = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=2020-01-01&higher_date=2020-12-31&limit=30&offset=80&target=JU";
+            //$url = "http://example.com/feed/main";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            return $this->render('index', [
+                'model' => json_decode($result)
+            ]);
         }
-        return $this->render('index');
+
+        return $this->redirect('scrapper');
     }
 
     public function actionScrapper()
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
         // return $this->render('scrapper');
-       /*  print_r(Yii::$app->request->post());
+        /*  print_r(Yii::$app->request->post());
         die('ss'); */
 
         $model = new ScrapperForm;
@@ -63,10 +78,19 @@ class DashboardController extends TController
             return TActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
-          
-            $data = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=".$model->start_date."&higher_date=".$model->end_date."&limit=20&offset=80&target=JU";
-            echo"<pre>";
-            print_r($data);die;
+
+            $url = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=" . $model->start_date . "&higher_date=" . $model->end_date . "&limit=20&offset=80&target=JU";
+            //$url = "http://example.com/feed/main";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            return $this->render('index', [
+                'model' => json_decode($result)
+            ]);
         }
         return $this->render('scrapper', [
             'model' => $model
