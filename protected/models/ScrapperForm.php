@@ -55,7 +55,32 @@ class ScrapperForm extends Model
 			$this->addError('end_date','Please give correct Start and End dates');
 		}
 	}
-
+	public function senitizeParams($parm)
+	{
+		$params="";
+		foreach ($parm as $key => $value) {			  
+			 $params .="$key=$value&";
+		}
+		return substr($params, 0, -1);
+		 
+	}
+	/**
+	 * @description $opt=[ 'lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01',
+	 *   'limit'=>'30','offset'=>80,'target'=>'JU' ]
+	 */
+	public function getRecordsFromApi($opt=['lower_date'=>'2020-01-01', 'higher_date'=>'2020-12-11', 	'limit'=>'30','offset'=>'0','target'=>'JU' ])
+	{
+ 
+		    $url =  Yii::$app->params['apiUrl'].$this->senitizeParams($opt);	         
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+            $result = curl_exec($ch);
+			curl_close($ch);
+			return json_decode($result);
+			
+	}
 
 	/**
 	 *

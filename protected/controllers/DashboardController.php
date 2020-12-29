@@ -52,17 +52,9 @@ class DashboardController extends TController
                 'form_model'=> $form_model
             ]);
         } else {
-            $url = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=2020-01-01&higher_date=2020-12-31&limit=30&offset=80&target=JU";
-            //$url = "http://example.com/feed/main";
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
-            $result = curl_exec($ch);
-            curl_close($ch);
-
+           $result = $form_model->getRecordsFromApi(/*no argm mesna dfault  ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01'] */);             
             return $this->render('index', [
-                'model' => json_decode($result),
+                'model' => $result,
                 'form_model'=> $form_model
             ]);
         }
@@ -81,23 +73,21 @@ class DashboardController extends TController
 
         $model = new ScrapperForm();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-         
+            Yii::$app->response->format = Response::FORMAT_JSON;         
             return TActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
-
-            $url = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=" . $model->start_date . "&higher_date=" . $model->end_date . "&limit=20&offset=80&target=JU";
-            //$url = "http://example.com/feed/main";
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); 
-            $result = curl_exec($ch);
-            curl_close($ch);
-
+            $result = $model->getRecordsFromApi([
+                'lower_date'=>$model->start_date,
+                'higher_date'=>$model->end_date,
+                'limit'=>"20",
+                'offset'=>"0",
+                'target'=>'JU'
+            ]);                        
+            
             return $this->render('index', [
-                'model' => json_decode($result)
+                'model' => $result,
+                'form_model' =>  $model
             ]);
         }
         return $this->render('scrapper', [

@@ -10,5 +10,6 @@ return [
     'companyUrl' => 'https://www.toxsl.com',
     'user.passwordResetTokenExpire' => 60 * 1024,
     'bsVersion' => '4.3.1',
-    'useCrudModals' => true
+    'useCrudModals' => true,
+    'apiUrl'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?"
 ];
