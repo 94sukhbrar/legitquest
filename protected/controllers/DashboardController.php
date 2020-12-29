@@ -14,8 +14,10 @@ use app\components\TActiveForm;
 use app\models\ScrapperForm;
 use app\models\Setting;
 use Yii;
+use yii\data\ArrayDataProvider;
+use yii\data\Pagination;
 use yii\web\Response;
-
+ 
 class DashboardController extends TController
 {
 
@@ -53,10 +55,34 @@ class DashboardController extends TController
             ]);
         } else {
            $result = $form_model->getRecordsFromApi(/*no argm mesna dfault  ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01'] */);             
-            return $this->render('index', [
-                'model' => $result,
-                'form_model'=> $form_model
+            
+          
+            $provider = new ArrayDataProvider([
+                'allModels' =>$result,
+                'sort' => [
+                    'attributes' => ['id', 'username', 'email'],
+                ],
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
             ]);
+            $pages = new Pagination(['totalCount' => $provider->getTotalCount() ]);
+
+            /* $cases = $provider->getModels();
+            print_r($cases  ); 
+            die;
+ */
+            /* return $this->render('_gridView', [
+                'dataProvider' => $provider,
+                'form_model'=> $form_model
+            ]); */
+            
+             return $this->render('index', [
+                 'dataProvider' => $provider,
+                'model' => $result,
+                'pages'=>$pages,
+                'form_model'=> $form_model
+            ]);  
         }
 
         return $this->redirect('scrapper',[
@@ -80,8 +106,8 @@ class DashboardController extends TController
             $result = $model->getRecordsFromApi([
                 'lower_date'=>$model->start_date,
                 'higher_date'=>$model->end_date,
-                'limit'=>"20",
-                'offset'=>"0",
+                'limit'=>$model->limit,
+                'offset'=>$model->offset,
                 'target'=>'JU'
             ]);                        
             
@@ -91,7 +117,8 @@ class DashboardController extends TController
             ]);
         }
         return $this->render('scrapper', [
-            'model' => $model
+            'model' => $model,
+            'form_model' =>  $model
         ]);
     }
 

@@ -9,7 +9,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-
+ 
 /**
  * ContactForm is the model behind the contact form.
  */
@@ -19,6 +19,8 @@ class ScrapperForm extends Model
 	public $scrap_type;
 	public $start_date;
 	public $end_date;
+	public $limit =20;
+	public $offset =0;
 
 	/**
 	 *
@@ -55,6 +57,8 @@ class ScrapperForm extends Model
 			$this->addError('end_date','Please give correct Start and End dates');
 		}
 	}
+
+	
 	public function senitizeParams($parm)
 	{
 		$params="";

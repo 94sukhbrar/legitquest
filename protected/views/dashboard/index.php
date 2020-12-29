@@ -25,6 +25,7 @@ use app\components\TActiveForm;
 <?php
 
 
-echo $this->render('_grid', ['model' => $model]);
+//echo $this->render('_grid', ['model' => $model]);
+echo $this->render('_gridView', ['model' => $model,'dataProvider'=>$dataProvider,'pages'=>$pages]);
 
 ?>

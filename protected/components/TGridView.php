@@ -193,13 +193,15 @@ class TGridView extends GridView
         // onclick event should alwaysif ($this->responsive) open detail view:
         if ($this->rowOptions == NULL)
             $this->rowOptions = function ($model, $key, $index, $grid) {
+                 /*  print_r($model);
+                die;    */
                 // get the model name is necessary, if the grid is not the main grid
                 // without this the routed view is the view of the main controller
                 return [
-                    'data-id' => $model->id,
+                    'data-id' =>isset( $model->id) ?  $model->id : $model->id_num,
                     'style' => $this->enableRowClick ? "cursor:pointer;" : '',
                     'data-name' => \yii\helpers\Inflector::camel2id(\yii\helpers\StringHelper::basename(get_class($model))),
-                    'data-url' => $model->getUrl()
+                    'data-url' => isset( $model->getUrl ) ?  $model->getUrl() : null
                 ];
             };
     }
