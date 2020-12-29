@@ -17,7 +17,7 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\data\Pagination;
 use yii\web\Response;
- 
+
 class DashboardController extends TController
 {
 
@@ -36,7 +36,7 @@ class DashboardController extends TController
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
-                            return User::isAdmin()||User::isGuest()||User::isUser();
+                            return User::isAdmin() || User::isGuest() || User::isUser();
                         }
                     ]
                 ]
@@ -52,14 +52,14 @@ class DashboardController extends TController
 
             return $this->render('index', [
                 'model' => $model,
-                'form_model'=> $form_model
+                'form_model' => $form_model
             ]);
         } else {
-           $result = $form_model->getRecordsFromApi(/*no argm mesna dfault  ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01'] */);             
-            
-          
+            $result = $form_model->getRecordsFromApi(/*no argm mesna dfault  ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01'] */);
+
+
             $provider = new ArrayDataProvider([
-                'allModels' =>$result,
+                'allModels' => $result,
                 'sort' => [
                     'attributes' => ['id', 'username', 'email'],
                 ],
@@ -67,7 +67,7 @@ class DashboardController extends TController
                     'pageSize' => 10,
                 ],
             ]);
-            $pages = new Pagination(['totalCount' => $provider->getTotalCount() ]);
+            $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
 
             /* $cases = $provider->getModels();
             print_r($cases  ); 
@@ -77,40 +77,40 @@ class DashboardController extends TController
                 'dataProvider' => $provider,
                 'form_model'=> $form_model
             ]); */
-            
-             return $this->render('index', [
-                 'dataProvider' => $provider,
+
+            return $this->render('index', [
+                'dataProvider' => $provider,
                 'model' => $result,
-                'pages'=>$pages,
-                'form_model'=> $form_model
-            ]);  
+                'pages' => $pages,
+                'form_model' => $form_model
+            ]);
         }
 
-        return $this->redirect('scrapper',[
-            'form_model'=> $form_model
+        return $this->redirect('scrapper', [
+            'form_model' => $form_model
         ]);
     }
 
     public function actionScrapper()
     {
-        $this->layout = User::LAYOUT_LEGITQUEST;    
+        $this->layout = User::LAYOUT_LEGITQUEST;
 
         $model = new ScrapperForm();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;         
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
             $result = $model->getRecordsFromApi([
-                'lower_date'=>$model->start_date,
-                'higher_date'=>$model->end_date,
-                'limit'=>$model->limit,
-                'offset'=>$model->offset,
-                'target'=>'JU'
-            ]);                        
-            
+                'lower_date' => $model->start_date,
+                'higher_date' => $model->end_date,
+                'limit' => $model->limit,
+                'offset' => $model->offset,
+                'target' => 'JU'
+            ]);
+
             $provider = new ArrayDataProvider([
-                'allModels' =>$result,
+                'allModels' => $result,
                 'sort' => [
                     'attributes' => ['id', 'username', 'email'],
                 ],
@@ -118,11 +118,11 @@ class DashboardController extends TController
                     'pageSize' => 10,
                 ],
             ]);
-            $pages = new Pagination(['totalCount' => $provider->getTotalCount() ]);
+            $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
 
             return $this->render('index', [
                 'dataProvider' => $provider,
-                'pages'=>$pages,
+                'pages' => $pages,
                 'model' => $result,
                 'form_model' =>  $model
             ]);
@@ -133,14 +133,34 @@ class DashboardController extends TController
         ]);
     }
 
-    public function actionDownloadPdf($id,$target=null)
+    public function actionDownloadPdf($id, $target = null)
     {
+       
         $model = new ScrapperForm();
         $result = $model->getPDFFromApi([
-            'id_num'=>$id,
-            'target'=>!empty($target)?$target:'DO'
-        ]); 
-        return $result[0]->link;
+            'id_num' => $id,
+            'target' => !empty($target) ? $target : 'DO'
+        ]);
+
+        if (!empty($result)) {
+            $data ='';
+            foreach ($result as $key => $val) {
+                $data .="<a href=".$val->link.">PDF [Documents ".$key."] </a><br />";
+            }
+
+            $response = [
+                'status' => true,
+                'message' => 'success',
+                'data' => $data
+            ];
+        }
+        else {
+            $response = [
+                'status' => false,
+                'message' => 'Document not exist!'
+            ];
+        }
+
         //print_r($result);die;
     }
 
@@ -177,5 +197,4 @@ class DashboardController extends TController
         \Yii::$app->session->setFlash('success', $msg);
         return $this->redirect(\Yii::$app->request->referrer);
     }
-    
 }
