@@ -37,6 +37,8 @@ class ScrapperForm extends Model
 				],
 				'required'
 			],
+			[['start_date','end_date'], 'date', 'format' => 'php:Y-m-d'],
+			['start_date','validateDates'],
 			
 			/*
 		 * // verifyCode needs to be entered correctly
@@ -46,7 +48,14 @@ class ScrapperForm extends Model
 		 * ]
 		 */
 		];
+	} 
+	public function validateDates(){
+		if(strtotime($this->end_date) <= strtotime($this->start_date)){
+			$this->addError('start_date','Please give correct Start and End dates');
+			$this->addError('end_date','Please give correct Start and End dates');
+		}
 	}
+
 
 	/**
 	 *

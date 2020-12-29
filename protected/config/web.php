@@ -17,7 +17,7 @@ $config = [
         'log',
         'session',
         'app\components\TBootstrap',
-        'languagepicker'
+       // 'languagepicker'
     ],
     'timeZone' => date_default_timezone_get(),
     'aliases' => [
@@ -167,9 +167,9 @@ if (YII_ENV == 'dev') {
 $config['modules']['logger'] = [
     'class' => 'app\modules\logger\Module'
 ];
-$config['modules']['file'] = [
+/* $config['modules']['file'] = [
     'class' => 'app\modules\file\Module'
-];
+]; */
 $config['modules']['notification'] = [
     'class' => 'app\modules\notification\Module'
 ];

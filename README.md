@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="http://toxsl.com" target="_blank">
-        <img src="https://toxsl.com/themes/toxsl/img/toxsl_logo.png" width="400" alt="Yii Framework" />
+    <a href="http://Amusoftech.com" target="_blank">
+        <img src="https://Amusoftech.com/themes/Amusoftech/img/Amusoftech_logo.png" width="400" alt="Yii Framework" />
     </a>
 </p>
 
@@ -21,7 +21,7 @@ Documentation
 -------------
 
 - A [Definitive Guide](https://www.yiiframework.com/doc/guide/2.0) and 
-a [Toxsl Reference](http://192.168.10.21/yii2/yii2-base-admin-panel-api-578/blob/bootstrap4/docs/README.md) cover specifically detail
+a [Amusoftech Reference](http://192.168.10.21/yii2/yii2-base-admin-panel-api-578/blob/bootstrap4/docs/README.md) cover specifically detail
 of the framework.
 
 ### Reporting Security issues

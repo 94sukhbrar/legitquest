@@ -63,9 +63,9 @@ class SiteController extends TController
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null
             ],
-            'content-tools-image-upload' => UploadAction::className(),
+          /*   'content-tools-image-upload' => UploadAction::className(),
             'content-tools-image-insert' => InsertAction::className(),
-            'content-tools-image-rotate' => RotateAction::className()
+            'content-tools-image-rotate' => RotateAction::className() */
         ];
     }
 

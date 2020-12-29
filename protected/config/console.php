@@ -27,6 +27,7 @@ $config = [
         'module' => 'app\components\commands\ModuleController',
         'user' => 'app\components\commands\UserController',
     ],
+    
     'components' => [
         'settings' => [
             'class' => 'app\components\Settings'

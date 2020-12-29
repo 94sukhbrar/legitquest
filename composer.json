@@ -1,5 +1,5 @@
 {
-	"name" : "BaseProject",
+	"name" : "amusoftech/baseproject",
 	"description" : "Project Management System",
 	"authors" : [{
 			"name" : "Shiv Charan Panjeta",
@@ -35,8 +35,7 @@
 		"iutbay/yii2-kcfinder" : "dev-master",
 		"iutbay/yii2-fontawesome" : "dev-master",
 		"himiklab/yii2-sortable-grid-view-widget" : "*",
-		"bryglen/yii2-apns-gcm" : "*",
-		"phpoffice/phpspreadsheet" : "*",
+		"bryglen/yii2-apns-gcm" : "*", 
 		"guzzlehttp/guzzle" : ">=4.1.4 <7.0",
 		"alexantr/yii2-ckeditor" : "^2.1@dev",
 		"lajax/yii2-language-picker" : "dev-master",

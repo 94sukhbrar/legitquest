@@ -10,9 +10,11 @@ namespace app\controllers;
 use app\components\TController;
 use app\models\User;
 use app\components\filters\AccessControl;
+use app\components\TActiveForm;
 use app\models\ScrapperForm;
 use app\models\Setting;
 use Yii;
+use yii\web\Response;
 
 class DashboardController extends TController
 {
@@ -21,7 +23,7 @@ class DashboardController extends TController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => [
@@ -42,10 +44,12 @@ class DashboardController extends TController
     public function actionIndex($model = null)
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
+        $form_model = new ScrapperForm();
         if (!empty($model)) {
 
             return $this->render('index', [
-                'model' => $model
+                'model' => $model,
+                'form_model'=> $form_model
             ]);
         } else {
             $url = "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?lower_date=2020-01-01&higher_date=2020-12-31&limit=30&offset=80&target=JU";
@@ -58,11 +62,14 @@ class DashboardController extends TController
             curl_close($ch);
 
             return $this->render('index', [
-                'model' => json_decode($result)
+                'model' => json_decode($result),
+                'form_model'=> $form_model
             ]);
         }
 
-        return $this->redirect('scrapper');
+        return $this->redirect('scrapper',[
+            'form_model'=> $form_model
+        ]);
     }
 
     public function actionScrapper()
@@ -72,9 +79,10 @@ class DashboardController extends TController
         /*  print_r(Yii::$app->request->post());
         die('ss'); */
 
-        $model = new ScrapperForm;
+        $model = new ScrapperForm();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+         
             return TActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
@@ -84,7 +92,7 @@ class DashboardController extends TController
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+            curl_setopt($ch, CURLOPT_ENCODING, ""); 
             $result = curl_exec($ch);
             curl_close($ch);
 

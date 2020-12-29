@@ -2,15 +2,21 @@
 
 use app\components\TActiveForm;
 
+use function PHPSTORM_META\type;
+
 $form = TActiveForm::begin([
-    'id' => 'user-form',
-    'enableClientValidation' => true
+    'id' => 'scrapper_form',
+    'enableClientValidation' => true,
+    'enableAjaxValidation' => true
 ]);
 ?>
 <div class="form-group row">
     <label class="col-md-2 col-form-label">Select Court</label>
     <div class="col-md-10">
-        <?php echo $this->render('state_list'); ?>
+        <?php echo $this->render('state_list',[
+            'form' => $form,
+            'model'=>$model
+        ]); ?>
     </div>
 </div>
 <div class="form-group row">
@@ -47,7 +53,13 @@ $form = TActiveForm::begin([
     <label for="example-date-input" class="col-md-2 col-form-label">Start
         Date</label>
     <div class="col-md-10">
-        <input class="form-control" type="date" value="2019-08-19" name="ScrapperForm[start_date]" id="example-date-input">
+
+        <?php
+        echo $form->field($model, 'start_date')->textInput([
+            'maxlength' => 255,
+            'type' => 'date',
+            'format' => 'Y-m-d'
+        ])->label(false) ?>
     </div>
 </div>
 
@@ -56,7 +68,12 @@ $form = TActiveForm::begin([
     <label for="example-date-input" class="col-md-2 col-form-label">End
         Date</label>
     <div class="col-md-10">
-        <input class="form-control" type="date" value="2019-08-19" name="ScrapperForm[end_date]" id="example-date-input">
+
+        <?php
+        echo $form->field($model, 'end_date')->textInput([
+            'maxlength' => 255,
+            'type' => 'date'
+        ])->label(false) ?>
     </div>
 </div>
 
