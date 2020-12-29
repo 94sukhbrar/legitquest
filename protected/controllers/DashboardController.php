@@ -92,10 +92,7 @@ class DashboardController extends TController
 
     public function actionScrapper()
     {
-        $this->layout = User::LAYOUT_LEGITQUEST;
-        // return $this->render('scrapper');
-        /*  print_r(Yii::$app->request->post());
-        die('ss'); */
+        $this->layout = User::LAYOUT_LEGITQUEST;    
 
         $model = new ScrapperForm();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
@@ -111,7 +108,20 @@ class DashboardController extends TController
                 'target'=>'JU'
             ]);                        
             
+            $provider = new ArrayDataProvider([
+                'allModels' =>$result,
+                'sort' => [
+                    'attributes' => ['id', 'username', 'email'],
+                ],
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+            $pages = new Pagination(['totalCount' => $provider->getTotalCount() ]);
+
             return $this->render('index', [
+                'dataProvider' => $provider,
+                'pages'=>$pages,
                 'model' => $result,
                 'form_model' =>  $model
             ]);
