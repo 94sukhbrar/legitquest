@@ -145,8 +145,9 @@ class DashboardController extends TController
         if (!empty($result)) {
             $data ='';
             foreach ($result as $key => $val) {
-                $data .="<a href=".$val->link.">PDF [Documents ".$key."] </a><br />";
+                $data.="<a href=".$val->link.">PDF [Documents ".$key."] </a><br />";
             }
+            print_r($data);die;
 
             $response = [
                 'status' => true,

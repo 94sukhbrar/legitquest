@@ -62,7 +62,9 @@ use yii\widgets\Pjax;
         </div>
         <div class="modal-body">
           <p><button class="downloadDoc" data-id="' . $data->id_num . '" style="background: none;border: none;color: blue;" >Click here </button>to Download Document.</p>
-        </div>
+       
+          <div class="document"></div>
+          </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -104,7 +106,7 @@ use yii\widgets\Pjax;
             type: 'GET',
             url: url,
             success: function(response) {
-                console.log(response);
+                $(".document").append(response);             
             },
             error: function(request, status, error) {
                 alert(error);
