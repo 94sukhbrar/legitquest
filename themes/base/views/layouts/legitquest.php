@@ -38,8 +38,8 @@ $this->beginPage() ?>
 	<link rel="icon" type="image/png" sizes="16x16" href="<?= $this->theme->getUrl('assets/images/favicon.png') ?>">
 	<title><?= Html::encode($this->title) ?></title>
 
-	
-	
+
+
 
 	<!-- legitquest Theme CSS -->
 	<link rel="shortcut icon" href="<?= $this->theme->getUrl('legitquest/assets/images/lq-logo-m.png') ?>">
@@ -65,8 +65,8 @@ $this->beginPage() ?>
 
 	$this->beginBody();
 	?>
-	
-	<div id="layout-wrapper">	
+
+	<div id="layout-wrapper">
 		<header id="page-topbar">
 			<div class="navbar-header">
 				<div class="d-flex">
@@ -159,7 +159,7 @@ $this->beginPage() ?>
 						<li class="menu-title">Menu</li>
 
 						<li>
-							<a href="<?=Url::toRoute(['/dashboard/scrapper']);?>" class="waves-effect">
+							<a href="<?= Url::toRoute(['/dashboard/scrapper']); ?>" class="waves-effect">
 								<div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
 								<span>Data scraper</span>
 							</a>
@@ -167,7 +167,7 @@ $this->beginPage() ?>
 
 
 						<li>
-							<a href="<?=Url::toRoute(['/dashboard/index']);?>" class="waves-effect">
+							<a href="<?= Url::toRoute(['/dashboard/index']); ?>" class="waves-effect">
 								<div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
 								<span>Dashboard</span>
 							</a>
@@ -221,15 +221,19 @@ $this->beginPage() ?>
 		</div>
 	</div>
 
-	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/jquery/jquery.min.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/libs/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/libs/metismenu/metisMenu.min.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/libs/simplebar/simplebar.min.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/libs/node-waves/waves.min.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/bundle.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/dashboard.init.js')?>"></script>
-    <script src="<?= $this->theme->getUrl('legitquest/assets/js/app.js')?>"></script>
-	
+	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/jquery/jquery.min.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/metismenu/metisMenu.min.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/simplebar/simplebar.min.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/libs/node-waves/waves.min.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/bundle.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/dashboard.init.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/assets/js/app.js') ?>"></script>
+	<script>
+		$("#page-header-user-dropdown").click(function() {
+			$(".dropdown-menu-right").toggleClass("show");
+		});
+	</script>
 
 
 	<?php
