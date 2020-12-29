@@ -11,7 +11,8 @@
         </div>
         <div class="modal-body">
           <p><button class="downloadDoc" data-id="<?=$id_num?>" style="background: none;border: none;color: blue;" >Click here </button>to Download Document.</p>
-       
+          <div id="loading_<?=$id_num?>"  class="spinner-border text-info invisible" style="color: #3051d3;"></div>
+
           <div class="document_<?=$id_num?>"></div>
           </div>
         <div class="modal-footer">
