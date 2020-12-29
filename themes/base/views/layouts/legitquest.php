@@ -233,6 +233,9 @@ $this->beginPage() ?>
 		$("#page-header-user-dropdown").click(function() {
 			$(".dropdown-menu-right").toggleClass("show");
 		});
+		$(".main-content").click(function(){
+			$(".dropdown-menu-right").removeClass("show");
+		})
 	</script>
 
 

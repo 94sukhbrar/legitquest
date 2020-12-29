@@ -86,6 +86,21 @@ class ScrapperForm extends Model
 			
 	}
 
+	public function getPDFFromApi($opt=['id_num'=>'2020-01-01','target'=>'DO' ])
+	{
+ 
+			$url =  Yii::$app->params['getPDFdocURL'].$this->senitizeParams($opt);	   
+			//print_r($url);die;      
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+            $result = curl_exec($ch);
+			curl_close($ch);
+			
+			return json_decode($result);			
+	}
+
 	/**
 	 *
 	 * @return array customized attribute labels

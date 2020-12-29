@@ -11,5 +11,6 @@ return [
     'user.passwordResetTokenExpire' => 60 * 1024,
     'bsVersion' => '4.3.1',
     'useCrudModals' => true,
-    'apiUrl'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?"
+    'apiUrl'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?",
+    'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?"
 ];

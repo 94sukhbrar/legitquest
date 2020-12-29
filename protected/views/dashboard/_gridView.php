@@ -34,16 +34,24 @@ Pjax::begin([
         'columns' => [
             
 
-            'id_num',
+           // 'id_num',
             'diary_number',
             'case_number',
             'petitioner_name',
             'respondent_name',
             'petitioner_advocate',
-            'respondent_advocate',
-            'bench',
-            'judgement_by',
-            'date'
+            //'respondent_advocate',
+            //'bench',
+            //'judgement_by',
+            //'date'
+            [
+                'attribute' => 'PDF [Document]', 
+                'format' => 'raw',               
+                'value' => function ($data) {
+                    return "<a href=".Url::toRoute(['/dashboard/download-pdf','id'=>$data->id_num]).">PDF [Document] </a>";                   
+                },
+            ],
+
              
         ],
         'pager'=>[

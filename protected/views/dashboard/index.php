@@ -10,11 +10,11 @@ use app\components\TActiveForm;
             <div class="col-md-10">
                 <?php
                 $form = TActiveForm::begin([
-                    'id' => 'scrapper_form' ,
+                    'id' => 'scrapper_form',
                     'enableAjaxValidation' => false
                 ]);
                 ?>
-                <?= $this->render('state_list', ['model' => $form_model, 'form'=> $form]) ?>
+                <?= $this->render('state_list', ['model' => $form_model, 'form' => $form]) ?>
                 <?php
                 TActiveForm::end();
                 ?>
@@ -22,10 +22,9 @@ use app\components\TActiveForm;
         </div>
     </div>
 </div>
-<?php
 
-
-//echo $this->render('_grid', ['model' => $model]);
-echo $this->render('_gridView', ['model' => $model,'dataProvider'=>$dataProvider,'pages'=>$pages]);
-
-?>
+<div class="card">
+    <div class="card-body">
+        <?= $this->render('_gridView', ['model' => $model, 'dataProvider' => $dataProvider, 'pages' => $pages]); ?>
+    </div>
+</div>

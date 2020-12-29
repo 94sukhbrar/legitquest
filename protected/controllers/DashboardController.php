@@ -31,11 +31,12 @@ class DashboardController extends TController
                         'actions' => [
                             'index',
                             'default-data',
-                            'scrapper'
+                            'scrapper',
+                            'download-pdf'
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
-                            return User::isAdmin();
+                            return User::isAdmin()||User::isGuest()||User::isUser();
                         }
                     ]
                 ]
@@ -93,10 +94,6 @@ class DashboardController extends TController
     public function actionScrapper()
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
-        // return $this->render('scrapper');
-        /*  print_r(Yii::$app->request->post());
-        die('ss'); */
-
         $model = new ScrapperForm();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;         
@@ -121,6 +118,19 @@ class DashboardController extends TController
             'form_model' =>  $model
         ]);
     }
+
+    public function actionDownloadPdf($id,$target=null)
+    {
+        $model = new ScrapperForm();
+        $result = $model->getPDFFromApi([
+            'id_num'=>$id,
+            'target'=>!empty($target)?$target:'DO'
+        ]); 
+        return $result[0]->link;
+        //print_r($result);die;
+    }
+
+
 
     public static function MonthlySignups()
     {
@@ -153,4 +163,5 @@ class DashboardController extends TController
         \Yii::$app->session->setFlash('success', $msg);
         return $this->redirect(\Yii::$app->request->referrer);
     }
+    
 }
