@@ -55,9 +55,12 @@ class DashboardController extends TController
                 'form_model'=> $form_model
             ]);
         } else {
-           $result = $form_model->getRecordsFromApi(/*no argm mesna dfault  ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01'] */);             
-            
-          
+            //OFFSET IS NOT CORRET, NEEDS TO FIX AND TEST 
+           $result = $form_model->getRecordsFromApi(
+            ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-12-11', 	'limit'=>'30','offset'=>$form_model->limit * isset(Yii::$app->request->queryParams['page'])  ? Yii::$app->request->queryParams['page'] : 0,'target'=>'JU' ]
+           );             
+             die("xxx");
+
             $provider = new ArrayDataProvider([
                 'allModels' =>$result,
                 'sort' => [
@@ -65,7 +68,7 @@ class DashboardController extends TController
                 ],
                 'pagination' => [
                     'pageSize' => 10,
-                ],
+                ], 
             ]);
             $pages = new Pagination(['totalCount' => $provider->getTotalCount() ]);
 

@@ -19,7 +19,7 @@ class ScrapperForm extends Model
 	public $scrap_type;
 	public $start_date;
 	public $end_date;
-	public $limit =20;
+	public $limit =30;
 	public $offset =0;
 
 	/**
