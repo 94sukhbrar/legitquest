@@ -6,7 +6,7 @@ use app\components\TGridView;
 use app\models\User;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-  
+
 /**
  *
  * @var yii\web\View $this
@@ -17,24 +17,25 @@ use yii\widgets\Pjax;
 
 
 <div class="table table-responsive">
-<?php
+    <?php
 
-Pjax::begin([
-    'id' => 'feed-pjax-grid'
-]);
-?>
+    Pjax::begin([
+        'id' => 'feed-pjax-grid'
+    ]);
+    ?>
     <?php
 
     echo TGridView::widget([
         'id' => 'feed-grid',
-        'dataProvider' => $dataProvider,         
+        'dataProvider' => $dataProvider,
+        'enableRowClick' =>false,
         'tableOptions' => [
             'class' => 'table table-centered table-hover mb-0'
-        ], 
+        ],
         'columns' => [
-            
 
-           // 'id_num',
+
+            // 'id_num',
             'diary_number',
             'case_number',
             'petitioner_name',
@@ -45,33 +46,52 @@ Pjax::begin([
             //'judgement_by',
             //'date'
             [
-                'attribute' => 'PDF [Document]', 
-                'format' => 'raw',               
+                'attribute' => 'PDF [Document]',
+                'format' => 'raw',
                 'value' => function ($data) {
-                    return "<a href=".Url::toRoute(['/dashboard/download-pdf','id'=>$data->id_num]).">PDF [Document] </a>";                   
+                    return $this->render("_modal",[
+                        'id_num' =>$data->id_num 
+                    ]);
                 },
             ],
 
-             
+
         ],
-        'pager'=>[
-            'options'=>[
-                'class'=>'pagination pagination-rounded justify-content-center mb-0',
-            ], 
-            'linkContainerOptions'=>[
-                'class'=> 'page-item'
+        'pager' => [
+            'options' => [
+                'class' => 'pagination pagination-rounded justify-content-center mb-0',
             ],
-            'linkOptions'=>[
-                'class' =>'page-link'
-            ], 
+            'linkContainerOptions' => [
+                'class' => 'page-item'
+            ],
+            'linkOptions' => [
+                'class' => 'page-link'
+            ],
             'disabledListItemSubTagOptions' => ['tag' => 'a', 'class' => 'page-link disabled']
         ]
     ]);
     ?>
-      
 
-<?php
 
-Pjax::end();
-?>
+    <?php
+
+    Pjax::end();
+    ?>
 </div>
+<script>
+    $(".downloadDoc").click(function() {
+        $(".document").empty()
+        var id = $(this).data("id");
+        var url = "<?= Url::toRoute(['/dashboard/download-pdf']) ?>?id=" + id;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                $(`.document_${id}`).append(response);
+            },
+            error: function(request, status, error) {
+                alert(error);
+            }
+        });
+    })
+</script>
