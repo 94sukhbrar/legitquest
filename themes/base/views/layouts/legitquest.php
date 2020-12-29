@@ -226,11 +226,8 @@ $this->beginPage() ?>
     <script src="<?= $this->theme->getUrl('legitquest/assets/libs/metismenu/metisMenu.min.js')?>"></script>
     <script src="<?= $this->theme->getUrl('legitquest/assets/libs/simplebar/simplebar.min.js')?>"></script>
     <script src="<?= $this->theme->getUrl('legitquest/assets/libs/node-waves/waves.min.js')?>"></script>
-
     <script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/bundle.js')?>"></script>
-
     <script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/dashboard.init.js')?>"></script>
-
     <script src="<?= $this->theme->getUrl('legitquest/assets/js/app.js')?>"></script>
 	
 

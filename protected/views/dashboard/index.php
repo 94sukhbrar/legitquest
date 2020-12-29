@@ -11,5 +11,7 @@
 <?php 
 use app\components\TGridView;
 
-echo $this->render('_grid',['model'=>$model]); ?>
+echo $this->render('_grid',['model'=>$model]);
+ 
+?>
 
