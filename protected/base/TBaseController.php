@@ -19,11 +19,11 @@ use yii\web\Controller;
 class TBaseController extends Controller
 {
 
-    public $layout = '//guest-main';
+    public $layout = '//legitquest';
 
     public $menu = [];
 
-    public $_author = '@toxsl';
+    public $_author = '@amusoftech';
 
     public $top_menu = [];
 

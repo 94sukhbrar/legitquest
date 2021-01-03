@@ -10,6 +10,11 @@ $form = TActiveForm::begin([
     'enableAjaxValidation' => true
 ]);
 ?>
+<style>
+.help-block-error{
+    color:red
+}
+</style>
 <div class="form-group row">
     <label class="col-md-2 col-form-label">Select Court</label>
     <div class="col-md-10">
@@ -25,25 +30,25 @@ $form = TActiveForm::begin([
     <div class="col-md-10">
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="option1" checked=""> <label class="form-check-label" for="inlineCheck1">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck1">
                 Judgements
             </label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="option1" checked=""> <label class="form-check-label" for="inlineCheck2">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Daily Orders
             </label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="option1" checked=""> <label class="form-check-label" for="inlineCheck2">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Case Status
             </label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="option1" checked=""> <label class="form-check-label" for="inlineCheck2">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Cause List
             </label>
         </div>

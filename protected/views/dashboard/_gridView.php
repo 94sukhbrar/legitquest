@@ -28,49 +28,23 @@ use yii\widgets\Pjax;
     echo TGridView::widget([
         'id' => 'feed-grid',
         'dataProvider' => $dataProvider,
+        'enableRowClick' =>false,
         'tableOptions' => [
             'class' => 'table table-centered table-hover mb-0'
         ],
         'columns' => [
-
-
-            // 'id_num',
             'diary_number',
             'case_number',
             'petitioner_name',
             'respondent_name',
             'petitioner_advocate',
-            //'respondent_advocate',
-            //'bench',
-            //'judgement_by',
-            //'date'
             [
                 'attribute' => 'PDF [Document]',
                 'format' => 'raw',
                 'value' => function ($data) {
-                    return '
-                    <a data-toggle="modal" data-target="#myModal" style="color: blue">PDF [Documents]</a>
-                        <div class="modal fade" id="myModal" role="dialog">
-                            <div class="modal-dialog">
-                            
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                
-                                </div>
-                                <div class="modal-body">
-                                <p><button class="downloadDoc" data-id="' . $data->id_num . '" style="background: none;border: none;color: blue;" >Click here </button>to Download Document.</p>
-                            
-                                <div class="document"></div>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                            
-                            </div>
-                        </div>';
+                    return $this->render("_modal",[
+                        'id_num' =>$data->id_num 
+                    ]);
                 },
             ],
 
@@ -98,13 +72,14 @@ use yii\widgets\Pjax;
 </div>
 <script>
     $(".downloadDoc").click(function() {
+        $(".document").empty()
         var id = $(this).data("id");
         var url = "<?= Url::toRoute(['/dashboard/download-pdf']) ?>?id=" + id;
         $.ajax({
             type: 'GET',
             url: url,
             success: function(response) {
-                $(".document").append(response);
+                $(`.document_${id}`).append(response);
             },
             error: function(request, status, error) {
                 alert(error);
