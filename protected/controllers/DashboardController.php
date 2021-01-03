@@ -32,7 +32,8 @@ class DashboardController extends TController
                             'index',
                             'default-data',
                             'scrapper',
-                            'download-pdf'
+                            'download-pdf',
+                            'data-index'
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
@@ -56,10 +57,10 @@ class DashboardController extends TController
             ]);
         } else {
             //OFFSET IS NOT CORRET, NEEDS TO FIX AND TEST 
-           $result = $form_model->getRecordsFromApi(
-            ['lower_date'=>'2020-01-01', 'higher_date'=>'2020-12-11', 	'limit'=>'30','offset'=>$form_model->limit * isset(Yii::$app->request->queryParams['page'])  ? Yii::$app->request->queryParams['page'] : 0,'target'=>'JU' ]
-           );             
-           //  die("xxx");
+            $result = $form_model->getRecordsFromApi(
+                ['lower_date' => '2020-01-01', 'higher_date' => '2020-12-11',     'limit' => '30', 'offset' => $form_model->limit * isset(Yii::$app->request->queryParams['page'])  ? Yii::$app->request->queryParams['page'] : 0, 'target' => 'JU']
+            );
+            //  die("xxx");
 
             $provider = new ArrayDataProvider([
                 'allModels' => $result,
@@ -68,7 +69,7 @@ class DashboardController extends TController
                 ],
                 'pagination' => [
                     'pageSize' => 10,
-                ], 
+                ],
             ]);
             $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
 
@@ -92,6 +93,37 @@ class DashboardController extends TController
         return $this->redirect('scrapper', [
             'form_model' => $form_model
         ]);
+    }
+
+    public function actionDataIndex()
+    {
+        $form_model = new ScrapperForm();
+        $allData = $form_model->getRecordsFromApi(
+            ['lower_date' => '2019-01-01', 'higher_date' => '2020-12-11',     'limit' => '20', 'offset' => '80', 'target' => 'JU']
+        );
+
+       // print_r($allData);die;
+
+        $numRows = array_sum($allData);
+        $resultData=[];
+       
+        foreach($allData as $result){
+            $empRows = array();
+            $empRows[] = $result->diary_number;         
+            $empRows[] = $result->case_number;
+            $empRows[] = $result->petitioner_name;
+            $empRows[] = $result->respondent_name;
+            $empRows[] = $result->petitioner_advocate;
+            $empRows[] = '<a data-toggle="modal" data-target="#myModal_'.$result->id_num.' style="color:#3051d3">PDF [Documents]</a>';
+           $resultData[] = $empRows;
+        }
+        $output = array(
+            //"draw"    =>    intval($_POST["draw"]),
+            "iTotalRecords"    =>     $numRows,
+            "iTotalDisplayRecords"    =>  10,
+            "data"    =>     $resultData
+        );
+        echo json_encode($output);
     }
 
     public function actionScrapper()
@@ -139,7 +171,7 @@ class DashboardController extends TController
 
     public function actionDownloadPdf($id, $target = null)
     {
-       
+
         $model = new ScrapperForm();
         $result = $model->getPDFFromApi([
             'id_num' => $id,
@@ -147,19 +179,19 @@ class DashboardController extends TController
         ]);
 
         if (!empty($result)) {
-            $data ='';
+            $data = '';
             foreach ($result as $key => $val) {
-                $data.="<a href=".$val->link.">PDF [Documents ".$key."] </a><br />";
+                $data .= "<a href=" . $val->link . ">PDF [Documents " . $key . "] </a><br />";
             }
-            print_r($data);die;
+            print_r($data);
+            die;
 
             $response = [
                 'status' => true,
                 'message' => 'success',
                 'data' => $data
             ];
-        }
-        else {
+        } else {
             $response = [
                 'status' => false,
                 'message' => 'Document not exist!'

@@ -1,34 +1,26 @@
-<?php
+<?php 
 use yii\helpers\Url;
 ?>
+
+<script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
+
 <table id="example" class="display" style="width:100%">
     <thead>
         <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Start date</th>
-            <th>Salary</th>
+            <th>Diary Number</th>
+            <th>Case Number</th>
+            <th>Petitioner Name</th>
+            <th>Respondent Name</th>
+            <th>Petitioner's Advocate</th>
+            <th>PDF [Document]</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Start date</th>
-            <th>Salary</th>
-        </tr>
-    </tfoot>
+    
 </table>
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": "<?= Url::toRoute(['/dashboard/index']) ?>"
+            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>"
         });
     });
 </script>
