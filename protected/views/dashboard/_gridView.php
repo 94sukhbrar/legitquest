@@ -71,15 +71,17 @@ use yii\widgets\Pjax;
     ?>
 </div>
 <script>
-    $(".downloadDoc").click(function() {
-        $(".document").empty()
+    $(".downloadDoc").click(function() {       
         var id = $(this).data("id");
+        $(`#loading_${id}`).toggleClass('invisible')
         var url = "<?= Url::toRoute(['/dashboard/download-pdf']) ?>?id=" + id;
         $.ajax({
             type: 'GET',
             url: url,
             success: function(response) {
+                $(`.document_${id}`).empty()
                 $(`.document_${id}`).append(response);
+                $(`#loading_${id}`).toggleClass('invisible')
             },
             error: function(request, status, error) {
                 alert(error);
