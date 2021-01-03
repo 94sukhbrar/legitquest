@@ -25,6 +25,6 @@ use app\components\TActiveForm;
 
 <div class="card">
     <div class="card-body">
-        <?= $this->render('_gridView', ['model' => $model, 'dataProvider' => $dataProvider, 'pages' => $pages]); ?>
+        <?= $this->render('_dataTable', ['model' => $model, 'dataProvider' => $dataProvider, 'pages' => $pages]); ?>
     </div>
 </div>

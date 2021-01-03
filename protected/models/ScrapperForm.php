@@ -72,6 +72,7 @@ class ScrapperForm extends Model
 	 * @description $opt=[ 'lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01',
 	 *   'limit'=>'30','offset'=>80,'target'=>'JU' ]
 	 */
+	
 	public function getRecordsFromApi($opt=['lower_date'=>'2020-01-01', 'higher_date'=>'2020-12-11', 	'limit'=>'30','offset'=>'0','target'=>'JU' ])
 	{
  
@@ -89,8 +90,7 @@ class ScrapperForm extends Model
 	public function getPDFFromApi($opt=['id_num'=>'2020-01-01','target'=>'DO' ])
 	{
  
-			$url =  Yii::$app->params['getPDFdocURL'].$this->senitizeParams($opt);	   
-			//print_r($url);die;      
+			$url =  Yii::$app->params['getPDFdocURL'].$this->senitizeParams($opt);	
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

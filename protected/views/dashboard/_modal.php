@@ -1,4 +1,4 @@
-<a data-toggle="modal" data-target="#myModal_<?=$id_num?>">PDF [Documents]</a>
+<a data-toggle="modal" data-target="#myModal_<?=$id_num?>" style="color:#3051d3">PDF [Documents]</a>
 
   <div class="modal fade" id="myModal_<?=$id_num?>" role="dialog">
     <div class="modal-dialog">

@@ -33,18 +33,11 @@ use yii\widgets\Pjax;
             'class' => 'table table-centered table-hover mb-0'
         ],
         'columns' => [
-
-
-            // 'id_num',
             'diary_number',
             'case_number',
             'petitioner_name',
             'respondent_name',
             'petitioner_advocate',
-            //'respondent_advocate',
-            //'bench',
-            //'judgement_by',
-            //'date'
             [
                 'attribute' => 'PDF [Document]',
                 'format' => 'raw',
@@ -74,7 +67,6 @@ use yii\widgets\Pjax;
 
 
     <?php
-
     Pjax::end();
     ?>
 </div>

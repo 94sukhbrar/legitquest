@@ -51,6 +51,13 @@ $this->beginPage() ?>
 	<!-- App Css-->
 	<link href="<?= $this->theme->getUrl('legitquest/assets/css/app.min.css') ?>" rel="stylesheet" type="text/css" />
 	<link href="<?= $this->theme->getUrl('legitquest/assets/css/style.css') ?>" rel="stylesheet" type="text/css" />
+	
+	<!-- DataTable css -->
+	<link href="<?= $this->theme->getUrl('legitquest/datatables.css') ?>" rel="stylesheet" type="text/css" />
+	<link href="<?= $this->theme->getUrl('legitquest/datatables.min.css') ?>" rel="stylesheet" type="text/css" />
+	
+
+	
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -139,7 +146,7 @@ $this->beginPage() ?>
 							<a class="dropdown-item" href="#"><i class="mdi mdi-account-settings font-size-16 align-middle mr-1"></i> Settings</a>
 							<a class="dropdown-item" href="#"><i class="mdi mdi-lock font-size-16 align-middle mr-1"></i> Lock screen</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
+							<a class="dropdown-item" href="<?= Url::toRoute(['/user/logout']); ?>"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
 						</div>
 					</div>
 
@@ -229,6 +236,8 @@ $this->beginPage() ?>
 	<script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/bundle.js') ?>"></script>
 	<script src="<?= $this->theme->getUrl('legitquest/assets/js/pages/dashboard.init.js') ?>"></script>
 	<script src="<?= $this->theme->getUrl('legitquest/assets/js/app.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/datatables.js') ?>"></script>
+	<script src="<?= $this->theme->getUrl('legitquest/datatables.min.js') ?>"></script>
 	<script>
 		$("#page-header-user-dropdown").click(function() {
 			$(".dropdown-menu-right").toggleClass("show");
