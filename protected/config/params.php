@@ -14,3 +14,7 @@ return [
     'apiUrl'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/lambda_query?",
     'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?"
 ];
+//  Judgements => JU
+//Daily Orders => DO
+
+// HIDO for highe court => fixed  
