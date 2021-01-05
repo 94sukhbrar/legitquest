@@ -68,8 +68,7 @@ class ScrapperForm extends Model
 		if(!isset($this->start_date) ){
 			$this->addError('start_date', 'Please give correct Start date');
 		}		 
-		if ($days  > Yii::$app->params['maxScrapDays']) {
-			//$this->addError('start_date', 'Please give correct Start and End dates');
+		if ($days  > Yii::$app->params['maxScrapDays']) {		
 			$this->addError('end_date', 'End Date can not be grater then '.Yii::$app->params['maxScrapDays'].' days');
 		}
 	}
@@ -119,7 +118,8 @@ class ScrapperForm extends Model
 		];
 
 
-		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
+		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));		 
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -127,7 +127,23 @@ class ScrapperForm extends Model
 		$result = curl_exec($ch);
 		curl_close($ch); 
 		return json_decode($result);
+		
+
 	}
+	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211','limit' => '100'])
+	{
+
+		$url =  Yii::$app->params['checlApiUrl'] . $this->senitizeParams($opt);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch); 
+		return json_decode($result);
+	 
+	}
+
 
 	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{

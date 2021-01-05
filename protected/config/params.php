@@ -44,7 +44,9 @@ return [
         "TE2911" => "Telangana High Court ",
         "UK1511" => "Uttarakhand High Court ",
     ],
-    'maxScrapDays' =>30
+    'maxScrapDays' =>30,
+    'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
+    'checlApiUrl'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/Lambda_random_initial_query?'
 ];
 //  Judgements => JU
 //Daily Orders => DO
