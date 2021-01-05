@@ -1,5 +1,5 @@
 <?php
-
+$constants = require (__DIR__ . '/constants.php');
 /**
 *@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
 *@author     : Ram mohamad Singh< er.amudeep@gmail.com >
@@ -46,7 +46,8 @@ return [
     ],
     'maxScrapDays' =>30,
     'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
-    'checlApiUrl'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/Lambda_random_initial_query?'
+    'checlApiUrl'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/Lambda_random_initial_query?',
+    'constants' => $constants,
 ];
 //  Judgements => JU
 //Daily Orders => DO

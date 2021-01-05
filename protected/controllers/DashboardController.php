@@ -135,7 +135,9 @@ class DashboardController extends TController
             Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
-        if ($model->load(Yii::$app->request->post())) {         
+        if ($model->load(Yii::$app->request->post())) {  
+            
+            
             $result = $model->highCourtScraper([
                 'state_name' =>   $model->cleanStateName ( Yii::$app->params['stateList'][$model->court]) ,
                 'start_date' => $model->start_date,

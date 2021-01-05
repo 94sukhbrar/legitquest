@@ -3,24 +3,27 @@
 use app\components\TActiveForm;
 
 use function PHPSTORM_META\type;
-
+ 
+$options =  Yii::$app->params['constants']['options'];
 $form = TActiveForm::begin([
     'id' => 'scrapper_form',
     'enableClientValidation' => true,
     'enableAjaxValidation' => true
 ]);
+
+
 ?>
 <style>
-.help-block-error{
-    color:red
-}
+    .help-block-error {
+        color: red
+    }
 </style>
 <div class="form-group row">
     <label class="col-md-2 col-form-label">Select Court</label>
     <div class="col-md-10">
-        <?php echo $this->render('state_list',[
+        <?php echo $this->render('state_list', [
             'form' => $form,
-            'model'=>$model
+            'model' => $model
         ]); ?>
     </div>
 </div>
@@ -29,41 +32,29 @@ $form = TActiveForm::begin([
         Srcap</label>
     <div class="col-md-10">
 
-    <div class="supreme_court" style="display: none;">
-     <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="HIDO" checked=""> <label class="form-check-label" for="inlineCheck1">
-                Judgements/Daily Orders
-            </label>
+        <div class="supreme_court" style="display: none;">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="HIDO" checked > <label class="form-check-label" for="inlineCheck1">
+                    Judgements/Daily Orders
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="high_court">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck1">
-                    Judgements
-                </label>
-            </div>
+        
+        <div class="high_court">
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                    Daily Orders
-                </label>
-            </div>
+            <?php foreach ($options as $key => $option) {
+            ?>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inline_<?= $option['value'] ?>" value="<?= $option['value'] ?>" checked="<?= $key == 0 ?>"> <label class="form-check-label" for="inline_<?= $option['value'] ?>">
+                        <?= $option['label'] ?>
+                    </label>
+                </div>
+            <?php } ?>
+            
+        </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                    Case Status
-                </label>
-            </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                    Cause List
-                </label>
-            </div>
-    </div>
-
-       
     </div>
 </div>
 <div class="form-group row">
@@ -112,17 +103,17 @@ TActiveForm::end();
 
 
 <script>
-$("#scrapperform-court").on('change', function(){
-         
-        if($(this).val() === "HIDO"){
+    $("#scrapperform-court").on('change', function() {
+
+        if ($(this).val() === "HIDO") {
             // supreme court is elected
             $('.supreme_court').show()
             $('.high_court').hide()
-            
-        }else{
-            
+
+        } else {
+
             $('.supreme_court').hide()
             $('.high_court').show()
         }
-})
+    })
 </script>
