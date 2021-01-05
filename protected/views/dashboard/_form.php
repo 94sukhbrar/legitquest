@@ -11,16 +11,16 @@ $form = TActiveForm::begin([
 ]);
 ?>
 <style>
-    .help-block-error {
-        color: red
-    }
+.help-block-error{
+    color:red
+}
 </style>
 <div class="form-group row">
     <label class="col-md-2 col-form-label">Select Court</label>
     <div class="col-md-10">
-        <?php echo $this->render('state_list', [
+        <?php echo $this->render('state_list',[
             'form' => $form,
-            'model' => $model
+            'model'=>$model
         ]); ?>
     </div>
 </div>
@@ -30,26 +30,25 @@ $form = TActiveForm::begin([
     <div class="col-md-10">
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked="checked"> <label class="form-check-label" for="inlineCheck1">
-                <span class="highCount" style="">Judgements</span>
-                <span class="supremeCourt" style="display:none">Judgements/ Daily Orders</span>
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck1">
+                Judgements
             </label>
         </div>
 
-        <div class="form-check form-check-inline highCount" style="">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="DO"> <label class="form-check-label" for="inlineCheck2">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Daily Orders
             </label>
         </div>
 
-        <div class="form-check form-check-inline highCount" style="">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU"> <label class="form-check-label" for="inlineCheck2">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Case Status
             </label>
         </div>
 
-        <div class="form-check form-check-inline highCount" style="">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU"> <label class="form-check-label" for="inlineCheck2">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
                 Cause List
             </label>
         </div>
@@ -88,19 +87,9 @@ $form = TActiveForm::begin([
     <label for="example-date-input" class="col-md-2 col-form-label"></label>
     <div class="col-md-10">
         <?php
-         \yii\helpers\Html::submitButton('Check', [
-            'class' => 'btn btn-primary waves-effect waves-light',
-            'name' => 'submit-button',
-            'value'=>'check',
-            'id'=>'checkBtn'
-        ]) ?>
-
-        <?php
         echo \yii\helpers\Html::submitButton('Submit', [
             'class' => 'btn btn-primary waves-effect waves-light',
-            'name' => 'submit-button',
-            'value'=>'submit',
-            'id'=>'submitBtn'
+            'name' => 'submit-button'
         ]) ?>
         <!--  <button class="btn btn-primary waves-effect waves-light" type="submit">Submit</button> -->
     </div>
@@ -108,18 +97,3 @@ $form = TActiveForm::begin([
 <?php
 TActiveForm::end();
 ?>
-<script>
-    $(document).ready(function() {
-        $('select').on('change', function() {
-            var selectedCourt = this.value;
-            if (selectedCourt == 'HIDO') {
-                $('.highCount').css('display', 'none');
-                $('.supremeCourt').css('display', 'inline');
-            } else {
-                $('.highCount').css('display', 'inline');
-                $('.supremeCourt').css('display', 'none');
-            }
-        });
-
-    });
-</script>

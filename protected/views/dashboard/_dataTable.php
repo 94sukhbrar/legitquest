@@ -24,12 +24,3 @@ use yii\helpers\Url;
         });
     });
 </script>
-
-<!-- if suprem court => target =>HIDO
-but waht to scrap => only one radio btn => daily order/judgement => by default checked 
-
-before submit should be a Check Button 
-28 day in both date
-
-state => 
--->
