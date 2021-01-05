@@ -34,7 +34,7 @@ use yii\helpers\Url;
                 "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt,
                 destroy: true
             });
-            mytable.ajax.reload();
+            mytable.ajax.reload(); 
         });
 
     });
