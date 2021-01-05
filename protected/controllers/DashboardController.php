@@ -100,22 +100,21 @@ class DashboardController extends TController
         $target = $_REQUEST['court'];
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi(
-            ['target' =>$target]
+            ['target' =>$target,'count'=>'100']
         );
-
-       print_r($allData);die;
+     // print_r($allData);die;
 
         $numRows = array_sum($allData);
         $resultData=[];
        
         foreach($allData as $result){
             $empRows = array();
-            $empRows[] = $result->diary_number;         
+            $empRows[] = $result->id_num;         
             $empRows[] = $result->case_number;
-            $empRows[] = $result->petitioner_name;
-            $empRows[] = $result->respondent_name;
-            $empRows[] = $result->petitioner_advocate;
-            $empRows[] = '<a data-toggle="modal" data-target="#myModal_'.$result->id_num.' style="color:#3051d3">PDF [Documents]</a>';
+            $empRows[] = $result->case_type;
+            $empRows[] = $result->case_year;
+            $empRows[] = $result->order_type;
+            $empRows[] = '<a href='.$result->link.' style="color:#3051d3">PDF [Documents]</a>';
            $resultData[] = $empRows;
         }
         $output = array(
@@ -124,7 +123,7 @@ class DashboardController extends TController
             "iTotalDisplayRecords"    =>  10,
             "data"    =>     $resultData
         );
-        echo json_encode($output);
+        return json_encode($output);
     }
 
     public function actionScrapper()

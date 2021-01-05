@@ -10,9 +10,12 @@ use yii\helpers\Url;
         <tr>
             <th>Diary Number</th>
             <th>Case Number</th>
-            <th>Petitioner Name</th>
+            <th>Case Type</th>
+            <th>Case Year</th>
+            <th>Order Type</th>
+            <!-- <th>Petitioner Name</th>
             <th>Respondent Name</th>
-            <th>Petitioner's Advocate</th>
+            <th>Petitioner's Advocate</th> -->
             <th>PDF [Document]</th>
         </tr>
     </thead>
@@ -21,6 +24,7 @@ use yii\helpers\Url;
 <script>
     $(document).ready(function() {
         $('select').on('change', function() {
+           // alert(this.value);
             var selectedCourt = this.value;
             $('#example').DataTable({
                 "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt
