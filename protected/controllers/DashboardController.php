@@ -128,6 +128,7 @@ class DashboardController extends TController
 
     public function actionScrapper()
     {
+       
         $this->layout = User::LAYOUT_LEGITQUEST;
 
         $model = new ScrapperForm();
@@ -136,7 +137,7 @@ class DashboardController extends TController
             return TActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
-            //print_r($model);die;
+            print_r($model);die('jj');
             $result = $model->getRecordsFromApi([
                 'lower_date' => $model->start_date,
                 'higher_date' => $model->end_date,

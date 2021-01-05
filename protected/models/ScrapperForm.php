@@ -9,7 +9,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
- 
+
 /**
  * ContactForm is the model behind the contact form.
  */
@@ -19,8 +19,8 @@ class ScrapperForm extends Model
 	public $scrap_type;
 	public $start_date;
 	public $end_date;
-	public $limit =30;
-	public $offset =0;
+	public $limit = 30;
+	public $offset = 0;
 
 	/**
 	 *
@@ -29,19 +29,20 @@ class ScrapperForm extends Model
 	public function rules()
 	{
 		return [
-			// name, email, subject and body are required
+
 			[
 				[
 					'court',
 					'scrap_type',
-					'start_date',
-					'end_date'
+					//'start_date',
+					//'end_date'
 				],
 				'required'
 			],
-			[['start_date','end_date'], 'date', 'format' => 'php:Y-m-d'],
-			['start_date','validateDates'],
-			
+			[['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d'],
+			//['start_date', 'validateDates'],
+			['end_date', 'validateDays'],
+
 			/*
 		 * // verifyCode needs to be entered correctly
 		 * [
@@ -50,55 +51,68 @@ class ScrapperForm extends Model
 		 * ]
 		 */
 		];
-	} 
-	public function validateDates(){
-		if(strtotime($this->end_date) <= strtotime($this->start_date)){
-			$this->addError('start_date','Please give correct Start and End dates');
-			$this->addError('end_date','Please give correct Start and End dates');
+	}
+	public function validateDates()
+	{
+
+		if (strtotime($this->end_date) <= strtotime($this->start_date)) {
+			$this->addError('start_date', 'Please give correct Start and End dates');
+			//	$this->addError('end_date', 'Please give correct Start and End dates');
 		}
 	}
 
-	
+	public function validateDays()
+	{
+
+		$end = strtotime($this->end_date);
+		$start = strtotime($this->start_date);
+		$diff = $end - $start;
+		echo $days  = round($diff / 86400);
+		if ($days > 28) {
+			//$this->addError('start_date', 'You can only check the records of 28 days');
+			$this->addError('end_date', 'You can only check the records of 28 days');
+		}
+	}
+
+
 	public function senitizeParams($parm)
 	{
-		$params="";
-		foreach ($parm as $key => $value) {			  
-			 $params .="$key=$value&";
+		$params = "";
+		foreach ($parm as $key => $value) {
+			$params .= "$key=$value&";
 		}
 		return substr($params, 0, -1);
-		 
 	}
 	/**
 	 * @description $opt=[ 'lower_date'=>'2020-01-01', 'higher_date'=>'2020-01-01',
 	 *   'limit'=>'30','offset'=>80,'target'=>'JU' ]
 	 */
-	
-	public function getRecordsFromApi($opt=['lower_date'=>'2020-01-01', 'higher_date'=>'2020-12-11', 	'limit'=>'30','offset'=>'0','target'=>'JU' ])
+
+	public function getRecordsFromApi($opt = ['lower_date' => '2020-01-01', 'higher_date' => '2020-12-11', 	'limit' => '30', 'offset' => '0', 'target' => 'JU'])
 	{
- 
-		    $url =  Yii::$app->params['apiUrl'].$this->senitizeParams($opt);	         
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
-            $result = curl_exec($ch);
-			curl_close($ch);
-			return json_decode($result);
-			
+
+		$url =  Yii::$app->params['apiUrl'] . $this->senitizeParams($opt);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($result);
 	}
 
-	public function getPDFFromApi($opt=['id_num'=>'2020-01-01','target'=>'DO' ])
+	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{
- 
-			$url =  Yii::$app->params['getPDFdocURL'].$this->senitizeParams($opt);	
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
-            $result = curl_exec($ch);
-			curl_close($ch);
-			
-			return json_decode($result);			
+
+		$url =  Yii::$app->params['getPDFdocURL'] . $this->senitizeParams($opt);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		return json_decode($result);
 	}
 
 	/**
