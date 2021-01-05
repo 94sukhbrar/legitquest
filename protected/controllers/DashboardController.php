@@ -100,22 +100,22 @@ class DashboardController extends TController
         $target = $_REQUEST['court'];
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi(
-            ['target' =>$target,'count'=>'100']
+            ['target' => $target, 'count' => '100']
         );
-     // print_r($allData);die;
+        // print_r($allData);die;
 
         $numRows = array_sum($allData);
-        $resultData=[];
-       
-        foreach($allData as $result){
+        $resultData = [];
+
+        foreach ($allData as $result) {
             $empRows = array();
-            $empRows[] = $result->id_num;         
+            $empRows[] = $result->id_num;
             $empRows[] = $result->case_number;
             $empRows[] = $result->case_type;
             $empRows[] = $result->case_year;
             $empRows[] = $result->order_type;
-            $empRows[] = '<a href='.$result->link.' style="color:#3051d3">PDF [Documents]</a>';
-           $resultData[] = $empRows;
+            $empRows[] = '<a href=' . $result->link . ' style="color:#3051d3">PDF [Documents]</a>';
+            $resultData[] = $empRows;
         }
         $output = array(
             //"draw"    =>    intval($_POST["draw"]),
@@ -129,22 +129,37 @@ class DashboardController extends TController
     public function actionScrapper()
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
-
+        $post = Yii::$app->request->post();
         $model = new ScrapperForm();
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isAjax && $model->load($post)) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
-        if ($model->load(Yii::$app->request->post())) {  
-            
-            
-            $result = $model->highCourtScraper([
-                'state_name' =>   $model->cleanStateName ( Yii::$app->params['stateList'][$model->court]) ,
+        if ($model->load($post)) {
+
+            if ($model->court === ScrapperForm::SupreameCourt) {
+                //COURT TYPE IS SUPREAME COURT
+                if ($model->scrap_type  === ScrapperForm::Judgements) {
+                    #scraping Judgements
+                    $model->supremeCourtJudgementsApi([
+                        'start_date' => $model->start_date,
+                        'end_date' => $model->end_date
+                    ]);
+                } else {
+                    #scraping Orders
+                    $model->supremeCourtOrdersApi([
+                        'start_date' => $model->start_date,
+                        'end_date' => $model->end_date
+                    ]);
+                }
+            } else  
+              $model->highCourtScraper([
+                'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                 'start_date' => $model->start_date,
-                'end_date' => $model->end_date,                
+                'end_date' => $model->end_date,
                 'target' => $model->scrap_type,
                 'court_code' => $model->court
-            ]); 
+            ]);
 
             /* $provider = new ArrayDataProvider([
                 'allModels' => $result,
@@ -167,8 +182,6 @@ class DashboardController extends TController
             return $this->redirect([
                 '/dashboard/index'
             ]);
-
-
         }
         return $this->render('scrapper', [
             'model' => $model,
