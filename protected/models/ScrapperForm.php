@@ -21,7 +21,9 @@ class ScrapperForm extends Model
 	public $end_date;
 	public $limit = 30;
 	public $offset = 0;
-
+	const SupreameCourt = "HIDO";
+	const  Judgements ="JU";
+	const DailyOrders = "DO";
 	/**
 	 *
 	 * @return array the validation rules.
@@ -103,6 +105,40 @@ class ScrapperForm extends Model
 	public function cleanStateName($stateName)
 	{
 		return str_replace(" ", "", $stateName);
+	}
+
+	/**
+	 * @param []  start_date,end_date  
+	 */
+	public function supremeCourtJudgementsApi( $opt=[ ] )
+	{
+		$url =  Yii::$app->params['supremeCourtJudgementsApiUrl'] . $this->senitizeParams( $opt  );		 
+		 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch); 
+		return json_decode($result);
+		 
+	}
+
+	/**
+	 * @param []  start_date,end_date  
+	 */
+	public function supremeCourtOrdersApi( $opt=[ ] )
+	{
+		$url =  Yii::$app->params['supremeCourtOrdersApiUrl'] . $this->senitizeParams( $opt  );		 
+		 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch); 
+		return json_decode($result);
+		 
 	}
 	public function highCourtScraper($opt = [
 		"state_name" => "AndhraPradesh",

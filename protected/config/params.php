@@ -48,6 +48,8 @@ return [
     'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
     'checlApiUrl'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/Lambda_random_initial_query?',
     'checkApiUrl' =>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/check_button?",
+    'supremeCourtJudgementsApiUrl' =>  "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/supreme_court_scraper?scraping_type=Judgements&",
+    'supremeCourtOrdersApiUrl' => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/supreme_court_scraper?scraping_type=Orders&",
     'constants' => $constants,
 ];
 //  Judgements => JU
