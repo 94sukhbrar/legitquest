@@ -192,7 +192,7 @@ TActiveForm::end();
                     //$("#alert_message").text("Respounce from check api")
                     let alertMessage = "you can run the scrapper"
                    console.log("data", data);
-                    const {message,scraper_date} =data && JSON.parse(data)[0]
+                    const {message,scraper_date} = data &&  JSON.parse(data).length > 0 && JSON.parse(data)[0]
                     if(message && scraper_date){
                         alertMessage=`Data  ${message} on ${scraper_date}`
                     }else{
