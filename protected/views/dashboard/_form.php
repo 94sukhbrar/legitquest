@@ -4,7 +4,7 @@ use app\components\TActiveForm;
 
 use function PHPSTORM_META\type;
 
-$options =  Yii::$app->params['constants']['options'];
+$options =  Yii::$app->params['constants']['higheCourtoptions'];
 $form = TActiveForm::begin([
     'id' => 'scrapper_form',
     'enableClientValidation' => true,
@@ -33,11 +33,16 @@ $form = TActiveForm::begin([
     <div class="col-md-10">
 
         <div class="supreme_court" style="display: none;">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="HIDO" value="HIDO" checked> <label class="form-check-label" for="inlineCheck1">
-                    Judgements/Daily Orders
-                </label>
-            </div>
+
+            <?php foreach (Yii::$app->params['constants']['SupreameCourtoptions'] as $key => $option) {
+            ?>
+                <div class="form-check form-check-inline">
+                    <input <?= $option['disabled']  ? 'disabled' : '' ?> class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="SupreameCourtoptions_<?= $option['value'] ?>" value="<?= $option['value'] ?>" checked="<?= $key == 0 ?>"> <label class="form-check-label" for="SupreameCourtoptions_<?= $option['value'] ?>">
+                        <?= $option['label'] ?>
+                    </label>
+                </div>
+            <?php } ?>
+
         </div>
 
 
@@ -46,7 +51,7 @@ $form = TActiveForm::begin([
             <?php foreach ($options as $key => $option) {
             ?>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inline_<?= $option['value'] ?>" value="<?= $option['value'] ?>" checked="<?= $key == 0 ?>"> <label class="form-check-label" for="inline_<?= $option['value'] ?>">
+                    <input <?= $option['disabled']  ? 'disabled' : '' ?> class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="higheCourtoptions_<?= $option['value'] ?>" value="<?= $option['value'] ?>" checked="<?= $key == 0 ?>"> <label class="form-check-label" for="higheCourtoptions_<?= $option['value'] ?>">
                         <?= $option['label'] ?>
                     </label>
                 </div>
@@ -86,6 +91,9 @@ $form = TActiveForm::begin([
 </div>
 
 
+<?=$this->render("_alert")?>
+
+
 <div class="form-group row">
     <label for="example-date-input" class="col-md-2 col-form-label"></label>
     <div class="col-md-10">
@@ -98,24 +106,15 @@ $form = TActiveForm::begin([
             ])
             ?>
         </div>
-
         <div class="before_check" style="display: block;">
             <button class="btn btn-primary waves-effect waves-light" id="check_if_exist" type="submit">Check
                 <div class="spinner-border" id="loading" role="status" style="display: none;">
                     <span class="sr-only">Loading...</span>
                 </div>
-
             </button>
 
         </div>
-
-
-
-    </div>
-
-
-
-
+    </div> 
 </div>
 <?php
 TActiveForm::end();
@@ -127,13 +126,17 @@ TActiveForm::end();
         if (hideAfter) {
             $(".before_check").show()
             $(".after_check").hide()
-            
+
         } else {
             $(".before_check").hide()
             $(".after_check").show()
             $("#loading").hide()
         }
-       
+
+    }
+
+    const validator = (startDate,endDate,target) =>{
+        return startDate && endDate && target
     }
     $("#scrapperform-court").on('change', function() {
 
@@ -143,10 +146,13 @@ TActiveForm::end();
             // supreme court is elected
             $('.supreme_court').show()
             $('.high_court').hide()
-            $("#HIDO").prop("checked", true);
+            $("#higheCourtoptions_HIDO").prop("checked", false);
+            $("#SupreameCourtoptions_JU").prop("checked", true);
 
         } else {
-            $("#HIDO").prop("checked", false);
+            $("#higheCourtoptions_HIDO").prop("checked", true);
+            $("#SupreameCourtoptions_JU").prop("checked", false);
+
             $('.supreme_court').hide()
             $('.high_court').show()
         }
@@ -160,19 +166,31 @@ TActiveForm::end();
         const endDate = $("#scrapperform-end_date").val()
         const target = $("#scrapperform-court").val()
         const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target}`
-        //start_date=YYYY-MM-DD&end_date=YYYY-MM-DD&target=AP211
-        console.log(URL);
+         
 
-        $("#loading").show()
-        $.ajax({
-            url: URL,
-            type: 'GET',
-            dataType: 'html',
-            success: function(data) {
-                toggleButton(false)
-                console.log("data", data);
-            }
-        });
+        if(validator(startDate,endDate,target)){
+            $("#loading").show()
+            $.ajax({
+                url: URL,
+                type: 'GET',
+                dataType: 'html',
+                success: function(data) {
+                    toggleButton(false)
+                    $("#alert_box").show()
+                    $("#alert_message").text("Respounce from check api")
+                    console.log("data", data);
+                }
+            });
+        }else{
+            $("#alert_box").show()
+             $("#alert_message").text("All the fields are required")
+        }
 
     })
+
+    $('#scrapper_form').on('keyup change paste', 'input, select, radio', function() {
+       // console.log('Form changed!');
+        $("#alert_box").hide()
+        toggleButton(true)
+    });
 </script>
