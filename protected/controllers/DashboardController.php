@@ -97,12 +97,13 @@ class DashboardController extends TController
 
     public function actionDataIndex()
     {
+        $target = $_REQUEST['court'];
         $form_model = new ScrapperForm();
-        $allData = $form_model->getRecordsFromApi(
-            ['lower_date' => '2019-01-01', 'higher_date' => '2020-12-11',     'limit' => '20', 'offset' => '80', 'target' => 'JU']
+        $allData = $form_model->getDashboardRecordsFromApi(
+            ['target' =>$target]
         );
 
-       // print_r($allData);die;
+       print_r($allData);die;
 
         $numRows = array_sum($allData);
         $resultData=[];

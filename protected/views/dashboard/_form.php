@@ -11,7 +11,7 @@ $form = TActiveForm::begin([
 ]);
 ?>
 <style>
-    .help-block-error {
+    .help-block-error{
         color: red
     }
 </style>

@@ -1,8 +1,9 @@
-<?php 
+<?php
+
 use yii\helpers\Url;
 ?>
 
-<script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
+<script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 
 <table id="example" class="display" style="width:100%">
     <thead>
@@ -15,13 +16,17 @@ use yii\helpers\Url;
             <th>PDF [Document]</th>
         </tr>
     </thead>
-    
+
 </table>
 <script>
     $(document).ready(function() {
-        $('#example').DataTable({
-            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>"
+        $('select').on('change', function() {
+            var selectedCourt = this.value;
+            $('#example').DataTable({
+                "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt
+            });
         });
+
     });
 </script>
 

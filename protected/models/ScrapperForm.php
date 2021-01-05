@@ -101,6 +101,20 @@ class ScrapperForm extends Model
 		return json_decode($result);
 	}
 
+	public function getDashboardRecordsFromApi($opt = ['target' => 'JU','limit' => '100'])
+	{
+
+		$url =  Yii::$app->params['checlApiUrl'] . $this->senitizeParams($opt);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($result);
+	}
+
+
 	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{
 
