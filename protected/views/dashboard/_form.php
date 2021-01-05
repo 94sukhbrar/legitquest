@@ -179,6 +179,9 @@ TActiveForm::end();
                     $("#alert_box").show()
                     $("#alert_message").text("Respounce from check api")
                     console.log("data", data);
+                },
+                error : function (error) {
+                    
                 }
             });
         }else{
