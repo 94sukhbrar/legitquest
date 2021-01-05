@@ -23,14 +23,20 @@ use yii\helpers\Url;
 </table>
 <script>
     $(document).ready(function() {
-        $('select').on('change', function() {
-           // alert(this.value);
-            var selectedCourt = this.value;
-            $('#example').DataTable({
-                "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt
-            });
+
+        $("option[value='HIDO']").attr('selected', 'selected');
+        $('#example').DataTable({
+            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=HIDO"
         });
 
+    });
+    $('select').on('change', function() {
+        //table.destroy();
+        // alert(this.value);
+        var selectedCourt = this.value;
+        $('#example').DataTable({
+            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt
+        });
     });
 </script>
 
