@@ -29,29 +29,41 @@ $form = TActiveForm::begin([
         Srcap</label>
     <div class="col-md-10">
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck1">
-                Judgements
+    <div class="supreme_court" style="display: none;">
+     <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="HIDO" checked=""> <label class="form-check-label" for="inlineCheck1">
+                Judgements/Daily Orders
             </label>
         </div>
+    </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                Daily Orders
-            </label>
-        </div>
+    <div class="high_court">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck1">
+                    Judgements
+                </label>
+            </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                Case Status
-            </label>
-        </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
+                    Daily Orders
+                </label>
+            </div>
 
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
-                Cause List
-            </label>
-        </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
+                    Case Status
+                </label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="ScrapperForm[scrap_type]" id="inlineRadios1" value="JU" checked=""> <label class="form-check-label" for="inlineCheck2">
+                    Cause List
+                </label>
+            </div>
+    </div>
+
+       
     </div>
 </div>
 <div class="form-group row">
@@ -97,3 +109,20 @@ $form = TActiveForm::begin([
 <?php
 TActiveForm::end();
 ?>
+
+
+<script>
+$("#scrapperform-court").on('change', function(){
+         
+        if($(this).val() === "HIDO"){
+            // supreme court is elected
+            $('.supreme_court').show()
+            $('.high_court').hide()
+            
+        }else{
+            
+            $('.supreme_court').hide()
+            $('.high_court').show()
+        }
+})
+</script>

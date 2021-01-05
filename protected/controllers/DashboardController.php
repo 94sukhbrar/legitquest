@@ -135,14 +135,13 @@ class DashboardController extends TController
             Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
-        if ($model->load(Yii::$app->request->post())) {
-            //print_r($model);die;
-            $result = $model->getRecordsFromApi([
-                'lower_date' => $model->start_date,
-                'higher_date' => $model->end_date,
-                'limit' => $model->limit,
-                'offset' => $model->offset,
-                'target' => $model->scrap_type
+        if ($model->load(Yii::$app->request->post())) {         
+            $result = $model->highCourtScraper([
+                'state_name' =>   $model->cleanStateName ( Yii::$app->params['stateList'][$model->court]) ,
+                'start_date' => $model->start_date,
+                'end_date' => $model->end_date,                
+                'target' => $model->scrap_type,
+                'court_code' => $model->court
             ]);
 
             $provider = new ArrayDataProvider([
