@@ -159,15 +159,25 @@ TActiveForm::end();
     })
 
 
+    const getSelectedTargetForSuperameCourt = () =>{
+        const  options = <?php echo json_encode(Yii::$app->params['constants']['SupreameCourtoptions'], JSON_PRETTY_PRINT) ?>;
+        let selectedVal = 'NONE'
+        options.map(option => {
+             if($(`#SupreameCourtoptions_${option.value}`).is(':checked')){
+                selectedVal= option.value
+             }
+        })
 
+        return selectedVal
+
+    }
     $("#check_if_exist").on("click", (e) => {
         e.preventDefault()
         const startDate = $("#scrapperform-start_date").val()
         const endDate = $("#scrapperform-end_date").val()
         const target = $("#scrapperform-court").val()
-        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target}`
-         
-
+        //console.log("target",target); 
+        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target === "HIDO" ?  getSelectedTargetForSuperameCourt() :target}`  
         if(validator(startDate,endDate,target)){
             $("#loading").show()
             $.ajax({
@@ -181,7 +191,7 @@ TActiveForm::end();
                     console.log("data", data);
                 },
                 error : function (error) {
-                    
+
                 }
             });
         }else{
