@@ -71,7 +71,7 @@ $form = TActiveForm::begin([
         echo $form->field($model, 'start_date')->textInput([
             'maxlength' => 255,
             'type' => 'date',
-            'format' => 'Y-m-d'
+            'format' => 'YYYY-MM-DD'
         ])->label(false) ?>
     </div>
 </div>
@@ -85,7 +85,8 @@ $form = TActiveForm::begin([
         <?php
         echo $form->field($model, 'end_date')->textInput([
             'maxlength' => 255,
-            'type' => 'date'
+            'type' => 'date',
+            'format' => 'YYYY-MM-DD'
         ])->label(false) ?>
     </div>
 </div>
@@ -176,9 +177,10 @@ TActiveForm::end();
         const startDate = $("#scrapperform-start_date").val()
         const endDate = $("#scrapperform-end_date").val()
         const target = $("#scrapperform-court").val()
-        //console.log("target",target); 
+         console.log("startDate",startDate,"endDate",endDate); 
         const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target === "HIDO" ?  getSelectedTargetForSuperameCourt() :target}`  
         if(validator(startDate,endDate,target)){
+            console.log("URL",URL);
             $("#loading").show()
             $.ajax({
                 url: URL,
@@ -187,8 +189,17 @@ TActiveForm::end();
                 success: function(data) {
                     toggleButton(false)
                     $("#alert_box").show()
-                    $("#alert_message").text("Respounce from check api")
-                    console.log("data", data);
+                    //$("#alert_message").text("Respounce from check api")
+                    let alertMessage = "you can run the scrapper"
+                   console.log("data", data);
+                    const {message,scraper_date} =data && JSON.parse(data)[0]
+                    if(message && scraper_date){
+                        alertMessage=`Data  ${message} on ${scraper_date}`
+                    }else{
+                        alertMessage ="you can run the scrapper"
+                    }
+
+                    $("#alert_message").text(alertMessage)
                 },
                 error : function (error) {
 

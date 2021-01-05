@@ -135,7 +135,8 @@ class DashboardController extends TController
             Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
-        if ($model->load($post)) {             
+        if ($model->load($post)) {   
+                  
             if ($model->court === ScrapperForm::SupreameCourt) {
                 //COURT TYPE IS SUPREAME COURT
                 if ($model->scrap_type  === ScrapperForm::Judgements) {
