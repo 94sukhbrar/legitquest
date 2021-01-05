@@ -19,24 +19,24 @@ use yii\helpers\Url;
             <th>PDF [Document]</th>
         </tr>
     </thead>
-
 </table>
+
 <script>
     $(document).ready(function() {
-
         $("option[value='HIDO']").attr('selected', 'selected');
         $('#example').DataTable({
             "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=HIDO"
         });
 
-    });
-    $('select').on('change', function() {
-        //table.destroy();
-        // alert(this.value);
-        var selectedCourt = this.value;
-        $('#example').DataTable({
-            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt
+        $('select').on('change', function() {
+            var selectedCourt = this.value;
+           var mytable =  $('#example').DataTable({
+                "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt,
+                destroy: true
+            });
+            mytable.ajax.reload();
         });
+
     });
 </script>
 
