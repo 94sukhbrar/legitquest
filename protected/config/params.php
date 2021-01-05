@@ -47,6 +47,7 @@ return [
     'maxScrapDays' =>30,
     'getPDFdocURL'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
     'checlApiUrl'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/Lambda_random_initial_query?',
+    'checkApiUrl' =>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/check_button?",
     'constants' => $constants,
 ];
 //  Judgements => JU
