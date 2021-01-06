@@ -1,21 +1,33 @@
 <?php
 
 use yii\helpers\Url;
+//die(Url::toRoute(['/dashboard/data-index'])."?court=SUJU");
 ?>
+<style>
 
+div#example_wrapper {
+    overflow: scroll;
+}
+</style>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 
-<table id="example" class="display" style="width:100%">
+<table id="example" class="display" style="width:100%; overflow: scroll;">
     <thead>
         <tr>
-            <th>Diary Number</th>
-            <th>Case Number</th>
-            <th>Case Type</th>
-            <th>Case Year</th>
-            <th>Order Type</th>
-            <!-- <th>Petitioner Name</th>
-            <th>Respondent Name</th>
-            <th>Petitioner's Advocate</th> -->
+
+            <th> case number </th>
+            <th> diary number </th>
+            <th> petitioner name </th>
+            <th> respondent name </th>
+            <th> petitioner advocate </th>
+            <th> respondent advocate </th>
+            <th> bench </th>
+            <th> judgement by </th>
+            <th> date </th>
+            <th> case type </th>
+            <th> case year </th>
+            <th> order type </th>
+
             <th>PDF [Document]</th>
         </tr>
     </thead>
@@ -23,18 +35,19 @@ use yii\helpers\Url;
 
 <script>
     $(document).ready(function() {
-        $("option[value='HIDO']").attr('selected', 'selected');
+        $("option[value='SUJU']").attr('selected', 'selected');
         $('#example').DataTable({
-            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=HIDO"
+            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=SUJU",
+            destroy: true
         });
 
         $('select').on('change', function() {
             var selectedCourt = this.value;
-           var mytable =  $('#example').DataTable({
+            var mytable = $('#example').DataTable({
                 "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=" + selectedCourt,
                 destroy: true
             });
-            mytable.ajax.reload(); 
+            mytable.ajax.reload();
         });
 
     });

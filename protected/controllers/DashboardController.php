@@ -33,7 +33,8 @@ class DashboardController extends TController
                             'default-data',
                             'scrapper',
                             'download-pdf',
-                            'data-index'
+                            'data-index',
+                            'log'
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
@@ -43,6 +44,18 @@ class DashboardController extends TController
                 ]
             ]
         ];
+    }
+
+    public function actionLog()
+    { 
+        $this->layout = User::LAYOUT_LEGITQUEST;
+        $model = new ScrapperForm();
+        $modelData=  $model->getLogsFromApi();
+        return $this->render('logs', [ 
+            'model' => $modelData
+        ]);
+
+
     }
 
     public function actionIndex($model = null)
@@ -106,17 +119,30 @@ class DashboardController extends TController
 
         $numRows = array_sum($allData);
         $resultData = [];
+        
+            foreach ($allData as $result) {
 
-        foreach ($allData as $result) {
-            $empRows = array();
-            $empRows[] = $result->id_num;
-            $empRows[] = $result->case_number;
-            $empRows[] = $result->case_type;
-            $empRows[] = $result->case_year;
-            $empRows[] = $result->order_type;
-            $empRows[] = '<a href=' . $result->link . ' style="color:#3051d3">PDF [Documents]</a>';
-            $resultData[] = $empRows;
-        }
+                $empRows = array();
+                $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
+                $empRows[] = isset(  $result->diary_number) ?   $result->diary_number : "NA";
+                $empRows[] =  isset( $result->petitioner_name)  ?  $result->petitioner_name : "NA";
+                $empRows[] =  isset( $result->respondent_name)  ?  $result->respondent_name : "NA";
+                $empRows[] =  isset( $result->petitioner_advocate)  ?  $result->petitioner_advocate : "NA";
+                $empRows[] =  isset( $result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
+                $empRows[] =  isset( $result->bench)  ?  $result->bench : "NA";
+                $empRows[] =  isset( $result->judgement_by)  ?  $result->judgement_by : "NA";
+                $empRows[] =  isset( $result->date)  ?  $result->date : "NA";
+                $empRows[] =  isset( $result->case_type)  ?  $result->case_type : "NA";
+                $empRows[] =  isset( $result->case_year)  ?  $result->case_year : "NA";
+                $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA";
+
+                $empRows[] = isset( $result->link )   ?   " <a href='$result->link' style='color:#3051d3'>PDF [Documents]</a>"  : "NA";
+
+                //$empRows[] = '<a href=' . isset( $result->link ) ?  $result->link : "NA". ' style="color:#3051d3">PDF [Documents]</a>';
+                $resultData[] = $empRows;
+            }
+         
+
         $output = array(
             //"draw"    =>    intval($_POST["draw"]),
             "iTotalRecords"    =>     $numRows,
@@ -135,8 +161,8 @@ class DashboardController extends TController
             Yii::$app->response->format = Response::FORMAT_JSON;
             return TActiveForm::validate($model);
         }
-        if ($model->load($post)) {   
-                  
+        if ($model->load($post)) {
+
             if ($model->court === ScrapperForm::SupreameCourt) {
                 //COURT TYPE IS SUPREAME COURT
                 if ($model->scrap_type  === ScrapperForm::Judgements) {
@@ -152,14 +178,20 @@ class DashboardController extends TController
                         'end_date' => $model->end_date
                     ]);
                 }
-            } else  
-              $model->highCourtScraper([
-                'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
-                'start_date' => $model->start_date,
-                'end_date' => $model->end_date,
-                'target' => $model->scrap_type,
-                'court_code' => $model->court
-            ]);
+            } else
+                {
+                  
+
+                    $model->highCourtScraper([
+                    'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
+                    'start_date' => $model->start_date,
+                    'end_date' => $model->end_date,                     
+                ]);
+
+                Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );
+
+            
+            }
 
             /* $provider = new ArrayDataProvider([
                 'allModels' => $result,

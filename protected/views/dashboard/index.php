@@ -14,7 +14,7 @@ use app\components\TActiveForm;
                     'enableAjaxValidation' => false
                 ]);
                 ?>
-                <?= $this->render('state_list', ['model' => $form_model, 'form' => $form]) ?>
+                <?= $this->render('state_list', ['model' => $form_model, 'form' => $form , 'addationalParams' =>["SUJU" => "Supreme Court Judgements ","SUDO" => "Supreme Court Orders "] ]) ?>
                 <?php
                 TActiveForm::end();
                 ?>

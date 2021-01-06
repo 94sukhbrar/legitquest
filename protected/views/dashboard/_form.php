@@ -92,7 +92,7 @@ $form = TActiveForm::begin([
 </div>
 
 
-<?=$this->render("_alert")?>
+<?= $this->render("_alert") ?>
 
 
 <div class="form-group row">
@@ -115,7 +115,7 @@ $form = TActiveForm::begin([
             </button>
 
         </div>
-    </div> 
+    </div>
 </div>
 <?php
 TActiveForm::end();
@@ -136,7 +136,7 @@ TActiveForm::end();
 
     }
 
-    const validator = (startDate,endDate,target) =>{
+    const validator = (startDate, endDate, target) => {
         return startDate && endDate && target
     }
     $("#scrapperform-court").on('change', function() {
@@ -160,13 +160,13 @@ TActiveForm::end();
     })
 
 
-    const getSelectedTargetForSuperameCourt = () =>{
-        const  options = <?php echo json_encode(Yii::$app->params['constants']['SupreameCourtoptions'], JSON_PRETTY_PRINT) ?>;
+    const getSelectedTargetForSuperameCourt = () => {
+        const options = <?php echo json_encode(Yii::$app->params['constants']['SupreameCourtoptions'], JSON_PRETTY_PRINT) ?>;
         let selectedVal = 'NONE'
         options.map(option => {
-             if($(`#SupreameCourtoptions_${option.value}`).is(':checked')){
-                selectedVal= option.value
-             }
+            if ($(`#SupreameCourtoptions_${option.value}`).is(':checked')) {
+                selectedVal = option.value
+            }
         })
 
         return selectedVal
@@ -177,10 +177,10 @@ TActiveForm::end();
         const startDate = $("#scrapperform-start_date").val()
         const endDate = $("#scrapperform-end_date").val()
         const target = $("#scrapperform-court").val()
-         console.log("startDate",startDate,"endDate",endDate); 
-        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target === "HIDO" ?  getSelectedTargetForSuperameCourt() :target}`  
-        if(validator(startDate,endDate,target)){
-            console.log("URL",URL);
+        console.log("startDate", startDate, "endDate", endDate);
+        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target === "HIDO" ?  getSelectedTargetForSuperameCourt() :target}`
+        if (validator(startDate, endDate, target)) {
+            console.log("URL", URL);
             $("#loading").show()
             $.ajax({
                 url: URL,
@@ -189,31 +189,37 @@ TActiveForm::end();
                 success: function(data) {
                     toggleButton(false)
                     $("#alert_box").show()
-                    //$("#alert_message").text("Respounce from check api")
                     let alertMessage = "you can run the scrapper"
-                   console.log("data", data);
-                    const {message,scraper_date} = data &&  JSON.parse(data).length > 0 && JSON.parse(data)[0]
-                    if(message && scraper_date){
-                        alertMessage=`Data  ${message} on ${scraper_date}`
-                    }else{
-                        alertMessage ="you can run the scrapper"
+                    if (data && JSON.parse(data).length > 0) {
+                        JSON.parse(data).map(message_ => {
+                            const {
+                                message,
+                                scraper_date,
+                                timestamp
+                            } = message_
+                            $("#tbody_").append(` <tr>  <td>${scraper_date} </td>   <td>${timestamp}</td>  <td> ${message}</td>  </tr>`);
+                        })
+                    } else {
+
+                        alertMessage = "<tr><td colspan='3'> <p class='text-center'>No record found, You can run the scrapper </p> </td></tr>"
+                        $("#tbody_").html(alertMessage)
                     }
 
-                    $("#alert_message").text(alertMessage)
+                    
                 },
-                error : function (error) {
+                error: function(error) {
 
                 }
             });
-        }else{
-            $("#alert_box").show()
-             $("#alert_message").text("All the fields are required")
+        } else {
+           /*  $("#alert_box").show()
+            $("#alert_message").text("All the fields are required") */
         }
 
     })
 
     $('#scrapper_form').on('keyup change paste', 'input, select, radio', function() {
-       // console.log('Form changed!');
+        // console.log('Form changed!');
         $("#alert_box").hide()
         toggleButton(true)
     });

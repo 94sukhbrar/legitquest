@@ -22,7 +22,7 @@ class ScrapperForm extends Model
 	public $limit = 30;
 	public $offset = 0;
 	const SupreameCourt = "HIDO";
-	const  Judgements ="JU";
+	const  Judgements = "JU";
 	const DailyOrders = "DO";
 	/**
 	 *
@@ -54,24 +54,24 @@ class ScrapperForm extends Model
 		];
 	}
 
-	function dateDiff ($d1, $d2) {
+	function dateDiff($d1, $d2)
+	{
 
 		// Return the number of days between the two dates:    
-		return round(abs(strtotime($d1) - strtotime($d2))/86400);
-	
-	} 
+		return round(abs(strtotime($d1) - strtotime($d2)) / 86400);
+	}
 
 	public function validateDates()
-	{ 
-		$days = $this->dateDiff($this->end_date,$this->start_date); 
-		if(!isset($this->end_date) ){
+	{
+		$days = $this->dateDiff($this->end_date, $this->start_date);
+		if (!isset($this->end_date)) {
 			$this->addError('end_date', 'Please give correct  End date');
-		}	
-		if(!isset($this->start_date) ){
+		}
+		if (!isset($this->start_date)) {
 			$this->addError('start_date', 'Please give correct Start date');
-		}		 
-		if ($days  > Yii::$app->params['maxScrapDays']) {		
-			$this->addError('end_date', 'End Date can not be grater then '.Yii::$app->params['maxScrapDays'].' days');
+		}
+		if ($days  > Yii::$app->params['maxScrapDays']) {
+			$this->addError('end_date', 'End Date can not be grater then ' . Yii::$app->params['maxScrapDays'] . ' days');
 		}
 	}
 
@@ -104,41 +104,62 @@ class ScrapperForm extends Model
 
 	public function cleanStateName($stateName)
 	{
-		return str_replace(" ", "", $stateName);
+
+		$cleanedString = str_replace(" ", "", $stateName);
+		if (strpos($cleanedString, 'HighCourt') !== false) {
+
+			$cleanedString = substr($cleanedString, 0, strpos($cleanedString, 'HighCourt'));
+		}
+
+		return str_replace(" ", "", $cleanedString);
 	}
 
 	/**
 	 * @param []  start_date,end_date  
 	 */
-	public function supremeCourtJudgementsApi( $opt=[ ] )
+	public function supremeCourtJudgementsApi($opt = [])
 	{
-		$url =  Yii::$app->params['supremeCourtJudgementsApiUrl'] . $this->senitizeParams( $opt  );		 
-		 
+		$url =  Yii::$app->params['supremeCourtJudgementsApiUrl'] . $this->senitizeParams($opt);
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
-		curl_close($ch); 
+		curl_close($ch);
 		return json_decode($result);
-		 
 	}
+
+
+	public function getLogsFromApi( )
+	{
+		$url =  Yii::$app->params['logsApi'] ;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($result);
+	}
+
+
 
 	/**
 	 * @param []  start_date,end_date  
 	 */
-	public function supremeCourtOrdersApi( $opt=[ ] )
+	public function supremeCourtOrdersApi($opt = [])
 	{
-		$url =  Yii::$app->params['supremeCourtOrdersApiUrl'] . $this->senitizeParams( $opt  );		 
-		 
+		$url =  Yii::$app->params['supremeCourtOrdersApiUrl'] . $this->senitizeParams($opt);
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
-		curl_close($ch); 
+		curl_close($ch);
 		return json_decode($result);
-		 
 	}
 	public function highCourtScraper($opt = [
 		"state_name" => "AndhraPradesh",
@@ -147,37 +168,30 @@ class ScrapperForm extends Model
 		'court_code' => '1'
 	])
 	{
-
-		$optinal = [
-			'state_cd' => '2', // optional for now
-			'dist_cd' => '1', // optional for now
-		];
-
-
-		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));		 
-		
+		/**MERGING ADDATIONAL PARAMS */
+		$optinal  =   Yii::$app->params['stateCodes'];
+		$optinal = $optinal[$opt['state_name']];
+		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
-		curl_close($ch); 
+		curl_close($ch);
 		return json_decode($result);
-		
-
 	}
-	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211','limit' => '100'])
+	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
 	{
 
 		$url =  Yii::$app->params['checlApiUrl'] . $this->senitizeParams($opt);
+		//die($url);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
-		curl_close($ch); 
+		curl_close($ch);
 		return json_decode($result);
-	 
 	}
 
 
