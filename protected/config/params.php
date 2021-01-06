@@ -40,7 +40,7 @@ return [
         "Uttarakhand" => [ "state_cd"=>15,"dist_cd"=>1,"court_code"=>1],
         "JammuandKashmir"=>[ "state_cd"=>12,"dist_cd"=>1,"court_code"=>2],
         "Madras" => ["state_cd"=>10,"dist_cd"=>1,"court_code"=>2],
-
+        
 
     ],
     'stateList' => [
@@ -50,7 +50,8 @@ return [
         "GJ1711" => "Gujarat High Court ",
         "HP511" => "Himachal Pradesh High Court ",
         "RJ911(jaipur)" => "Jaipur High Court ",
-        "JK1211" => "Jammu and Kashmir High Court",
+        "JK1211" => "Jammu and Kashmir High Court (Jammu Wing)", 
+        "JK1212" => "Jammu and Kashmir High Court (Srinagar Wing)",   
         "TN1011" => "Madras High Court (Madurai) ",
         "MN2511" => "Manipur High Court ",
         "ML2111" => "Meghalaya High Court ",
@@ -61,6 +62,7 @@ return [
         "TE2911" => "Telangana High Court ",
         "UK1511" => "Uttarakhand High Court ",
         "SK2411" => "Sikkim High Court ",
+
         //"allahabad_high_court" => "Allahabad High Court ",
         //"bombay_high_court" => "Bombay High Court ",
         // "calcutta_high_court" => "Calcutta High Court ",
