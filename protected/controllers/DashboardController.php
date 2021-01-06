@@ -121,9 +121,9 @@ class DashboardController extends TController
         $resultData = [];
         
             foreach ($allData as $result) {
-                echo "<pre>";
+               /*  echo "<pre>";
                 print_r($result);
-                die;
+                die; */
 
                 $empRows = array();
                 $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
