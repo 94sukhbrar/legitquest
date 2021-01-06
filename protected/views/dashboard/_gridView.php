@@ -44,7 +44,7 @@ use yii\widgets\Pjax;
                 'value' => function ($data) {
                     return $this->render("_modal",[
                         'id_num' =>$data->id_num 
-                    ]);
+                    ]); 
                 },
             ],
 

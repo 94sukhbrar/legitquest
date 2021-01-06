@@ -164,13 +164,12 @@ class ScrapperForm extends Model
 	public function highCourtScraper($opt = [
 		"state_name" => "AndhraPradesh",
 		"start_date" => "YYYY-MM-DD",
-		'end_date' => "YYYY-MM-DD",
-		'court_code' => '1'
-	])
+		'end_date' => "YYYY-MM-DD"  
+	], $courtCode =null)
 	{
 		/**MERGING ADDATIONAL PARAMS */
-		$optinal  =   Yii::$app->params['stateCodes'];
-		$optinal = $optinal[$opt['state_name']];
+		$optinal  =   Yii::$app->params['stateCodes'];		
+		$optinal = $optinal[$courtCode];
 		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

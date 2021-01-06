@@ -112,18 +112,18 @@ class DashboardController extends TController
     {
         $target = $_REQUEST['court'];
         $form_model = new ScrapperForm();
-        $allData = $form_model->getDashboardRecordsFromApi(
+        $allData = $form_model->getDashboardRecordsFromApi( 
             ['target' => $target, 'count' => '1000']
         );
-        // print_r($allData);die;
+         // print_r($allData);die;
 
-        $numRows = array_sum(isset( $allData) ?  $allData :  []);
+        $numRows = array_sum(isset(  $allData) ? (array)$allData :  []);
         $resultData = [];        
          if(isset( $allData)){   foreach ($allData as $result) {
-              /*   echo "<pre>";
+                /* echo "<pre>";
                 print_r($result);
-                die; */
-
+                die;
+ */
                 $empRows = array();
                 $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
                 $empRows[] =  isset(  $result->diary_number) ?   $result->diary_number : "NA";
@@ -181,12 +181,12 @@ class DashboardController extends TController
             } else
                 {
                   
-
+  
                     $model->highCourtScraper([
                     'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
                     'end_date' => $model->end_date,                     
-                ]);
+                    ],$model->court);
 
                 Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );
 

@@ -15,7 +15,7 @@ return [
     'highCourtScraper' => 'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/high_court_scraper?',
     'getPDFdocURL' => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
     'stateCodes' => [
-        "AndhraPradesh" =>  [
+        /* "AndhraPradesh" =>  [
             "state_cd" => 2,
             "dist_cd" => 1,
             "court_code" => 1
@@ -39,25 +39,58 @@ return [
         "Telangana"=> ["state_cd"=>29,"dist_cd"=>1,"court_code"=>1],
         "Uttarakhand" => [ "state_cd"=>15,"dist_cd"=>1,"court_code"=>1],
         "JammuandKashmir"=>[ "state_cd"=>12,"dist_cd"=>1,"court_code"=>2],
-        "Madras" => ["state_cd"=>10,"dist_cd"=>1,"court_code"=>2],
-        
+        "Madras" => ["state_cd"=>10,"dist_cd"=>1,"court_code"=>2], */
 
-    ],
+        "AP211" =>  [
+            "state_cd" => 2,
+            "dist_cd" => 1,
+            "court_code" => 1
+        ],
+        "CG1811" => [
+            "state_cd" => 18,
+            'dist_cd' => 1,
+            "court_code" => 1
+        ],
+        "GJ1711" => ["state_cd" => 17, "dist_cd" => 1,  "court_code" => 1],
+        "HP511" => ["state_cd" => 5, "dist_cd" => 1, "court_code" => 1,],
+        "RJ911" => ["state_cd" => 9, "dist_cd" => 1, "court_code" => 1,],
+        "JK1211" => ["state_cd" => 12, "dist_cd" => 1, "court_code" => 1],
+        "Kerala" => ["state_cd" => 4, "dist_cd" => 1, "court_code" => 1],
+        "TN1011" => ["state_cd" => 10, "dist_cd" => 1, "court_code" => 1],
+        "MN2511" =>  ["state_cd" => 25, "dist_cd" => 1, "court_code" => 1],
+        "ML2111" => ["state_cd" => 21, "dist_cd" => 1, "court_code" => 1],
+        "Odisha" => ["state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
+        "Sikkim" => ["state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
+        "Tripura" => ["state_cd" => 20, "dist_cd" => 1, "court_code" => 1],
+        "Telangana" => ["state_cd" => 29, "dist_cd" => 1, "court_code" => 1],
+        "Uttarakhand" => ["state_cd" => 15, "dist_cd" => 1, "court_code" => 1],
+        "JK1212" => ["state_cd" => 12, "dist_cd" => 1, "court_code" => 2],
+        "TN1012" => ["state_cd" => 10, "dist_cd" => 1, "court_code" => 2],
+        "SK2411" => ["state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
+        "OR1111" =>   ["state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
+        "KL411" =>  ["state_cd" => 4, "dist_cd" => 1, "court_code" => 1],
+        "RJ912"  =>  ["state_cd" => 9, "dist_cd" => 1, "court_code" => 2],
+        "TR2011" =>  ["state_cd" => 20, "dist_cd" => 1, "court_code" => 1],
+        "TE2911" => ["state_cd" => 29, "dist_cd" => 1, "court_code" => 1],
+        "UK1511"=>[  "state_cd"=>15 ,"dist_cd"=>1 ,"ourt_code"=>1] ,   
+        "SK2411" =>[ "state_cd"=>11,"dist_cd"=>1,"court_code"=>1]
+     ],
     'stateList' => [
         "HIDO" => "Supreme Court ",
         "AP211" => "Andhra Pradesh High Court ",
         "CG1811" => "Chhattisgarh High Court ",
         "GJ1711" => "Gujarat High Court ",
         "HP511" => "Himachal Pradesh High Court ",
-        "RJ911(jaipur)" => "Jaipur High Court ",
-        "JK1211" => "Jammu and Kashmir High Court (Jammu Wing)", 
-        "JK1212" => "Jammu and Kashmir High Court (Srinagar Wing)",   
-        "TN1011" => "Madras High Court (Madurai) ",
+        "RJ911" => "Jaipur High Court ",
+        "JK1211" => "Jammu and Kashmir High Court (Jammu Wing)",
+        "JK1212" => "Jammu and Kashmir High Court (Srinagar Wing)",
+        "TN1011" => "Madras High Court ",
+        "TN1012" => "Madras High Court (Madurai) ",
         "MN2511" => "Manipur High Court ",
         "ML2111" => "Meghalaya High Court ",
-        "SK2411" => "Orissa High Court ",
+        "OR1111" => "Orissa High Court ",
         "KL411" => "Kerala High Court ",
-        "RJ912 (jodhpur)" => "Rajasthan High Court",
+        "RJ912" => "Rajasthan High Court",
         "TR2011" => "Tripura High Court ",
         "TE2911" => "Telangana High Court ",
         "UK1511" => "Uttarakhand High Court ",
