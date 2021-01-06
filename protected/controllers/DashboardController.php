@@ -113,7 +113,7 @@ class DashboardController extends TController
         $target = $_REQUEST['court'];
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi(
-            ['target' => $target, 'count' => '100']
+            ['target' => $target, 'count' => '1000']
         );
         // print_r($allData);die;
 
@@ -121,17 +121,20 @@ class DashboardController extends TController
         $resultData = [];
         
             foreach ($allData as $result) {
+                echo "<pre>";
+                print_r($result);
+                die;
 
                 $empRows = array();
                 $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
-                $empRows[] = isset(  $result->diary_number) ?   $result->diary_number : "NA";
+                $empRows[] =  isset(  $result->diary_number) ?   $result->diary_number : "NA";
                 $empRows[] =  isset( $result->petitioner_name)  ?  $result->petitioner_name : "NA";
                 $empRows[] =  isset( $result->respondent_name)  ?  $result->respondent_name : "NA";
                 $empRows[] =  isset( $result->petitioner_advocate)  ?  $result->petitioner_advocate : "NA";
                 $empRows[] =  isset( $result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
                 $empRows[] =  isset( $result->bench)  ?  $result->bench : "NA";
                 $empRows[] =  isset( $result->judgement_by)  ?  $result->judgement_by : "NA";
-                $empRows[] =  isset( $result->date)  ?  $result->date : "NA";
+                $empRows[] =  isset( $result->date)  ?  $result->date :  $result->order_date ;
                 $empRows[] =  isset( $result->case_type)  ?  $result->case_type : "NA";
                 $empRows[] =  isset( $result->case_year)  ?  $result->case_year : "NA";
                 $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA";
