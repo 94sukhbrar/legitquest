@@ -117,10 +117,9 @@ class DashboardController extends TController
         );
         // print_r($allData);die;
 
-        $numRows = array_sum($allData);
-        $resultData = [];
-        
-            foreach ($allData as $result) {
+        $numRows = array_sum(isset( $allData) ?  $allData :  []);
+        $resultData = [];        
+         if(isset( $allData)){   foreach ($allData as $result) {
                /*  echo "<pre>";
                 print_r($result);
                 die; */
@@ -140,10 +139,8 @@ class DashboardController extends TController
                 $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA";
 
                 $empRows[] = isset( $result->link )   ?   " <a href='$result->link' style='color:#3051d3'>PDF [Documents]</a>"  : "NA";
-
-                //$empRows[] = '<a href=' . isset( $result->link ) ?  $result->link : "NA". ' style="color:#3051d3">PDF [Documents]</a>';
-                $resultData[] = $empRows;
-            }
+                 $resultData[] = $empRows;
+            }}
          
 
         $output = array(
