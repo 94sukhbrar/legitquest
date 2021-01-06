@@ -50,7 +50,7 @@ return [
         "GJ1711" => "Gujarat High Court ",
         "HP511" => "Himachal Pradesh High Court ",
         "RJ911(jaipur)" => "Jaipur High Court ",
-        "JK1211" => "Jammu High Court ",
+        "JK1211" => "Jammu and Kashmir High Court",
         "TN1011" => "Madras High Court (Madurai) ",
         "MN2511" => "Manipur High Court ",
         "ML2111" => "Meghalaya High Court ",
