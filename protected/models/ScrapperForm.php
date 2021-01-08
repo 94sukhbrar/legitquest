@@ -114,6 +114,11 @@ class ScrapperForm extends Model
 		return str_replace(" ", "", $cleanedString);
 	}
 
+	public function removeSpaces($cleanedString)
+	{
+		return str_replace(" ", "", $cleanedString);
+	}
+
 	/**
 	 * @param []  start_date,end_date  
 	 */
@@ -131,9 +136,9 @@ class ScrapperForm extends Model
 	}
 
 
-	public function getLogsFromApi( )
+	public function getLogsFromApi()
 	{
-		$url =  Yii::$app->params['logsApi'] ;
+		$url =  Yii::$app->params['logsApi'];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -164,11 +169,11 @@ class ScrapperForm extends Model
 	public function highCourtScraper($opt = [
 		"state_name" => "AndhraPradesh",
 		"start_date" => "YYYY-MM-DD",
-		'end_date' => "YYYY-MM-DD"  
-	], $courtCode =null)
+		'end_date' => "YYYY-MM-DD"
+	], $courtCode = null)
 	{
 		/**MERGING ADDATIONAL PARAMS */
-		$optinal  =   Yii::$app->params['stateCodes'];		
+		$optinal  =   Yii::$app->params['stateCodes'];
 		$optinal = $optinal[$courtCode];
 		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
 		$ch = curl_init();
@@ -239,5 +244,31 @@ class ScrapperForm extends Model
 			return true;
 		}
 		return false;
+	}
+
+
+	public function renderModal($id_num,$data_id)
+	{
+		return "  <a data-toggle='modal' data-target='#myModal_$id_num' style='color:#3051d3'>PDF [Documents]</a> 
+					<div class='modal fade' id='myModal_$id_num' role='dialog'>
+						<div class='modal-dialog'> 
+						<div class='modal-content'>
+							<div class='modal-header'>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+							
+							</div>
+							<div class='modal-body'>
+							<p><button class='downloadDoc' id='$id_num'  data-id='$data_id' style='background: none;border: none;color: blue;' >Click here </button>to Download Document.</p>
+							<div id='loading_$id_num'  class='spinner-border text-info invisible' style='color: #3051d3;'></div>
+
+							<div class='document_$id_num'></div>
+							</div>
+							<div class='modal-footer'>
+							<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+							</div>
+						</div> 
+						</div>
+					</div>
+		 ";
 	}
 }

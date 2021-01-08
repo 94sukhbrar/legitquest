@@ -136,9 +136,9 @@ class DashboardController extends TController
                 $empRows[] =  isset( $result->date)  ?  $result->date :  $result->order_date ;
                 $empRows[] =  isset( $result->case_type)  ?  $result->case_type : "NA";
                 $empRows[] =  isset( $result->case_year)  ?  $result->case_year : "NA";
-                $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA";
-
-                $empRows[] = isset( $result->link )   ?   " <a href='$result->link' style='color:#3051d3'>PDF [Documents]</a>"  : "NA";
+                $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA"; 
+                $TEMP_LINK = $result->link  === "/No+data"  ? '#' : $result->link ; 
+                $empRows[] = ($target  == "SUJU" || $target == "SUDO") ?  $form_model->renderModal( $form_model->removeSpaces( md5(  $result->case_number)),$result->case_number) : "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
                  $resultData[] = $empRows;
             }}
          
