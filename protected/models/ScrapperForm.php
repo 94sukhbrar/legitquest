@@ -213,6 +213,28 @@ class ScrapperForm extends Model
 		return json_decode($result);
 	}
 
+	public function getDataCountForCourt($target )
+	{
+		 
+		$url =  Yii::$app->params['countApiUrl']."?target=".array_search ($target,$this->stateListFixer() ) ;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+		 
+		return json_decode($result)[0][0];
+	}
+
+
+		public function stateListFixer()
+		{
+			$items = Yii::$app->params['stateList'];
+			unset( $items["HIDO"] );      
+		 	$items = array_merge(["SUJU" => "Supreme Court Judgements ","SUDO" => "Supreme Court Orders "],$items);
+			return $items;
+		}
 	/**
 	 *
 	 * @return array customized attribute labels
@@ -246,7 +268,14 @@ class ScrapperForm extends Model
 		return false;
 	}
 
-
+	function array_chunks_fixed($input_array, $chunks=3) {
+		if (sizeof($input_array) > 0) {
+			//$chunks = 3;
+			return array_chunk($input_array, intval(ceil(sizeof($input_array) / $chunks)));
+		}
+	
+		return array();
+	}
 	public function renderModal($id_num,$data_id)
 	{
 		return "  <a data-toggle='modal' data-target='#myModal_$id_num' style='color:#3051d3'>PDF [Documents]</a> 

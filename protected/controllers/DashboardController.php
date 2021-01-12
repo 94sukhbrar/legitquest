@@ -34,7 +34,8 @@ class DashboardController extends TController
                             'scrapper',
                             'download-pdf',
                             'data-index',
-                            'log'
+                            'log',
+                            'court'
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
@@ -95,7 +96,7 @@ class DashboardController extends TController
                 'form_model'=> $form_model
             ]); */
 
-            return $this->render('index', [
+            return $this->render(/* 'index' */'dashboard', [
                 'dataProvider' => $provider,
                 'model' => $result,
                 'pages' => $pages,
@@ -103,9 +104,17 @@ class DashboardController extends TController
             ]);
         }
 
-        return $this->redirect('scrapper', [
+        return $this->redirect( 'dashboard'/* 'scrapper' */, [
             'form_model' => $form_model
         ]);
+    }
+    public function actionCourt($court=null)
+    {  
+        Yii::$app->view->params['selectedCourt'] = $court; 
+        return $this->render('_dataTable', [ 
+        
+    ]);
+         
     }
 
     public function actionDataIndex()
@@ -114,16 +123,10 @@ class DashboardController extends TController
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi( 
             ['target' => $target, 'count' => '1000']
-        );
-         // print_r($allData);die;
-
+        ); 
         $numRows = array_sum(isset(  $allData) ? (array)$allData :  []);
         $resultData = [];        
-         if(isset( $allData)){   foreach ($allData as $result) {
-                /* echo "<pre>";
-                print_r($result);
-                die;
- */
+         if(isset( $allData)){   foreach ($allData as $result) { 
                 $empRows = array();
                 $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
                 $empRows[] =  isset(  $result->diary_number) ?   $result->diary_number : "NA";
@@ -143,8 +146,7 @@ class DashboardController extends TController
             }}
          
 
-        $output = array(
-            //"draw"    =>    intval($_POST["draw"]),
+        $output = array(            
             "iTotalRecords"    =>     $numRows,
             "iTotalDisplayRecords"    =>  10,
             "data"    =>     $resultData
@@ -179,38 +181,16 @@ class DashboardController extends TController
                     ]);
                 }
             } else
-                {
-                  
-  
+                { 
                     $model->highCourtScraper([
                     'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
                     'end_date' => $model->end_date,                     
-                    ],$model->court);
-
-                Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );
-
-            
+                    ],$model->court); 
+                Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );  
             }
 
-            /* $provider = new ArrayDataProvider([
-                'allModels' => $result,
-                'sort' => [
-                    'attributes' => ['id', 'username', 'email'],
-                ],
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
-            ]);
-            $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
-
-            return $this->render('index', [
-                'dataProvider' => $provider,
-                'pages' => $pages,
-                'model' => $result,
-                'form_model' =>  $model
-            ]);  */
-
+          
             return $this->redirect([
                 '/dashboard/index'
             ]);

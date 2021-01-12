@@ -11,6 +11,7 @@ use yii\widgets\Menu;
 
 $user = Yii::$app->user->identity;
 
+ 
 /* @var $this \yii\web\View */
 /* @var $content string */
 // $this->title = yii::$app->name;
@@ -202,8 +203,12 @@ $this->beginPage() ?>
 				<div class="page-title-box">
 					<div class="container-fluid">
 						<div class="row align-items-center">
-							<div class="col-md-8">
-								<h4 class="page-title mb-1"> Select resective court to view data in System</h4>
+							<div class="row col-md-10">
+								<h4 class="page-title mb-1"> Select resective court to view data in System</h4> 
+								<?php if(isset($this->params['selectedCourt'])){?>
+									<button type="button" class="ml-2 btn btn-warning">  <?=$this->params['selectedCourt']?>  </button>
+
+								<?php }?>
 							</div>
 
 						</div>
