@@ -110,6 +110,7 @@ class DashboardController extends TController
     }
     public function actionCourt($court=null)
     {  
+        $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court; 
         return $this->render('_dataTable', [ 
         
@@ -125,7 +126,7 @@ class DashboardController extends TController
             ['target' => $target, 'count' => '1000']
         ); 
         $numRows = array_sum(isset(  $allData) ? (array)$allData :  []);
-        $resultData = [];        
+        $resultData = [];         
          if(isset( $allData)){   foreach ($allData as $result) { 
                 $empRows = array();
                 $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
