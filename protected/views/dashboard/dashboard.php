@@ -17,7 +17,7 @@ $overAllCount = 0
 
                                 <table class="table table-bordered">
                                     <tbody>
-                                        <?php foreach ($modelClass->array_chunks_fixed($modelClass->stateListFixer(), 7) as $key => $courtChunk) { ?>
+                                        <?php foreach ($modelClass->array_chunks_fixed($modelClass->stateListFixer( ), 7) as $key => $courtChunk) { ?>
                                             <tr>
                                                 <?php foreach ($courtChunk as $courtKey => $court) {
                                                     $recordCount = $modelClass->getDataCountForCourt($court);

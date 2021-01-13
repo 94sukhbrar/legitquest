@@ -228,11 +228,11 @@ class ScrapperForm extends Model
 	}
 
 
-		public function stateListFixer()
+		public function stateListFixer($addArr=[])
 		{
 			$items = Yii::$app->params['stateList'];
 			unset( $items["HIDO"] );      
-		 	$items = array_merge(["SUJU" => "Supreme Court Judgements ","SUDO" => "Supreme Court Orders "],$items);
+		 	$items = array_merge(["SUJU" => "Supreme Court Judgements ","SUDO" => "Supreme Court Orders "],$items,$addArr);
 			return $items;
 		}
 	/**
