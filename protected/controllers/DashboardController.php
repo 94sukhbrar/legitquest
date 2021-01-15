@@ -52,9 +52,26 @@ class DashboardController extends TController
         $this->layout = User::LAYOUT_LEGITQUEST;
         $model = new ScrapperForm();
         $modelData=  $model->getLogsFromApi();
+
+        $provider = new ArrayDataProvider([
+            'allModels' =>  $modelData,
+            'sort' => [
+                'attributes' => ['date_range', 'timestamp'],
+            ],
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+       // $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
+ 
+       return $this->render('_grid_view_log', [
+        'dataProvider' => $provider,
+        
+    ]); 
+/* 
         return $this->render('logs', [ 
             'model' => $modelData
-        ]);
+        ]);  */
 
 
     }
