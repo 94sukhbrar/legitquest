@@ -181,7 +181,9 @@ class DashboardController extends TController
             return TActiveForm::validate($model);
         }
         if ($model->load($post)) {
-
+           /*  echo "<pre>";
+            print_r($post);
+            die; */
             if ($model->court === ScrapperForm::SupreameCourt) {
                 //COURT TYPE IS SUPREAME COURT
                 if ($model->scrap_type  === ScrapperForm::Judgements) {
@@ -198,12 +200,17 @@ class DashboardController extends TController
                     ]);
                 }
             } else 
-                { 
+                {  
+                    #handle the exceptional case like Delhi,
+                    if($model->court === "DL1112DL1111"){
+                        $model->court= $model->determineExceptionalCaseStateName($model->court,$model->scrap_type);
+                    }
+                   
                     $model->highCourtScraper([  #state_name is being captures from params.php 
                    // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
                     'end_date' => $model->end_date,                     
-                    ],$model->court); 
+                    ], $model->court); 
                 Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );  
             }
 

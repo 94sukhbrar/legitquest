@@ -150,14 +150,20 @@ class ScrapperForm extends Model
 	}
 
 
-
+	public function determineExceptionalCaseStateName($code,$scrapeType)
+	{
+		 
+		 
+		return array_search ("DL".$scrapeType, Yii::$app->params['expeptionalCases']) ;
+		 
+	}
 	/**
 	 * @param []  start_date,end_date  
 	 */
 	public function supremeCourtOrdersApi($opt = [])
 	{
 		$url =  Yii::$app->params['supremeCourtOrdersApiUrl'] . $this->senitizeParams($opt);
-
+			
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -176,7 +182,7 @@ class ScrapperForm extends Model
 		$optinal  =   Yii::$app->params['stateCodes'];
 		$optinal = $optinal[$courtCode];
 		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
-		//die($url );
+		 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

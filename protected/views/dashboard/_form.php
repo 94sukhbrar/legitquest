@@ -23,7 +23,8 @@ $form = TActiveForm::begin([
     <div class="col-md-10">
         <?php echo $this->render('state_list', [
             'form' => $form,
-            'model' => $model
+            'model' => $model,
+            'addationalParams'=> [ "HIDO" => "Supreme Court ","DL1112DL1111" => "Delhi High Court"]
         ]); ?>
     </div>
 </div>
@@ -139,13 +140,19 @@ TActiveForm::end();
     const validator = (startDate, endDate, target) => {
         return startDate && endDate && target
     }
+    const isAnExcepctionalCase = (target)=>{
+        const excepctionalCases = [<?=json_encode(Yii::$app->params['expeptionalCases'] , JSON_PRETTY_PRINT) ?>]
+        excepctionalCases.map(item=>{
+            console.log("item",item,"target",target);
+        })
+    }
     $("#scrapperform-court").on('change', function() {
         const excepctionalCases = [<?=json_encode(Yii::$app->params['expeptionalCases'] , JSON_PRETTY_PRINT) ?>]
-
+        isAnExcepctionalCase($(this).val() )
         console.log("excepctionalCases",excepctionalCases);
         //show check button on every change
         toggleButton()
-        if (($(this).val() === "HIDO" ) || ( $(this).val() === "DL1112") ||  $(this).val() === "DL1111" )  {
+        if (($(this).val() === "HIDO" ) || ( $(this).val() === "DL1112DL1111")   )  {
             // supreme court is selected
             $('.supreme_court').show()
             $('.high_court').hide()
@@ -178,9 +185,17 @@ TActiveForm::end();
         e.preventDefault()
         const startDate = $("#scrapperform-start_date").val()
         const endDate = $("#scrapperform-end_date").val()
-        const target = $("#scrapperform-court").val()
+        let target = $("#scrapperform-court").val()
         console.log("startDate", startDate, "endDate", endDate);
-        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target === "HIDO" ?  getSelectedTargetForSuperameCourt() :target}`
+        if(target === "HIDO"){
+            //finilize target
+            target= getSelectedTargetForSuperameCourt() 
+        }else if( target ===  "DL1112DL1111"){  //`DL1112DL1111` is a combined code for delhi JU,DO
+             // if highe court delhi selected
+            target = `DL${getSelectedTargetForSuperameCourt()}`   
+            
+        }
+        const URL = `<?= Yii::$app->params['checkApiUrl']; ?>start_date=${startDate}&end_date=${endDate}&target=${target}`
         if (validator(startDate, endDate, target)) {
             console.log("URL", URL);
             $("#loading").show()

@@ -4,7 +4,9 @@
 
 $items =   Yii::$app->params['stateList'];
 if(isset($addationalParams)){
-     unset( $items["HIDO"] );      
+     unset( $items["HIDO"] );
+     unset( $items["DL1112"]);
+     unset( $items["DL1111"]);      
     $items = array_merge($addationalParams,$items);
 }
 if (isset($form) && isset($model)) {
