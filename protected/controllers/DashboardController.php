@@ -56,7 +56,7 @@ class DashboardController extends TController
         $provider = new ArrayDataProvider([
             'allModels' =>  $modelData,
             'sort' => [
-                'attributes' => ['date_range', 'timestamp'],
+                'attributes' => ['supreme_court','state_name', 'date_range', 'timestamp'],
             ],
             'pagination' => [
                 'pageSize' => 10,
