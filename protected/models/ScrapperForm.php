@@ -187,8 +187,8 @@ class ScrapperForm extends Model
 	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
 	{
 
-		$url =  Yii::$app->params['checlApiUrl'] . $this->senitizeParams($opt);
-		//die($url);
+		$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams($opt);
+		//die($url );
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

@@ -12,10 +12,14 @@ $target =  array_search ( Yii::$app->getRequest()->getQueryParam('court'),$model
     div#example_wrapper {
         overflow: scroll;
     }
+
+
 </style>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 <div class="card">
+    <?=$this->render('_loader')?>
     <div class="card-body" id="data_table">
+        <?=$this->render('_date_filter',['target'=>$target])?>
 
         <table id="example" class="display" style="width:100%; overflow: scroll;">
             <thead>

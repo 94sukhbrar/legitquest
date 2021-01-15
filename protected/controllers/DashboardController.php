@@ -121,10 +121,13 @@ class DashboardController extends TController
     public function actionDataIndex()
     {
         $target = $_REQUEST['court'];
+        $lower_date = isset( $_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days')); 
+        $higher_date = isset( $_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] :date('Y-m-d', strtotime(date('Y-m-d'). ' + 60 days'))  ; 
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi( 
-            ['target' => $target, 'count' => '1000']
-        ); 
+            ['target' => $target, 'count' => '1000', 'lower_date'=> $lower_date , 'higher_date'=>  $higher_date   ]
+        );  
+         
         $numRows = array_sum(isset(  $allData) ? (array)$allData :  []);
         $resultData = [];         
          if(isset( $allData)){   foreach ($allData as $result) { 
@@ -137,11 +140,15 @@ class DashboardController extends TController
                 $empRows[] =  isset( $result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
                 $empRows[] =  isset( $result->bench)  ?  $result->bench : "NA";
                 $empRows[] =  isset( $result->judgement_by)  ?  $result->judgement_by : "NA";
-                $empRows[] =  isset( $result->date)  ?  $result->date :  $result->order_date ;
+                $empRows[] =  isset( $result->date)  ?  $result->date : ( isset ($result->order_date ) ? $result->order_date : "NA");
                 $empRows[] =  isset( $result->case_type)  ?  $result->case_type : "NA";
                 $empRows[] =  isset( $result->case_year)  ?  $result->case_year : "NA";
                 $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA"; 
-                $TEMP_LINK = $result->link  === "/No+data"  ? '#' : $result->link ; 
+                $TEMP_LINK = "";
+                if(isset($result->link)){
+                    $TEMP_LINK=   $result->link  === "/No+data"  ? '#' : $result->link ; 
+                }
+                
                 $empRows[] = ($target  == "SUJU" || $target == "SUDO") ?  $form_model->renderModal( $form_model->removeSpaces( md5(  $result->case_number)),$result->case_number) : "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
                  $resultData[] = $empRows;
             }}

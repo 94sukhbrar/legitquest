@@ -8,4 +8,4 @@
 tests/_output/*
 /vendor
 /protected/config/db-dev.php
-common.php
+ 
