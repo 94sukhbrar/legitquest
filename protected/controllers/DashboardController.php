@@ -59,7 +59,7 @@ class DashboardController extends TController
                 'attributes' => ['date_range', 'timestamp'],
             ],
             'pagination' => [
-                'pageSize' => 15,
+                'pageSize' => 10,
             ],
         ]);
        // $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);

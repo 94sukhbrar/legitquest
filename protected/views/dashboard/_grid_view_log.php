@@ -37,15 +37,20 @@ use yii\widgets\Pjax;
         ],
         'columns' => [
             [
-                'attribute'=>'supreme_court',
+                
                 'label' => 'Court Name',
                 'format' => 'raw',
                 'value' => function ($data) {
-                  return isset( $data->supreme_court)  ?  $data->supreme_court  :  $data->state_name;
+                  return   $data->supreme_court != "NA"   ?  $data->supreme_court  :  $data->state_name;
                  },
             ], 
             'date_range', 
-            'timestamp',
+            [
+                'attribute' => 'timestamp',
+                'label' => 'Date (when scrapper ran) ',
+                'value' => function($model) { return $model->timestamp   ;},
+            ] 
+            
             
  
 
