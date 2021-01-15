@@ -140,11 +140,13 @@ TActiveForm::end();
         return startDate && endDate && target
     }
     $("#scrapperform-court").on('change', function() {
+        const excepctionalCases = [<?=json_encode(Yii::$app->params['expeptionalCases'] , JSON_PRETTY_PRINT) ?>]
 
+        console.log("excepctionalCases",excepctionalCases);
         //show check button on every change
         toggleButton()
-        if ($(this).val() === "HIDO") {
-            // supreme court is elected
+        if (($(this).val() === "HIDO" ) || ( $(this).val() === "DL1112") ||  $(this).val() === "DL1111" )  {
+            // supreme court is selected
             $('.supreme_court').show()
             $('.high_court').hide()
             $("#higheCourtoptions_HIDO").prop("checked", false);

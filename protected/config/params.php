@@ -37,7 +37,7 @@ return [
         "ML2111" => ["state_name"=>"Meghalaya","state_cd" => 21, "dist_cd" => 1, "court_code" => 1],        
         "JK1212" => ["state_name"=>"JammuandKashmir","state_cd" => 12, "dist_cd" => 1, "court_code" => 2],
         "TN1012" => ["state_name"=>"Madras","state_cd" => 10, "dist_cd" => 1, "court_code" => 2],
-        "SK2411" => ["state_name"=>"Sikkim","state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
+        "SK2411" => ["state_name"=>"Sikkim","state_cd" => 24, "dist_cd" => 1, "court_code" => 1],
         "OR1111" =>   ["state_name"=>"Odisha","state_cd" => 11, "dist_cd" => 1, "court_code" => 1],
         "KL411" =>  ["state_name"=>"Kerala","state_cd" => 4, "dist_cd" => 1, "court_code" => 1],
         "RJ912"  =>  ["state_name"=>"Rajasthan","state_cd" => 9, "dist_cd" => 1, "court_code" => 2],
