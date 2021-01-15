@@ -176,6 +176,7 @@ class ScrapperForm extends Model
 		$optinal  =   Yii::$app->params['stateCodes'];
 		$optinal = $optinal[$courtCode];
 		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
+		//die($url );
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

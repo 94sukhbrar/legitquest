@@ -61,19 +61,11 @@ class DashboardController extends TController
             'pagination' => [
                 'pageSize' => 10,
             ],
-        ]);
-       // $pages = new Pagination(['totalCount' => $provider->getTotalCount()]);
+        ]);        
  
        return $this->render('_grid_view_log', [
-        'dataProvider' => $provider,
-        
-    ]); 
-/* 
-        return $this->render('logs', [ 
-            'model' => $modelData
-        ]);  */
-
-
+            'dataProvider' => $provider, 
+        ]);   
     }
 
     public function actionIndex($model = null)
@@ -205,10 +197,10 @@ class DashboardController extends TController
                         'end_date' => $model->end_date
                     ]);
                 }
-            } else
+            } else 
                 { 
-                    $model->highCourtScraper([
-                    'state_name' =>   $model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
+                    $model->highCourtScraper([  #state_name is being captures from params.php 
+                   // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
                     'end_date' => $model->end_date,                     
                     ],$model->court); 
