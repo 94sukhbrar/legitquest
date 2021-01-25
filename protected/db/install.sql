@@ -616,6 +616,29 @@ CREATE TABLE IF NOT EXISTS `tbl_visitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+
+
+
+-- -------------------------------------------
+
+-- TABLE `tbl_courts`
+
+-- -------------------------------------------
+DROP TABLE IF EXISTS `tbl_courts`;
+CREATE TABLE IF NOT EXISTS `tbl_courts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `state_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `state_cd` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `dist_cd` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `court_code` varchar(255) COLLATE utf8_unicode_ci NOT NULL, 
+  `created_on` datetime NOT NULL,
+  `updated_on` datetime DEFAULT NULL,
+  `created_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 COMMIT;
 -- -------------------------------------------
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

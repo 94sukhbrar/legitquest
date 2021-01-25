@@ -48,24 +48,24 @@ class DashboardController extends TController
     }
 
     public function actionLog()
-    { 
+    {
         $this->layout = User::LAYOUT_LEGITQUEST;
         $model = new ScrapperForm();
-        $modelData=  $model->getLogsFromApi();
+        $modelData =  $model->getLogsFromApi();
 
         $provider = new ArrayDataProvider([
             'allModels' =>  $modelData,
             'sort' => [
-                'attributes' => ['supreme_court','state_name', 'date_range', 'timestamp'],
+                'attributes' => ['supreme_court', 'state_name', 'date_range', 'timestamp'],
             ],
             'pagination' => [
                 'pageSize' => 10,
             ],
-        ]);        
- 
-       return $this->render('_grid_view_log', [
-            'dataProvider' => $provider, 
-        ]);   
+        ]);
+
+        return $this->render('_grid_view_log', [
+            'dataProvider' => $provider,
+        ]);
     }
 
     public function actionIndex($model = null)
@@ -113,57 +113,65 @@ class DashboardController extends TController
             ]);
         }
 
-        return $this->redirect( 'dashboard'/* 'scrapper' */, [
+        return $this->redirect('dashboard'/* 'scrapper' */, [
             'form_model' => $form_model
         ]);
     }
-    public function actionCourt($court=null)
-    {  
+    public function actionCourt($court = null)
+    {
         $this->layout = User::LAYOUT_LEGITQUEST;
-        Yii::$app->view->params['selectedCourt'] = $court; 
-        return $this->render('_dataTable', [ 
-        
-    ]);
-         
+        Yii::$app->view->params['selectedCourt'] = $court;
+        return $this->render('_dataTable', []);
     }
 
     public function actionDataIndex()
     {
         $target = $_REQUEST['court'];
-        $lower_date = isset( $_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d'). ' - 60 days')); 
-        $higher_date = isset( $_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] :date('Y-m-d', strtotime(date('Y-m-d'). ' + 60 days'))  ; 
+        $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 1 days'));
+        $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 7 days'));
         $form_model = new ScrapperForm();
-        $allData = $form_model->getDashboardRecordsFromApi( 
-            ['target' => $target, 'count' => '1000', 'lower_date'=> $lower_date , 'higher_date'=>  $higher_date   ]
-        );  
-         
-        $numRows = array_sum(isset(  $allData) ? (array)$allData :  []);
-        $resultData = [];         
-         if(isset( $allData)){   foreach ($allData as $result) { 
-                $empRows = array();
-                $empRows[] =  isset( $result->case_number)  ?  $result->case_number : "NA";
-                $empRows[] =  isset(  $result->diary_number) ?   $result->diary_number : "NA";
-                $empRows[] =  isset( $result->petitioner_name)  ?  $result->petitioner_name : "NA";
-                $empRows[] =  isset( $result->respondent_name)  ?  $result->respondent_name : "NA";
-                $empRows[] =  isset( $result->petitioner_advocate)  ?  $result->petitioner_advocate : "NA";
-                $empRows[] =  isset( $result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
-                $empRows[] =  isset( $result->bench)  ?  $result->bench : "NA";
-                $empRows[] =  isset( $result->judgement_by)  ?  $result->judgement_by : "NA";
-                $empRows[] =  isset( $result->date)  ?  $result->date : ( isset ($result->order_date ) ? $result->order_date : "NA");
-                $empRows[] =  isset( $result->case_type)  ?  $result->case_type : "NA";
-                $empRows[] =  isset( $result->case_year)  ?  $result->case_year : "NA";
-                $empRows[] =  isset( $result->order_type)  ?  $result->order_type : "NA"; 
-                $TEMP_LINK = "";
-                if(isset($result->link)){
-                    $TEMP_LINK=   $result->link  === "/No+data"  ? '#' : $result->link ; 
-                }
-                
-                $empRows[] = ($target  == "SUJU" || $target == "SUDO") ?  $form_model->renderModal( $form_model->removeSpaces( md5(  $result->case_number)),$result->case_number) : "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
-                 $resultData[] = $empRows;
-            }}
-         
+        $allData = $form_model->getDashboardRecordsFromApi(
+            ['target' => $target, 'count' => '1000', 'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+        );
 
-        $output = array(            
+        $numRows = array_sum(isset($allData) ? (array)$allData :  []);
+        $resultData = [];
+        if (isset($allData)) {
+            foreach ($allData as $result) {
+                $empRows = array();
+                $empRows[] =  isset($result->case_number)  ?  $result->case_number : "NA";
+                $empRows[] =  isset($result->diary_number) ?   $result->diary_number : "NA";
+                $empRows[] =  isset($result->petitioner_name)  ?  $result->petitioner_name : "NA";
+                $empRows[] =  isset($result->respondent_name)  ?  $result->respondent_name : "NA";
+                $empRows[] =  isset($result->petitioner_advocate)  ?  $result->petitioner_advocate : "NA";
+                $empRows[] =  isset($result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
+                $empRows[] =  isset($result->bench)  ?  $result->bench : "NA";
+                $empRows[] =  isset($result->judgement_by)  ?  $result->judgement_by : "NA";
+                $empRows[] =  isset($result->date)  ?  $result->date : (isset($result->order_date) ? $result->order_date : "NA");
+                $empRows[] =  isset($result->case_type)  ?  $result->case_type : "NA";
+                $empRows[] =  isset($result->case_year)  ?  $result->case_year : "NA";
+                $empRows[] =  isset($result->order_type)  ?  $result->order_type : "NA";
+                $TEMP_LINK = "";
+                if (isset($result->link) && strpos($result->link, 'http') !== false) {
+                    /// if string contrainer HTTP  then it should show document 
+                    $TEMP_LINK =   $result->link  === "/No+data"  ? '#' : $result->link;
+                    $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
+                }else{
+                    $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
+                }
+
+               /*  
+               $empRows[] = ($target  == "SUJU" || $target == "SUDO")
+                    ?
+                    $form_model->renderModal($form_model->removeSpaces(md5($result->case_number)), $result->case_number)
+                    :
+                    "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>"; */
+                $resultData[] = $empRows;
+            }
+        }
+
+
+        $output = array(
             "iTotalRecords"    =>     $numRows,
             "iTotalDisplayRecords"    =>  10,
             "data"    =>     $resultData
@@ -181,7 +189,7 @@ class DashboardController extends TController
             return TActiveForm::validate($model);
         }
         if ($model->load($post)) {
-           /*  echo "<pre>";
+            /*  echo "<pre>";
             print_r($post);
             die; */
             if ($model->court === ScrapperForm::SupreameCourt) {
@@ -199,22 +207,21 @@ class DashboardController extends TController
                         'end_date' => $model->end_date
                     ]);
                 }
-            } else 
-                {  
-                    #handle the exceptional case like Delhi,
-                    if($model->court === "DL1112DL1111"){
-                        $model->court= $model->determineExceptionalCaseStateName($model->court,$model->scrap_type);
-                    }
-                   
-                    $model->highCourtScraper([  #state_name is being captures from params.php 
-                   // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
+            } else {
+                #handle the exceptional case like Delhi,
+                if ($model->court === "DL1112DL1111") {
+                    $model->court = $model->determineExceptionalCaseStateName($model->court, $model->scrap_type);
+                }
+
+                $model->highCourtScraper([  #state_name is being captures from params.php 
+                    // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
-                    'end_date' => $model->end_date,                     
-                    ], $model->court); 
-                Yii::$app->session->setFlash('info', "Your data is being scrapped for ".  $model->start_date." - ".$model->end_date );  
+                    'end_date' => $model->end_date,
+                ], $model->court);
+                Yii::$app->session->setFlash('info', "Your data is being scrapped for " .  $model->start_date . " - " . $model->end_date);
             }
 
-          
+
             return $this->redirect([
                 '/dashboard/index'
             ]);
