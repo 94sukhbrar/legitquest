@@ -7,6 +7,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 use yii\base\Model;
 
@@ -150,12 +151,11 @@ class ScrapperForm extends Model
 	}
 
 
-	public function determineExceptionalCaseStateName($code,$scrapeType)
+	public function determineExceptionalCaseStateName($code, $scrapeType)
 	{
-		 
-		 
-		return array_search ("DL".$scrapeType, Yii::$app->params['expeptionalCases']) ;
-		 
+
+
+		return array_search("DL" . $scrapeType, Yii::$app->params['expeptionalCases']);
 	}
 	/**
 	 * @param []  start_date,end_date  
@@ -163,7 +163,7 @@ class ScrapperForm extends Model
 	public function supremeCourtOrdersApi($opt = [])
 	{
 		$url =  Yii::$app->params['supremeCourtOrdersApiUrl'] . $this->senitizeParams($opt);
-			
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -181,7 +181,7 @@ class ScrapperForm extends Model
 		/**MERGING ADDATIONAL PARAMS */
 		$optinal  =   Yii::$app->params['stateCodes'];
 		$optinal = $optinal[$courtCode];
-		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));		 
+		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -190,18 +190,69 @@ class ScrapperForm extends Model
 		curl_close($ch);
 		return json_decode($result);
 	}
+	public function asyncall($urls )
+	{ 
+		// Setando opção padrão para todas url e adicionando a fila para processamento
+		$mh = curl_multi_init();
+		foreach ($urls as $key => $value) {
+			$ch[$key] = curl_init($value);
+			curl_setopt($ch[$key], CURLOPT_NOBODY, true);
+			curl_setopt($ch[$key], CURLOPT_HEADER, true);
+			curl_setopt($ch[$key], CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch[$key], CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch[$key], CURLOPT_SSL_VERIFYHOST, false);
+ 
+
+			curl_multi_add_handle($mh, $ch[$key]);
+		}
+
+		// Executando consulta
+		do {
+		 	curl_multi_exec($mh, $running);
+	 
+			curl_multi_select($mh);
+		} while ($running > 0);
+
+		// Obtendo dados de todas as consultas e retirando da fila
+		foreach (array_keys($ch) as $key) {
+			echo curl_getinfo($ch[$key], CURLINFO_HTTP_CODE);
+			echo curl_getinfo($ch[$key], CURLINFO_EFFECTIVE_URL);
+			echo "\n";
+
+			curl_multi_remove_handle($mh, $ch[$key]);
+		}
+ 
+		// Finalizando
+		curl_multi_close($mh);
+	}
 	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
 	{
 
-		$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams($opt);
-		//die($url );
-		$ch = curl_init();
+		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
+		$overAllResults = [];
+		$urls =[];
+		foreach ($dateRanges as $key => $date_params) {
+			//$urls [] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+			$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_ENCODING, "");
+			$result = curl_exec($ch);
+			curl_close($ch);
+			$overAllResults = array_merge($overAllResults, json_decode($result));
+		}
+	 
+		return  $overAllResults;
+
+
+		/* $ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		curl_setopt($ch, CURLOPT_ENCODING, ""); 
 		$result = curl_exec($ch);
 		curl_close($ch);
-		return json_decode($result);
+		return json_decode($result); */
 	}
 
 
@@ -219,28 +270,28 @@ class ScrapperForm extends Model
 		return json_decode($result);
 	}
 
-	public function getDataCountForCourt($target )
+	public function getDataCountForCourt($target)
 	{
-		 
-		$url =  Yii::$app->params['countApiUrl']."?target=".array_search ($target,$this->stateListFixer() ) ;
+
+		$url =  Yii::$app->params['countApiUrl'] . "?target=" . array_search($target, $this->stateListFixer());
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
 		curl_close($ch);
-		 
+
 		return json_decode($result)[0][0];
 	}
 
 
-		public function stateListFixer($addArr=[])
-		{
-			$items = Yii::$app->params['stateList'];
-			unset( $items["HIDO"] );      
-		 	$items = array_merge(["SUJU" => "Supreme Court Judgements ","SUDO" => "Supreme Court Orders "],$items,$addArr);
-			return $items;
-		}
+	public function stateListFixer($addArr = [])
+	{
+		$items = Yii::$app->params['stateList'];
+		unset($items["HIDO"]);
+		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders "], $items, $addArr);
+		return $items;
+	}
 	/**
 	 *
 	 * @return array customized attribute labels
@@ -274,15 +325,16 @@ class ScrapperForm extends Model
 		return false;
 	}
 
-	function array_chunks_fixed($input_array, $chunks=3) {
+	function array_chunks_fixed($input_array, $chunks = 3)
+	{
 		if (sizeof($input_array) > 0) {
 			//$chunks = 3;
 			return array_chunk($input_array, intval(ceil(sizeof($input_array) / $chunks)));
 		}
-	
+
 		return array();
 	}
-	public function renderModal($id_num,$data_id)
+	public function renderModal($id_num, $data_id)
 	{
 		return "  <a data-toggle='modal' data-target='#myModal_$id_num' style='color:#3051d3'>PDF [Documents]</a> 
 					<div class='modal fade' id='myModal_$id_num' role='dialog'>
@@ -305,5 +357,35 @@ class ScrapperForm extends Model
 						</div>
 					</div>
 		 ";
+	}
+
+	function getWeekDates($date, $start_date, $end_date, $i)
+	{
+
+		$week =  date('W', strtotime($date));
+		$year =  date('Y', strtotime($date));
+		$from = date("Y-m-d", strtotime("{$year}-W{$week}+1")); //Returns the date of monday in week
+		if ($from < $start_date) $from = $start_date;
+		$to = date("Y-m-d", strtotime("{$year}-W{$week}-7"));   //Returns the date of sunday in week
+		if ($to > $end_date) $to = $end_date;
+		return ['lower_date' => $from, 'higher_date' => $to];
+		//echo "$i th ".$from." to ".$to.'<br>';
+
+	}
+
+	public function weekRange($start_date_, $end_date_)
+	{
+
+		$start_date = date('Y-m-d', strtotime($start_date_));
+		$end_date = date('Y-m-d', strtotime($end_date_));
+		$i = 1;
+		$datas = [];
+		for ($date = $start_date; $date <= $end_date; $date = date('Y-m-d', strtotime($date . ' + 7 days'))) {
+			$wek =  $this->getWeekDates($date, $start_date, $end_date, $i);
+			array_push($datas, $wek);
+			//echo "\n";
+			$i++;
+		}
+		return $datas;
 	}
 }
