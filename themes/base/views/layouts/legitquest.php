@@ -188,7 +188,14 @@ $this->beginPage() ?>
 							</a>
 						</li>
 
+						<!-- <li>
+							<a href="< ?= Url::toRoute(['/courts']); ?>" class="waves-effect">
+								<div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
+								<span>courts</span>
+							</a>
+						</li> -->
 
+						
 					</ul>
 
 				</div>

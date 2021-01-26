@@ -190,49 +190,44 @@ class ScrapperForm extends Model
 		curl_close($ch);
 		return json_decode($result);
 	}
-	public function asyncall($urls )
-	{ 
-		// Setando opção padrão para todas url e adicionando a fila para processamento
-		$mh = curl_multi_init();
-		foreach ($urls as $key => $value) {
-			$ch[$key] = curl_init($value);
-			curl_setopt($ch[$key], CURLOPT_NOBODY, true);
-			curl_setopt($ch[$key], CURLOPT_HEADER, true);
-			curl_setopt($ch[$key], CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch[$key], CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch[$key], CURLOPT_SSL_VERIFYHOST, false);
- 
+	public function asyncall($nodes)
+	{
 
-			curl_multi_add_handle($mh, $ch[$key]);
+		$node_count = count($nodes);
+
+		$curl_arr = array();
+		$master = curl_multi_init();
+
+		for ($i = 0; $i < $node_count; $i++) {
+			$url = $nodes[$i];
+			$curl_arr[$i] = curl_init($url);
+			curl_setopt($curl_arr[$i], CURLOPT_RETURNTRANSFER, true);
+			curl_multi_add_handle($master, $curl_arr[$i]);
 		}
 
-		// Executando consulta
 		do {
-		 	curl_multi_exec($mh, $running);
-	 
-			curl_multi_select($mh);
+			curl_multi_exec($master, $running);
 		} while ($running > 0);
 
-		// Obtendo dados de todas as consultas e retirando da fila
-		foreach (array_keys($ch) as $key) {
-			echo curl_getinfo($ch[$key], CURLINFO_HTTP_CODE);
-			echo curl_getinfo($ch[$key], CURLINFO_EFFECTIVE_URL);
-			echo "\n";
-
-			curl_multi_remove_handle($mh, $ch[$key]);
+		$results = [];
+		for ($i = 0; $i < $node_count; $i++) {
+			
+			$respo =   curl_multi_getcontent($curl_arr[$i]);
+			print_r($respo);
+			/* if(is_array($respo ))
+				$results = array_merge($results, json_decode($respo  )); */
 		}
- 
-		// Finalizando
-		curl_multi_close($mh);
+		return	$results;
 	}
 	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
-	{
+	{ 
+		 
 
 		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
 		$overAllResults = [];
-		$urls =[];
+		$urls = [];
 		foreach ($dateRanges as $key => $date_params) {
-			//$urls [] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+			//$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 			$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -242,7 +237,8 @@ class ScrapperForm extends Model
 			curl_close($ch);
 			$overAllResults = array_merge($overAllResults, json_decode($result));
 		}
-	 
+		 
+		//return $this->asyncall($urls);
 		return  $overAllResults;
 
 
