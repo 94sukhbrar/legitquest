@@ -127,13 +127,13 @@ class DashboardController extends TController
     public function actionDataIndex()
     {
         $target = $_REQUEST['court'];
-        $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 1 days'));
-        $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 7 days'));
+        $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
+        $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
         $allData = $form_model->getDashboardRecordsFromApi(
-            ['target' => $target, 'count' => '1000', 'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
         );
-
+ 
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
@@ -150,7 +150,7 @@ class DashboardController extends TController
                 $empRows[] =  isset($result->date)  ?  $result->date : (isset($result->order_date) ? $result->order_date : "NA");
                 $empRows[] =  isset($result->case_type)  ?  $result->case_type : "NA";
                 $empRows[] =  isset($result->case_year)  ?  $result->case_year : "NA";
-                $empRows[] =  isset($result->order_type)  ?  $result->order_type : "NA";
+                $empRows[] =  isset($result->order_type)  ?  $result->order_type :  $form_model->getOrderType($target) ;
                 $TEMP_LINK = "";
                 if (isset($result->link) && strpos($result->link, 'http') !== false) {
                     /// if string contrainer HTTP  then it should show document 
