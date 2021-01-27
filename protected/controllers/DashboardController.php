@@ -212,7 +212,7 @@ class DashboardController extends TController
                 if ($model->court === "DL1112DL1111") {
                     $model->court = $model->determineExceptionalCaseStateName($model->court, $model->scrap_type);
                 }
-
+ 
                 $model->highCourtScraper([  #state_name is being captures from params.php 
                     // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
