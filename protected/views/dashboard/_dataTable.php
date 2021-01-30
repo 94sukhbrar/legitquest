@@ -5,21 +5,19 @@ use yii\helpers\Url;
 //die(Url::toRoute(['/dashboard/data-index'])."?court=SUJU");
 
 $modelClass = new ScrapperForm();
-$target =  array_search ( Yii::$app->getRequest()->getQueryParam('court'),$modelClass->stateListFixer()) ;
+$target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelClass->stateListFixer());
 //die($target);
 ?>
 <style>
     div#example_wrapper {
         overflow: scroll;
     }
-
-
 </style>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 <div class="card">
-    <?=$this->render('_loader')?>
+    <?= $this->render('_loader') ?>
     <div class="card-body" id="data_table">
-        <?=$this->render('_date_filter',['target'=>$target])?>
+        <?= $this->render('_date_filter', ['target' => $target]) ?>
 
         <table id="example" class="display" style="width:100%; overflow: scroll;">
             <thead>
@@ -37,6 +35,12 @@ $target =  array_search ( Yii::$app->getRequest()->getQueryParam('court'),$model
                     <th> case type </th>
                     <th> case year </th>
                     <th> order type </th>
+ 
+                    <th> Page number </th>
+                    <th> Corrigendum </th>
+                    <th> Case description </th>
+                    <th> Court number </th>
+
 
                     <th>PDF [Document]</th>
                 </tr>
@@ -50,14 +54,14 @@ $target =  array_search ( Yii::$app->getRequest()->getQueryParam('court'),$model
     $(document).ready(function() {
         $("option[value='SUJU']").attr('selected', 'selected');
         $('#example').DataTable({
-            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=<?=$target?>",
+            "ajax": "<?= Url::toRoute(['/dashboard/data-index']) ?>?court=<?= $target ?>",
             destroy: true
-        }); 
+        });
     });
 </script>
- 
+
 <script>
-    $('#data_table').on('click',".downloadDoc",function() {       
+    $('#data_table').on('click', ".downloadDoc", function() {
         var id = $(this).data("id");
         var id_ = $(this).attr("id")
         $(`#loading_${id_}`).toggleClass('invisible')
@@ -66,7 +70,7 @@ $target =  array_search ( Yii::$app->getRequest()->getQueryParam('court'),$model
             type: 'GET',
             url: url,
             success: function(response) {
-                console.log("response",response);
+                console.log("response", response);
                 $(`.document_${id_}`).empty()
                 $(`.document_${id_}`).append(response);
                 $(`#loading_${id_}`).toggleClass('invisible')

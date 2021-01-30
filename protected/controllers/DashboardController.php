@@ -137,7 +137,9 @@ class DashboardController extends TController
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
+            
             foreach ($allData as $result) {
+               
                 $empRows = array();
                 $empRows[] =  isset($result->case_number)  ?  $result->case_number : "NA";
                 $empRows[] =  isset($result->diary_number) ?   $result->diary_number : "NA";
@@ -151,6 +153,18 @@ class DashboardController extends TController
                 $empRows[] =  isset($result->case_type)  ?  $result->case_type : "NA";
                 $empRows[] =  isset($result->case_year)  ?  $result->case_year : "NA";
                 $empRows[] =  isset($result->order_type)  ?  $result->order_type :  $form_model->getOrderType($target) ;
+ 
+                $empRows[] =  isset($result->pg_number)  ?  $result->pg_number :  "NA" ;
+                $empRows[] =  isset($result->corrigendum)  ?  $result->corrigendum :  "NA" ;
+                $empRows[] =  isset($result->case_description)  ?  $result->case_description :  "NA" ;
+                $empRows[] =  isset($result->court_number)  ?  $result->court_number :  "NA" ;
+                 
+                
+
+
+               
+
+
                 $TEMP_LINK = "";
                 if (isset($result->link) && strpos($result->link, 'http') !== false) {
                     /// if string contrainer HTTP  then it should show document 
