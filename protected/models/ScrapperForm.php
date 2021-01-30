@@ -182,7 +182,7 @@ class ScrapperForm extends Model
 		$optinal  =   Yii::$app->params['stateCodes'];
 		$optinal = $optinal[$courtCode];
 		$url =  Yii::$app->params['highCourtScraper'] . $this->senitizeParams(array_merge($opt, $optinal));
-		///die( $url );
+		//die( $url );
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -226,10 +226,13 @@ class ScrapperForm extends Model
 
 		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
 		$overAllResults = [];
-		$urls = [];
+		$urls = []; 
+	/* 	print_r($dateRanges);
+		die; */
 		foreach ($dateRanges as $key => $date_params) {
 			//$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 			$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+			//die($url);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -396,14 +399,13 @@ class ScrapperForm extends Model
 	public function weekRange($start_date_, $end_date_)
 	{
 
-		$start_date = date('Y-m-d', strtotime($start_date_));
+		$start_date = date('Y-m-d', strtotime($start_date_.'- 1 days'));
 		$end_date = date('Y-m-d', strtotime($end_date_));
 		$i = 1;
 		$datas = [];
 		for ($date = $start_date; $date <= $end_date; $date = date('Y-m-d', strtotime($date . ' + 7 days'))) {
 			$wek =  $this->getWeekDates($date, $start_date, $end_date, $i);
-			array_push($datas, $wek);
-			//echo "\n";
+			array_push($datas, $wek); 
 			$i++;
 		}
 		return $datas;

@@ -43,7 +43,7 @@ return [
         "RJ912"  =>  ["state_name" => "Rajasthan", "state_cd" => 9, "dist_cd" => 1, "court_code" => 2],
         "TR2011" =>  ["state_name" => "Tripura", "state_cd" => 20, "dist_cd" => 1, "court_code" => 1],
         "TE2911" => ["state_name" => "Telangana", "state_cd" => 29, "dist_cd" => 1, "court_code" => 1],
-        "UK1511" => ["state_name" => "Uttarakhand",  "state_cd" => 15, "dist_cd" => 1, "ourt_code" => 1],
+        "UK1511" => ["state_name" => "Uttarakhand",  "state_cd" => 15, "dist_cd" => 1, "court_code" => 1],
 
         "KA312" =>  ["state_name" => "Karnataka", "state_cd" => 3, "dist_cd" => 1, "court_code" => 2],
         "KA313" => ["state_name" => "Karnataka", "state_cd" => 3, "dist_cd" => 1, "court_code" => 3],
