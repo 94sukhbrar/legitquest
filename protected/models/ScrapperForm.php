@@ -212,7 +212,7 @@ class ScrapperForm extends Model
 
 		$results = [];
 		for ($i = 0; $i < $node_count; $i++) {
-			
+
 			$respo =   curl_multi_getcontent($curl_arr[$i]);
 			print_r($respo);
 			/* if(is_array($respo ))
@@ -221,44 +221,100 @@ class ScrapperForm extends Model
 		return	$results;
 	}
 	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
-	{ 
-		 
+	{
+
 
 		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
 		$overAllResults = [];
-		$urls = []; 
-	/* 	print_r($dateRanges);
-		die; */
+		$urls = [];
+
 		foreach ($dateRanges as $key => $date_params) {
 			//$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 			$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
-			//die($url);
+
+			//	die($url);
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_ENCODING, "");
 			$result = curl_exec($ch);
 			curl_close($ch);
-			//$overAllResults = array_merge($overAllResults, json_decode($result));
-			if(is_array(json_decode($result))){
+			if ($this->hasError(json_decode($result))) {
+				$overAllResults = array_merge($overAllResults, $this->recursivelyGetResults($date_params,$opt)); 
+			}
+			if (is_array(json_decode($result))) {
 				$overAllResults = array_merge($overAllResults, json_decode($result));
 			}
 		}
-		 
+		//die;
 		//return $this->asyncall($urls);
 		return  $overAllResults;
-
-
-		/* $ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_ENCODING, ""); 
-		$result = curl_exec($ch);
-		curl_close($ch);
-		return json_decode($result); */
+	}
+	public function recursivelyGetResults($dateRange,$opt)
+	{
+		#get diff in days, if more then 8 divide to week range 
+		$date1 = date_create($dateRange['lower_date']);
+		$date2 = date_create($dateRange['higher_date']);
+		$diff = date_diff($date1, $date2);
+		$resultData =[];
+		$newDateRanges = [];
+		if ($diff->format("%a") >= 6) {
+			$dateRanges = $this->splitDates($dateRange['lower_date'],   $dateRange['higher_date']);		 
+			$UPTO = count($dateRanges);
+			for ($i = 0; $i < $UPTO; $i += 2) {
+				if ($i < ($UPTO - 1)) {
+					array_push($newDateRanges, [
+						"lower_date" => $dateRanges[$i],
+						"higher_date" => $dateRanges[$i + 1]
+					]);
+				}
+			}
+			foreach ($newDateRanges as $key => $range) {				 
+				 $url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $range));
+				$resultsFromApi =  $this->callApi($url);
+				$resultData= array_merge($resultData,$resultsFromApi )  ;
+				 
+			} 
+		} else {
+			$dateRanges = $this->splitDates($dateRange['lower_date'],   $dateRange['higher_date'], 3);
+			//YET TO HANDLE
+			//$dateRanges = $this->weekRange($dateRange['lower_date'],   $dateRange['higher_date']);
+		 
+		}
+		return $resultData;
+		#other wise loop through all the days.
+		//print_r($dateRange);
 	}
 
+	public function callApi($url)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, "");
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($result);
+	}
 
+	public function splitDates($min, $max, $parts = 7, $output = "Y-m-d")
+	{
+		$dataCollection[] = date($output, strtotime($min));
+		$diff = (strtotime($max) - strtotime($min)) / $parts;
+		$convert = strtotime($min) + $diff;
+
+		for ($i = 1; $i < $parts; $i++) {
+			$dataCollection[] = date($output, $convert);
+			$convert += $diff;
+		}
+		$dataCollection[] = date($output, strtotime($max));
+		return $dataCollection;
+	}
+
+	public function hasError($jsonString)
+	{
+		return  isset($jsonString->errorMessage)  && isset($jsonString->errorMessage);
+	}
 	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{
 
@@ -277,13 +333,13 @@ class ScrapperForm extends Model
 	{
 
 		$url =  Yii::$app->params['countApiUrl'] . "?target=" . array_search($target, $this->stateListFixer());
-		 
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
 		$result = curl_exec($ch);
-		curl_close($ch); 
+		curl_close($ch);
 		return json_decode($result)[0][0];
 	}
 
@@ -304,13 +360,13 @@ class ScrapperForm extends Model
 	{
 		switch ($target) {
 			case 'SUJU':
-			 return "Judgements";
+				return "Judgements";
 				break;
 			case 'SUDO':
-			  return "Orders";
-					break;			
+				return "Orders";
+				break;
 			default:
-			return "NA";
+				return "NA";
 				break;
 		}
 		//return	$target === "SUJU"  ?  "Supreme Court Judgements " ? "SUDO" => "Supreme Court Orders "
@@ -399,13 +455,13 @@ class ScrapperForm extends Model
 	public function weekRange($start_date_, $end_date_)
 	{
 
-		$start_date = date('Y-m-d', strtotime($start_date_.'- 1 days'));
+		$start_date = date('Y-m-d', strtotime($start_date_ . '- 1 days'));
 		$end_date = date('Y-m-d', strtotime($end_date_));
 		$i = 1;
 		$datas = [];
 		for ($date = $start_date; $date <= $end_date; $date = date('Y-m-d', strtotime($date . ' + 7 days'))) {
 			$wek =  $this->getWeekDates($date, $start_date, $end_date, $i);
-			array_push($datas, $wek); 
+			array_push($datas, $wek);
 			$i++;
 		}
 		return $datas;
