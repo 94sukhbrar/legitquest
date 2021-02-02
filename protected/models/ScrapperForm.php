@@ -272,7 +272,8 @@ class ScrapperForm extends Model
 			foreach ($newDateRanges as $key => $range) {				 
 				 $url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $range));
 				$resultsFromApi =  $this->callApi($url);
-				$resultData= array_merge($resultData,$resultsFromApi )  ;
+				if(is_array($resultsFromApi))
+					$resultData= array_merge($resultData,$resultsFromApi )  ;
 				 
 			} 
 		} else {
