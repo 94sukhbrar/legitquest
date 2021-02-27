@@ -191,48 +191,142 @@ class ScrapperForm extends Model
 		curl_close($ch);
 		return json_decode($result);
 	}
-	public function asyncall($nodes)
-	{
+	public function asyncall($urls, $followLocation = false, $maxRedirects = 10)
+	{   // Options
+		$curlOptions = [
+			CURLOPT_HEADER => false,
+			CURLOPT_NOBODY => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_CONNECTTIMEOUT => 10,
+			CURLOPT_ENCODING => ""
+		];
 
-		$node_count = count($nodes);
-
-		$curl_arr = array();
-		$master = curl_multi_init();
-
-		for ($i = 0; $i < $node_count; $i++) {
-			$url = $nodes[$i];
-			$curl_arr[$i] = curl_init($url);
-			curl_setopt($curl_arr[$i], CURLOPT_RETURNTRANSFER, true);
-			curl_multi_add_handle($master, $curl_arr[$i]);
+		if ($followLocation) {
+			$curlOptions[CURLOPT_FOLLOWLOCATION] = true;
+			$curlOptions[CURLOPT_MAXREDIRS] = $maxRedirects;
 		}
 
+		// Init multi-curl
+		$mh = curl_multi_init();
+		$chArray = [];
+
+		$urls = !is_array($urls) ? [$urls] : $urls;
+		foreach ($urls as $key => $url) {
+			// Init of requests without executing
+			$ch = curl_init($url);
+			curl_setopt_array($ch, $curlOptions);
+
+			$chArray[$key] = $ch;
+
+			// Add the handle to multi-curl
+			curl_multi_add_handle($mh, $ch);
+		}
+
+		// Execute all requests simultaneously
+		$active = null;
 		do {
-			curl_multi_exec($master, $running);
-		} while ($running > 0);
+			$mrc = curl_multi_exec($mh, $active);
+		} while ($mrc == CURLM_CALL_MULTI_PERFORM);
 
-		$results = [];
-		for ($i = 0; $i < $node_count; $i++) {
+		while ($active && $mrc == CURLM_OK) {
+			// Wait for activity on any curl-connection
+			if (curl_multi_select($mh) === -1) {
+				usleep(100);
+			}
 
-			$respo =   curl_multi_getcontent($curl_arr[$i]);
-			print_r($respo);
-			/* if(is_array($respo ))
-				$results = array_merge($results, json_decode($respo  )); */
+			while (curl_multi_exec($mh, $active) == CURLM_CALL_MULTI_PERFORM);
 		}
-		return	$results;
+
+		// Close the resources
+		foreach ($chArray as $ch) {
+			curl_multi_remove_handle($mh, $ch);
+		}
+		curl_multi_close($mh);
+
+		// Access the results
+		$result = [];
+		foreach ($chArray as $key => $ch) {
+
+			// Get response
+			$res = json_decode(curl_exec($ch));
+			if (is_array($res))
+				$result  = array_merge($result,   $res);  //  curl_multi_getcontent($ch);
+		}
+
+		return $result;
+	}
+
+
+	public function isLessThenAweek($dateRange)
+	{
+		#get diff in days, if more then 8 divide to week range 
+		$date1 = date_create($dateRange['lower_date']);
+		$date2 = date_create($dateRange['higher_date']);
+		$diff = date_diff($date1, $date2);
+		return  $diff;//$diff->format("%a") <= 6;
+	}
+
+	public function getByWeek($opt)
+	{
+		#DIVIDE INTO WEEK 
+		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
+		$overAllResults = [];
+		$urls = [];
+		$newDateRanges = [];
+		$diff = $this->isLessThenAweek($opt);
+		 
+		if ($diff->format("%a") <= 6) {
+
+			$dateRanges = $this->splitDates($opt['lower_date'],   $opt['higher_date'],$diff->format("%a"));
+			// print_r($dateRanges);
+			$UPTO = count($dateRanges);
+			for ($i = 0; $i < $UPTO; $i ++) {
+				 
+					array_push($newDateRanges, [
+						"lower_date" => $dateRanges[$i],
+						"higher_date" => $dateRanges[$i]
+					]);
+				 
+			}
+		} else {
+			foreach ($dateRanges as $key => $range) {
+				$dateRanges = $this->splitDates($range['lower_date'],   $range['higher_date']);
+				// print_r($dateRanges);
+				$UPTO = count($dateRanges);
+				for ($i = 0; $i < $UPTO; $i += 2) {
+					if ($i < ($UPTO - 1)) {
+						array_push($newDateRanges, [
+							"lower_date" => $dateRanges[$i],
+							"higher_date" => $dateRanges[$i + 1]
+						]);
+					}
+				}
+			}
+		}
+
+		foreach ($newDateRanges as $key => $date_params) {
+			$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+		}
+	/* 	echo"<pre>";
+		print_r($urls);
+die; */
+	  $data =  $this->asyncall($urls);
+		return   $data;  
+
+
+		#CALL API AGAINES EACH DAY
 	}
 	public function getDashboardRecordsFromApi($opt = ['target' => 'AP211', 'limit' => '100'])
 	{
 
-
+		//ini_set('memory_limit', '-1');
 		$dateRanges = $this->weekRange($opt['lower_date'],   $opt['higher_date']);
 		$overAllResults = [];
 		$urls = [];
 
 		foreach ($dateRanges as $key => $date_params) {
-			//$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
-			$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
-
-			//	die($url);
+			$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
+			/* $url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params)); 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -240,26 +334,29 @@ class ScrapperForm extends Model
 			$result = curl_exec($ch);
 			curl_close($ch);
 			if ($this->hasError(json_decode($result))) {
-				$overAllResults = array_merge($overAllResults, $this->recursivelyGetResults($date_params,$opt)); 
+				$overAllResults = array_merge($overAllResults, $this->recursivelyGetResults($date_params, $opt));
 			}
 			if (is_array(json_decode($result))) {
 				$overAllResults = array_merge($overAllResults, json_decode($result));
-			}
+			} */
 		}
-		//die;
-		//return $this->asyncall($urls);
+		echo "<pre>";
+		print_r($urls);
+
+		print_r($this->asyncall($urls));
+		die;
 		return  $overAllResults;
 	}
-	public function recursivelyGetResults($dateRange,$opt)
+	public function recursivelyGetResults($dateRange, $opt)
 	{
 		#get diff in days, if more then 8 divide to week range 
 		$date1 = date_create($dateRange['lower_date']);
 		$date2 = date_create($dateRange['higher_date']);
 		$diff = date_diff($date1, $date2);
-		$resultData =[];
+		$resultData = [];
 		$newDateRanges = [];
-		if ($diff->format("%a") >= 6) {
-			$dateRanges = $this->splitDates($dateRange['lower_date'],   $dateRange['higher_date']);		 
+		if ($diff->format("%a") <= 6) {
+			$dateRanges = $this->splitDates($dateRange['lower_date'],   $dateRange['higher_date']);
 			$UPTO = count($dateRanges);
 			for ($i = 0; $i < $UPTO; $i += 2) {
 				if ($i < ($UPTO - 1)) {
@@ -269,18 +366,27 @@ class ScrapperForm extends Model
 					]);
 				}
 			}
-			foreach ($newDateRanges as $key => $range) {				 
-				 $url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $range));
+			foreach ($newDateRanges as $key => $range) {
+				$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $range));
 				$resultsFromApi =  $this->callApi($url);
-				if(is_array($resultsFromApi))
-					$resultData= array_merge($resultData,$resultsFromApi )  ;
-				 
-			} 
+				if ($this->hasError($resultsFromApi)) {
+					#MAY CAUSE INFINITE LOOP
+					$resultData = array_merge($resultData, $this->recursivelyGetResults($range, $opt));
+				}
+				if (is_array($resultsFromApi))
+					$resultData = array_merge($resultData, $resultsFromApi);
+			}
 		} else {
 			$dateRanges = $this->splitDates($dateRange['lower_date'],   $dateRange['higher_date'], 3);
+			foreach ($dateRanges as $key => $range) {
+				$url =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $range));
+				$resultsFromApi =  $this->callApi($url);
+				if (is_array($resultsFromApi))
+					$resultData = array_merge($resultData, $resultsFromApi);
+			}
 			//YET TO HANDLE
 			//$dateRanges = $this->weekRange($dateRange['lower_date'],   $dateRange['higher_date']);
-		 
+
 		}
 		return $resultData;
 		#other wise loop through all the days.

@@ -130,10 +130,14 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-        $allData = $form_model->getDashboardRecordsFromApi(
+        /* $allData = $form_model->getDashboardRecordsFromApi(
             ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-        );
- 
+        ); */
+        
+        $allData = $form_model->getByWeek(
+            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+        ); 
+        
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
