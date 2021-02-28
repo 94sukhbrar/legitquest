@@ -28,7 +28,7 @@ return [
             'dist_cd' => 1,
             "court_code" => 1
         ],
-        "GJ1711" => ["state_name" => "Gujarat", "state_cd" => 17, "dist_cd" => 1,  "court_code" => 1],
+       // "GJ1711" => ["state_name" => "Gujarat", "state_cd" => 17, "dist_cd" => 1,  "court_code" => 1],
         "HP511" => ["state_name" => "HimachalPradesh", "state_cd" => 5, "dist_cd" => 1, "court_code" => 1,],
         "RJ911" => ["state_name" => "Rajasthan", "state_cd" => 9, "dist_cd" => 1, "court_code" => 1,],
         "JK1211" => ["state_name" => "JammuandKashmir", "state_cd" => 12, "dist_cd" => 1, "court_code" => 1],
@@ -84,7 +84,7 @@ return [
         "HIDO" => "Supreme Court ",
         "AP211" => "Andhra Pradesh High Court ",
         "CG1811" => "Chhattisgarh High Court ",
-        "GJ1711" => "Gujarat High Court ",
+        //"GJ1711" => "Gujarat High Court ",
         "HP511" => "Himachal Pradesh High Court ",
         "RJ911" => "Rajasthan High Court [Bench at Jaipur]",
         "RJ912" => "Rajasthan High Court [Principal Seat, Jodhpur] ",
