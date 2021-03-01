@@ -133,57 +133,53 @@ class DashboardController extends TController
         /* $allData = $form_model->getDashboardRecordsFromApi(
             ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
         ); */
-        
+      
+        $columnNames= Yii::$app->params['constants']['columnNames'];
+       /*  echo( trim( $columnNames['CaseNumber']));
+        die($columnNames['CaseNumber']); */
         $allData = $form_model->getByWeek(
             ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-        ); 
-        
+        );  
+       /* print_r($allData);
+        die; */
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
             
-            foreach ($allData as $result) {
-               
+            foreach ($allData as $result_) { 
+                $result = json_decode(json_encode($result_), true); 
                 $empRows = array();
-                $empRows[] =  isset($result->case_number)  ?  $result->case_number : "NA";
-                $empRows[] =  isset($result->diary_number) ?   $result->diary_number : "NA";
-                $empRows[] =  isset($result->petitioner_name)  ?  $result->petitioner_name : "NA";
-                $empRows[] =  isset($result->respondent_name)  ?  $result->respondent_name : "NA";
-                $empRows[] =  isset($result->petitioner_advocate)  ?  $result->petitioner_advocate : "NA";
-                $empRows[] =  isset($result->respondent_advocate)  ?  $result->respondent_advocate : "NA";
-                $empRows[] =  isset($result->bench)  ?  $result->bench : "NA";
-                $empRows[] =  isset($result->judgement_by)  ?  $result->judgement_by : "NA";
-                $empRows[] =  isset($result->date)  ?  $result->date : (isset($result->order_date) ? $result->order_date : "NA");
-                $empRows[] =  isset($result->case_type)  ?  $result->case_type : "NA";
-                $empRows[] =  isset($result->case_year)  ?  $result->case_year : "NA";
-                $empRows[] =  isset($result->order_type)  ?  $result->order_type :  $form_model->getOrderType($target) ;
- 
-                $empRows[] =  isset($result->pg_number)  ?  $result->pg_number :  "NA" ;
-                $empRows[] =  isset($result->corrigendum)  ?  $result->corrigendum :  "NA" ;
-                $empRows[] =  isset($result->case_description)  ?  $result->case_description :  "NA" ;
-                $empRows[] =  isset($result->court_number)  ?  $result->court_number :  "NA" ;
-                 
+                //$empRows[] =  isset($result->case_number)  ?  $result->case_number : "NA";
+                $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
+                $empRows[] =  isset($result[$columnNames['DiaryNumber']]) ?   $result[$columnNames['DiaryNumber']] : "NA";
+                $empRows[] =  isset($result[$columnNames['PetitionerName']])  ?  $result[$columnNames['PetitionerName']] : "NA";
+                $empRows[] =  isset($result[$columnNames['RespondentName']])  ?  $result[$columnNames['RespondentName']] : "NA";
+                $empRows[] =  isset($result[$columnNames['PetitionerAdvocate']])  ?  $result[$columnNames['PetitionerAdvocate']] : "NA";
+                $empRows[] =  isset($result[$columnNames['RespondentAdvocate']])  ?  $result[$columnNames['RespondentAdvocate']] : "NA";
+                $empRows[] =  isset($result[$columnNames['Bench']])  ?  $result[$columnNames['Bench']] : "NA";
+                $empRows[] =  isset($result[$columnNames['JudgementBy']])  ?  $result[$columnNames['JudgementBy']]: "NA";
+
+                $empRows[] =  isset($result[$columnNames['OrderDate']])  ?  $result[$columnNames['OrderDate']] : (isset($result[$columnNames['OrderDate']]) ? $result[$columnNames['OrderDate']] : "NA");
                 
-
-
-               
+                $empRows[] =  isset($result[$columnNames['CaseType']])  ?  $result[$columnNames['CaseType']]: "NA";
+                $empRows[] =  isset($result[$columnNames['CaseYear']])  ?  $result[$columnNames['CaseYear']] : "NA";
+                $empRows[] =  isset($result[$columnNames['OrderType']])  ?  $result[$columnNames['OrderType']]:  $form_model->getOrderType($target) ;
+ 
+                $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA" ;
+                $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA" ;
+                $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']]:  "NA" ;
+                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA" ; 
 
 
                 $TEMP_LINK = "";
-                if (isset($result->link) && strpos($result->link, 'http') !== false) {
-                    /// if string contrainer HTTP  then it should show document 
-                    $TEMP_LINK =   $result->link  === "/No+data"  ? '#' : $result->link;
+                if (isset($result[$columnNames['Link']]) && strpos($result[$columnNames['Link']], 'http') !== false) {
+                    /// if string containes HTTP  then it should show document 
+                    $TEMP_LINK =   $result[$columnNames['Link']]  === "/No+data"  ? '#' : $result[$columnNames['Link']];
                     $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
                 }else{
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
-
-               /*  
-               $empRows[] = ($target  == "SUJU" || $target == "SUDO")
-                    ?
-                    $form_model->renderModal($form_model->removeSpaces(md5($result->case_number)), $result->case_number)
-                    :
-                    "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>"; */
+ 
                 $resultData[] = $empRows;
             }
         }
