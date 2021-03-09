@@ -104,8 +104,7 @@ class DashboardController extends TController
                 'dataProvider' => $provider,
                 'form_model'=> $form_model
             ]); */
-
-            return $this->render(/* 'index' */'dashboard', [
+             return $this->render(/* 'index' */'index_v2', [
                 'dataProvider' => $provider,
                 'model' => $result,
                 'pages' => $pages,

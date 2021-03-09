@@ -573,4 +573,15 @@ die; */
 		}
 		return $datas;
 	}
+
+	public function isOrderType($term ,$query="Order")
+	{
+	return	str_contains($term , $query); 
+	}
+
+	public function isJudgementsType($term ,$query="Judgements")
+	{
+	return	str_contains($term , $query); 
+	}
+
 }
