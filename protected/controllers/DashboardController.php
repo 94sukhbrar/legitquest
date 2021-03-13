@@ -35,7 +35,9 @@ class DashboardController extends TController
                             'download-pdf',
                             'data-index',
                             'log',
-                            'court'
+                            'court',
+                            'full-info',
+                            'full-data-index'
                         ],
                         'allow' => true,
                         'matchCallback' => function () {
@@ -104,7 +106,7 @@ class DashboardController extends TController
                 'dataProvider' => $provider,
                 'form_model'=> $form_model
             ]); */
-             return $this->render(/* 'index' */'index_v2', [
+            return $this->render(/* 'index' */'index_v2', [
                 'dataProvider' => $provider,
                 'model' => $result,
                 'pages' => $pages,
@@ -122,6 +124,12 @@ class DashboardController extends TController
         Yii::$app->view->params['selectedCourt'] = $court;
         return $this->render('_dataTable', []);
     }
+    public function actionFullInfo($court = null)
+    {
+        $this->layout = User::LAYOUT_LEGITQUEST;
+        Yii::$app->view->params['selectedCourt'] = $court;
+        return $this->render('_dataTable_full_info', []);
+    }
 
     public function actionDataIndex()
     {
@@ -129,26 +137,18 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-        /* $allData = $form_model->getDashboardRecordsFromApi(
-            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-        ); */
-      
-        $columnNames= Yii::$app->params['constants']['columnNames'];
-       /*  echo( trim( $columnNames['CaseNumber']));
-        die($columnNames['CaseNumber']); */
+
+        $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = $form_model->getByWeek(
             ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-        );  
-       /* print_r($allData);
-        die; */
+        );
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
-            
-            foreach ($allData as $result_) { 
-                $result = json_decode(json_encode($result_), true); 
+
+            foreach ($allData as $result_) {
+                $result = json_decode(json_encode($result_), true);
                 $empRows = array();
-                //$empRows[] =  isset($result->case_number)  ?  $result->case_number : "NA";
                 $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
                 $empRows[] =  isset($result[$columnNames['DiaryNumber']]) ?   $result[$columnNames['DiaryNumber']] : "NA";
                 $empRows[] =  isset($result[$columnNames['PetitionerName']])  ?  $result[$columnNames['PetitionerName']] : "NA";
@@ -156,33 +156,30 @@ class DashboardController extends TController
                 $empRows[] =  isset($result[$columnNames['PetitionerAdvocate']])  ?  $result[$columnNames['PetitionerAdvocate']] : "NA";
                 $empRows[] =  isset($result[$columnNames['RespondentAdvocate']])  ?  $result[$columnNames['RespondentAdvocate']] : "NA";
                 $empRows[] =  isset($result[$columnNames['Bench']])  ?  $result[$columnNames['Bench']] : "NA";
-                $empRows[] =  isset($result[$columnNames['JudgementBy']])  ?  $result[$columnNames['JudgementBy']]: "NA";
+                $empRows[] =  isset($result[$columnNames['JudgementBy']])  ?  $result[$columnNames['JudgementBy']] : "NA";
 
                 $empRows[] =  isset($result[$columnNames['OrderDate']])  ?  $result[$columnNames['OrderDate']] : (isset($result[$columnNames['OrderDate']]) ? $result[$columnNames['OrderDate']] : "NA");
-                
-                $empRows[] =  isset($result[$columnNames['CaseType']])  ?  $result[$columnNames['CaseType']]: "NA";
+
+                $empRows[] =  isset($result[$columnNames['CaseType']])  ?  $result[$columnNames['CaseType']] : "NA";
                 $empRows[] =  isset($result[$columnNames['CaseYear']])  ?  $result[$columnNames['CaseYear']] : "NA";
-                $empRows[] =  isset($result[$columnNames['OrderType']])  ?  $result[$columnNames['OrderType']]:  $form_model->getOrderType($target) ;
- 
-                $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA" ;
-                $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA" ;
-                $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']]:  "NA" ;
-                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA" ; 
+                $empRows[] =  isset($result[$columnNames['OrderType']])  ?  $result[$columnNames['OrderType']] :  $form_model->getOrderType($target);
+
+                $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA";
+                $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA";
+                $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']] :  "NA";
+                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA";
 
 
                 $TEMP_LINK = "";
                 if (isset($result[$columnNames['Link']]) && strpos($result[$columnNames['Link']], 'http') !== false) {
-                    /// if string containes HTTP  then it should show document 
                     $TEMP_LINK =   $result[$columnNames['Link']]  === "/No+data"  ? '#' : $result[$columnNames['Link']];
                     $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
-                }else{
+                } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
- 
                 $resultData[] = $empRows;
             }
         }
-
 
         $output = array(
             "iTotalRecords"    =>     $numRows,
@@ -191,6 +188,51 @@ class DashboardController extends TController
         );
         return json_encode($output);
     }
+
+
+    public function actionFullDataIndex()
+    {
+        $target = $_REQUEST['court'];
+        $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
+        $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
+        $form_model = new ScrapperForm();
+
+        $columnNames = Yii::$app->params['constants']['columnAddationalData'];
+        $allData = $form_model->getByWeek(
+            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+        );
+        $numRows = array_sum(isset($allData) ? (array)$allData :  []);
+        $resultData = [];
+        if (isset($allData)) {
+            $TEMP_LINK = "";
+            foreach ($allData as $result_) {
+                $result = json_decode(json_encode($result_), true);
+                $empRows = array(); 
+                foreach ($result as $key => $value) {
+                    if ($key == 6) { //Doc Link
+                        if (strpos($value, 'http') !== false) {
+                            $TEMP_LINK =   $value  === "/No+data"  ? '#' : $value;
+                            $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
+                        } else {
+                            $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
+                        }
+                    } else
+                        $empRows[] = $value;
+                }
+
+                $resultData[] = $empRows;
+            }
+        }
+
+        $output = array(
+            "iTotalRecords"    =>     $numRows,
+            "iTotalDisplayRecords"    =>  10,
+            "data"    =>     $resultData
+        );
+        return json_encode($output);
+    }
+
+
 
     public function actionScrapper()
     {
@@ -225,7 +267,7 @@ class DashboardController extends TController
                 if ($model->court === "DL1112DL1111") {
                     $model->court = $model->determineExceptionalCaseStateName($model->court, $model->scrap_type);
                 }
- 
+
                 $model->highCourtScraper([  #state_name is being captures from params.php 
                     // 'state_name' =>$model->cleanStateName(Yii::$app->params['stateList'][$model->court]),
                     'start_date' => $model->start_date,
