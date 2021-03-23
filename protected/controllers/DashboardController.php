@@ -179,11 +179,11 @@ class DashboardController extends TController
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
-                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=> md5(date("Y-m-d")) , 'url'=>$result[9]  ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
+                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=>$result[9]  ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }
-
+ 
         $output = array(
             "iTotalRecords"    =>     $numRows,
             "iTotalDisplayRecords"    =>  10,
