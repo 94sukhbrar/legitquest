@@ -43,6 +43,7 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
 
 
                     <th>PDF [Document]</th>
+                    <th>Order/Judgements</th>
                 </tr>
             </thead>
         </table>
@@ -80,5 +81,33 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
             }
         });
     })
+
+
+    $('#data_table').on('click', ".fetchContent", function() {
+        var id = $(this).data("id");
+        var id_ = $(this).attr("id")
+        var url = $(this).attr("data-value") 
+        $(`#loading_${id_}`).toggleClass('invisible')
+        var URLL = `https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction?s3url=${url}` 
+        //console.log("URLL",URLL);
+        $.ajax({
+            type: 'GET',
+            url: URLL,
+            success: function(response) {
+                 console.log("response", `#document_${id_}`);
+                 $(`#loading_${id_}`).toggleClass('invisible')
+                 $(`.document_${id_}`).empty()
+                //$(`.document_${id_}`).text( response );
+                $(`#document_${id_}`).text( response );
+                
+                
+            },
+            error: function(request, status, error) {
+                alert(error);
+            }
+        });
+    })
+
+
     //$(".downloadDoc").click()
 </script>

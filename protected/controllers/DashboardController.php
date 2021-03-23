@@ -122,7 +122,7 @@ class DashboardController extends TController
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court;
-        return $this->render('_dataTable', []);
+        return $this->render('_dataTable', []); 
     }
     public function actionFullInfo($court = null)
     {
@@ -145,9 +145,11 @@ class DashboardController extends TController
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
-
+//echo "<pre>";
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
+               /*  print_r($result );
+                die; */
                 $empRows = array();
                 $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
                 $empRows[] =  isset($result[$columnNames['DiaryNumber']]) ?   $result[$columnNames['DiaryNumber']] : "NA";
@@ -167,8 +169,8 @@ class DashboardController extends TController
                 $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA";
                 $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA";
                 $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']] :  "NA";
-                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA";
-
+                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA"; 
+                
 
                 $TEMP_LINK = "";
                 if (isset($result[$columnNames['Link']]) && strpos($result[$columnNames['Link']], 'http') !== false) {
@@ -177,6 +179,7 @@ class DashboardController extends TController
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
+                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=> md5(date("Y-m-d")) , 'url'=>$result[9]  ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }
@@ -219,7 +222,6 @@ class DashboardController extends TController
                     } else
                         $empRows[] = $value;
                 }
-
                 $resultData[] = $empRows;
             }
         }
