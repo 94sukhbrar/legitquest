@@ -12,7 +12,6 @@ use yii\helpers\Url;
         color: #fff;
     }
 </style>
-
 <div class="page-content-wrapper mt-4">
     <div class="container-fluid">
         <div class="row">
@@ -20,16 +19,7 @@ use yii\helpers\Url;
                 <div class="card">
                     <div class="card-body">
                         <div class="container ">
-
-
-
-
-
                             <div class="table-responsive-sm">
-
-
-
-
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr>

@@ -2,6 +2,7 @@
 
 use app\models\ScrapperForm;
 use yii\helpers\Url;
+
 //die(Url::toRoute(['/dashboard/data-index'])."?court=SUJU");
 
 $modelClass = new ScrapperForm();
@@ -37,6 +38,7 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
 <script>
     $(document).ready(function() {
         $("option[value='SUJU']").attr('selected', 'selected');
+       
         $('#example').DataTable({
             "ajax": "<?= Url::toRoute(['/dashboard/full-data-index']) ?>?court=ECOURT-<?= $target ?>",
             destroy: true
@@ -47,7 +49,7 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
 <script>
     $('#data_table').on('click', ".downloadDoc", function() {
         var id = $(this).data("id");
-        var id_ = $(this).attr("id")
+        var id_ = $(this).attr("id")      
         $(`#loading_${id_}`).toggleClass('invisible')
         var url = "<?= Url::toRoute(['/dashboard/download-pdf']) ?>?id=" + id;
         $.ajax({

@@ -263,7 +263,7 @@ class ScrapperForm extends Model
 		$date1 = date_create($dateRange['lower_date']);
 		$date2 = date_create($dateRange['higher_date']);
 		$diff = date_diff($date1, $date2);
-		return  $diff;//$diff->format("%a") <= 6;
+		return  $diff; //$diff->format("%a") <= 6;
 	}
 
 	public function getByWeek($opt)
@@ -274,19 +274,18 @@ class ScrapperForm extends Model
 		$urls = [];
 		$newDateRanges = [];
 		$diff = $this->isLessThenAweek($opt);
-		 
+
 		if ($diff->format("%a") <= 6) {
 
-			$dateRanges = $this->splitDates($opt['lower_date'],   $opt['higher_date'],$diff->format("%a"));
+			$dateRanges = $this->splitDates($opt['lower_date'],   $opt['higher_date'], $diff->format("%a"));
 			// print_r($dateRanges);
 			$UPTO = count($dateRanges);
-			for ($i = 0; $i < $UPTO; $i ++) {
-				 
-					array_push($newDateRanges, [
-						"lower_date" => $dateRanges[$i],
-						"higher_date" => $dateRanges[$i]
-					]);
-				 
+			for ($i = 0; $i < $UPTO; $i++) {
+
+				array_push($newDateRanges, [
+					"lower_date" => $dateRanges[$i],
+					"higher_date" => $dateRanges[$i]
+				]);
 			}
 		} else {
 			foreach ($dateRanges as $key => $range) {
@@ -307,11 +306,11 @@ class ScrapperForm extends Model
 		foreach ($newDateRanges as $key => $date_params) {
 			$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 		}
-	/* 	echo"<pre>";
+		/* 	echo"<pre>";
 		print_r($urls);
 die; */
-	  $data =  $this->asyncall($urls);
-		return   $data;  
+		$data =  $this->asyncall($urls);
+		return   $data;
 
 
 		#CALL API AGAINES EACH DAY
@@ -424,7 +423,7 @@ die; */
 	}
 	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{
-
+		
 		$url =  Yii::$app->params['getPDFdocURL'] . $this->senitizeParams($opt);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -440,7 +439,7 @@ die; */
 	{
 
 		$url =  Yii::$app->params['countApiUrl'] . "?target=" . array_search($target, $this->stateListFixer());
- 
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -458,7 +457,7 @@ die; */
 	{
 		$items = Yii::$app->params['stateList'];
 		unset($items["HIDO"]);
-		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders "], $items, $addArr);
+		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders",'JH711'=>'Jharkhand High Court','WB1611'=>'Calcutta High Court'], $items, $addArr);
 		return $items;
 	}
 	/**
@@ -577,14 +576,13 @@ die; */
 		return $datas;
 	}
 
-	public function isOrderType($term ,$query="Order")
+	public function isOrderType($term, $query = "Order")
 	{
-	return	str_contains($term , $query); 
+		//return	str_contains($term, $query);
 	}
 
-	public function isJudgementsType($term ,$query="Judgements")
+	public function isJudgementsType($term, $query = "Judgements")
 	{
-	return	str_contains($term , $query); 
+		return	str_contains($term, $query);
 	}
-
 }
