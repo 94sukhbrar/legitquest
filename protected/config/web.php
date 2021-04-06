@@ -180,9 +180,9 @@ $config['modules']['api'] = [
 $config['modules']['backup'] = [
     'class' => 'app\modules\backup\Module'
 ];
-$config['modules']['seo'] = [
-    'class' => 'app\modules\seo\Module'
-];
+// $config['modules']['seo'] = [
+//     'class' => 'app\modules\seo\Module'
+// ];
 $config['modules']['page'] = [
     'class' => 'app\modules\page\Module'
 ];
