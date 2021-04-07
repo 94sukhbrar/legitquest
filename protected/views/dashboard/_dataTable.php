@@ -108,10 +108,15 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
                  $(`.document_${id_}`).css('display','inline')
                 //$(`.document_${id_}`).text( response );
                 //$(`#document_${id_}`).text( response[1] );
-                $(`#document_judge_${id_}`).text(response[1]);
-                $(`#document_Petitioner_${id_}`).text(response[2]);
-                $(`#document_Respondent_${id_}`).text(response[3]);
-                $(`#document_Judgement_${id_}`).text(response[4]);
+                $(`#document_status_${id_}`).text(response[1]);
+                $(`#document_case_number_${id_}`).text(response[2]);
+                $(`#document_petitioner_info_${id_}`).text(response[3]);
+                $(`#document_respondent_info_${id_}`).text(response[4]);  
+                $(`#document_judges_${id_}`).text(response[5]);
+                $(`#document_date_${id_}`).text(response[6]);                
+                const judgement= response[7]; 
+                const  paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                $(`#document_judgement_${id_}`).html(paragraphs);
                 
                 
             },

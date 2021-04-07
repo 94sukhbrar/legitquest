@@ -13,10 +13,19 @@
         <div id="loading_<?= $id_num ?>" class="spinner-border text-info invisible" style="color: #3051d3;"></div>
 
         <div class="document_<?= $id_num ?>" id="document_<?= $id_num ?>" style="display:none">
-          <p><B>Judgement By :</B> <span id="document_judge_<?= $id_num ?>"></span></p>
-          <p><B>Petitioner Advocate:</B> <span id="document_Petitioner_<?= $id_num ?>"></span></p>
-          <p><B>Respondent advocate :</B> <span id="document_Respondent_<?= $id_num ?>"></span></p>
-          <p><B>Judgement :</B> <span id="document_Judgement_<?= $id_num ?>"></span></p>
+
+          <p> <b> Status : </b> <span id="document_status_<?= $id_num ?>"></span> </p>
+          <p> <b> Case Number : </b> <span id="document_case_number_<?= $id_num ?>"></span> </p>
+          <p> <b> Petitioner information : </b> <span id="document_petitioner_info_<?= $id_num ?>"></span> </p>
+          <p> <b> Respondent information: </b> <span id="document_respondent_info_<?= $id_num ?>"></span> </p>
+          <p> <b> Judges : </b> <span id="document_judges_<?= $id_num ?>"></span> </p>
+          <p> <b> Date : </b> <span id="document_date_<?= $id_num ?>"></span> </p>
+          <p> <b> Judgement: </b></p> <p id="document_judgement_<?= $id_num ?>"></p> 
+
+          <!-- <p><B>Judgement By :</B> <span id="document_judge_< ?= $id_num ?>"></span></p>
+          <p><B>Petitioner Advocate:</B> <span id="document_Petitioner_< ?= $id_num ?>"></span></p>
+          <p><B>Respondent advocate :</B> <span id="document_Respondent_< ?= $id_num ?>"></span></p>
+          <p><B>Judgement :</B> <span id="document_Judgement_< ? = $id_num ?>"></span></p> -->
         </div>
       </div>
       <div class="modal-footer">

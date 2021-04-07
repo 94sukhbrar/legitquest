@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Kolkata');
 
-define('PROJECT_ID', 'AdminProject');  //TODO:must change
+define('PROJECT_ID', 'Legitquest');  //TODO:must change
 define('PROJECT_NAME', 'Legitquest'); //TODO:must change
 
 //defined('YII_ENV') or define('YII_ENV', 'prod');
@@ -26,7 +26,7 @@ defined('UPLOAD_THUMB_PATH') or define('UPLOAD_THUMB_PATH', dirname(__FILE__) . 
 defined('TMP_PATH') or define('TMP_PATH', sys_get_temp_dir());
 defined('BASE_PATH') or define('BASE_PATH', dirname(__FILE__) . '/protected');
 defined('PROTECTED_PATH') or define('PROTECTED_PATH', dirname(__FILE__) . '/protected');
-defined('VENDOR_PATH') or define('VENDOR_PATH', __DIR__ . '/../vendor/');
+defined('VENDOR_PATH') or define('VENDOR_PATH', __DIR__ . '/vendor/');
 define('RUNTIME_PATH', BASE_PATH . '/runtime');
 
 // db config path setting

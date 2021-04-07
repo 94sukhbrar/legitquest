@@ -150,7 +150,17 @@ class ScrapperForm extends Model
 		return json_decode($result);
 	}
 
-
+	public function hitCurlApi($url)
+	{
+	 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_ENCODING, ""); // this will handle gzip content
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return json_decode($result);
+	}
 	public function determineExceptionalCaseStateName($code, $scrapeType)
 	{
 
@@ -306,7 +316,7 @@ class ScrapperForm extends Model
 		foreach ($newDateRanges as $key => $date_params) {
 			$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 		}
-		/* 	echo"<pre>";
+			/* echo"<pre>";
 		print_r($urls);
 die; */
 		$data =  $this->asyncall($urls);
@@ -423,7 +433,7 @@ die; */
 	}
 	public function getPDFFromApi($opt = ['id_num' => '2020-01-01', 'target' => 'DO'])
 	{
-		
+
 		$url =  Yii::$app->params['getPDFdocURL'] . $this->senitizeParams($opt);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -457,7 +467,7 @@ die; */
 	{
 		$items = Yii::$app->params['stateList'];
 		unset($items["HIDO"]);
-		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders",'JH711'=>'Jharkhand High Court','WB1611'=>'Calcutta High Court'], $items, $addArr);
+		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders", 'JH711' => 'Jharkhand High Court', 'WB1611' => 'Calcutta High Court'], $items, $addArr);
 		return $items;
 	}
 	/**
