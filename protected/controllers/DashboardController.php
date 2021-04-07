@@ -179,7 +179,8 @@ class DashboardController extends TController
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
-                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=>$result[9]  ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
+              
+                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=>$result[9] ,'target'=>$target ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }
@@ -196,6 +197,7 @@ class DashboardController extends TController
     public function actionFullDataIndex()
     {
         $target = $_REQUEST['court'];
+       
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
