@@ -130,6 +130,7 @@ return [
         "DL1112" => "DLDO",
 
     ],
+    
     'apiUrladdationalInfoForJudgesAndConetent'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=",
     'maxScrapDays' => 30,
     'getPDFdocURL' => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",
@@ -140,7 +141,8 @@ return [
     "logsApi" =>   "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch_court_logs",
     "countApiUrl" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/count_dashboard",
     'constants' => $constants,
-    'pdfSupremeCourt'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url='
+    'pdfSupremeCourt'=>'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=',
+     "loadConetentOrders"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme_order?s3url="
 ];
 //  Judgements => JU
 //Daily Orders => DO

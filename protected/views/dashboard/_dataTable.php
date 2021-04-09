@@ -35,7 +35,7 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
                     <th> case type </th>
                     <th> case year </th>
                     <th> order type </th>
- 
+
                     <th> Page number </th>
                     <th> Corrigendum </th>
                     <th> Case description </th>
@@ -86,39 +86,39 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
     $('#data_table').on('click', ".fetchContent", function() {
         var id = $(this).data("id");
         var id_ = $(this).attr("id")
-        var url = $(this).attr("data-value") 
-        var target = $(this).attr("data-court") 
+        var url = $(this).attr("data-value")
+        var target = $(this).attr("data-court")
 
-        console.log("target",target);
+        console.log("target", target);
         $(`#loading_${id_}`).toggleClass('invisible');
-        if(target=='SUJU'){
+        /* if(target=='SUJU'){
             var URLL = `https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=${url}` 
         }else{
             var URLL = `https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction?s3url=${url}` 
-        }
-      
+        } */
+
         //console.log("URLL",URLL);
         $.ajax({
             type: 'GET',
-            url: URLL,
+            url: url,
             success: function(response) {
-                 console.log("response", `#document_${id_}`);
-                 console.log('--------------',response);
-                 $(`#loading_${id_}`).toggleClass('invisible')
-                 $(`.document_${id_}`).css('display','inline')
+                console.log("response", `#document_${id_}`);
+                console.log('--------------', response);
+                $(`#loading_${id_}`).toggleClass('invisible')
+                $(`.document_${id_}`).css('display', 'inline')
                 //$(`.document_${id_}`).text( response );
                 //$(`#document_${id_}`).text( response[1] );
                 $(`#document_status_${id_}`).text(response[1]);
                 $(`#document_case_number_${id_}`).text(response[2]);
                 $(`#document_petitioner_info_${id_}`).text(response[3]);
-                $(`#document_respondent_info_${id_}`).text(response[4]);  
+                $(`#document_respondent_info_${id_}`).text(response[4]);
                 $(`#document_judges_${id_}`).text(response[5]);
-                $(`#document_date_${id_}`).text(response[6]);                
-                const judgement= response[7]; 
-                const  paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                $(`#document_date_${id_}`).text(response[6]);
+                const judgement = response[7];
+                const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                 $(`#document_judgement_${id_}`).html(paragraphs);
-                
-                
+
+
             },
             error: function(request, status, error) {
                 alert(error);
@@ -129,3 +129,5 @@ $target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelC
 
     //$(".downloadDoc").click()
 </script>
+
+

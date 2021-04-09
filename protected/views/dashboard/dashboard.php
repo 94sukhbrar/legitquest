@@ -6,7 +6,7 @@ use yii\helpers\Url;
 $modelClass = new ScrapperForm();
 $overAllCount = 0
 ?>
-<div class="page-content-wrapper mt-4">
+<div class="page-content-wrapper mt-4" >
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -17,7 +17,7 @@ $overAllCount = 0
 
                                 <table class="table table-bordered">
                                     <tbody>
-                                        <?php foreach ($modelClass->array_chunks_fixed($modelClass->stateListFixer( ), 20) as $key => $courtChunk) { ?>
+                                        <?php foreach ($modelClass->array_chunks_fixed($modelClass->stateListFixer(), 20) as $key => $courtChunk) { ?>
                                             <tr>
                                                 <?php foreach ($courtChunk as $courtKey => $court) {
                                                     $recordCount = $modelClass->getDataCountForCourt($court);
@@ -46,3 +46,4 @@ $overAllCount = 0
     </div>
     <!-- end container-fluid -->
 </div>
+

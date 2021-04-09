@@ -588,7 +588,7 @@ die; */
 
 	public function isOrderType($term, $query = "Order")
 	{
-		//return	str_contains($term, $query);
+		 return	str_contains($term, $query);
 	}
 
 	public function isJudgementsType($term, $query = "Judgements")

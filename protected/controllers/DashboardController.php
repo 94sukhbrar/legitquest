@@ -137,11 +137,12 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-
+//die($target);
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = $form_model->getByWeek(
             ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
         );
+       
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
@@ -179,8 +180,8 @@ class DashboardController extends TController
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
-              
-                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=>$result[9] ,'target'=>$target ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
+                 $contentUrl = Yii::$app->params[trim($target) ==="SUDO" ?  'loadConetentOrders' : 'pdfSupremeCourt' ] . $result[9] ; 
+                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=> $contentUrl  ,'target'=>$target ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }
