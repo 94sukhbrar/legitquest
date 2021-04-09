@@ -51,7 +51,7 @@ Vue.component("card-item", {
             //console.log("data.dailyorder", data.dailyorder);
           } else {
             this.label = data.fullinfo;
-            console.log("!this.isfullinfo", data);
+           
           }
         })
         .catch((error) => {
@@ -59,7 +59,7 @@ Vue.component("card-item", {
         });
     },
   },
-  template: `<button  class="btn btn-danger" v-if="!label && !isloading" @click="onLoadAgain"> <span >Load Again</span> </button> 
+  template: `<button  class="btn btn-warning" v-if="!label && !isloading" @click="onLoadAgain"> <span >Load Again</span> </button> 
   <a v-else :href="urltogo"  target="_blank">
     
     <span v-if="isloading" class="spinner-border"></span>
