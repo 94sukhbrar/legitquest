@@ -6,17 +6,18 @@ use yii\helpers\Url;
 
 $modelClass = new ScrapperForm();
 
-function searchForId($id, $array) {
+function searchForId($id, $array)
+{
     foreach ($array as $key => $val) {
-           
-         if(strcmp( trim( $val),trim( $id))){
-              return $key ;
-         }
+
+        if (strcmp(trim($val), trim($id))) {
+            return $key;
+        }
     }
     return null;
- }
- $target = searchForId(trim( Yii::$app->request->queryParams['court']),$modelClass->stateListFixer());// array_search(trim( Yii::$app->request->queryParams['court']), $modelClass->stateListFixer());
- 
+}
+$target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClass->stateListFixer()); // array_search(trim( Yii::$app->request->queryParams['court']), $modelClass->stateListFixer());
+
 /* print_r($modelClass->stateListFixer());
 
 echo($target);
@@ -105,13 +106,7 @@ echo($target);
 
         console.log("target", target);
         $(`#loading_${id_}`).toggleClass('invisible');
-        /* if(target=='SUJU'){
-            var URLL = `https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=${url}` 
-        }else{
-            var URLL = `https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction?s3url=${url}` 
-        } */
 
-        //console.log("URLL",URLL);
         $.ajax({
             type: 'GET',
             url: url,
@@ -120,17 +115,31 @@ echo($target);
                 console.log('--------------', response);
                 $(`#loading_${id_}`).toggleClass('invisible')
                 $(`.document_${id_}`).css('display', 'inline')
-                //$(`.document_${id_}`).text( response );
-                //$(`#document_${id_}`).text( response[1] );
-                $(`#document_status_${id_}`).text(response[1]);
-                $(`#document_case_number_${id_}`).text(response[2]);
-                $(`#document_petitioner_info_${id_}`).text(response[3]);
-                $(`#document_respondent_info_${id_}`).text(response[4]);
-                $(`#document_judges_${id_}`).text(response[5]);
-                $(`#document_date_${id_}`).text(response[6]);
-                const judgement = response[7];
-                const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
-                $(`#document_judgement_${id_}`).html(paragraphs);
+                if (target?.trim() === "SUDO") {
+                    $(`#document_date_${id_}`).text(response[1])                    
+                    $(`#document_reportable_${id_}`).text(response[2])
+                    $(`#document_case_number_${id_}`).text(response[3])
+                    $(`#document_appellant_${id_}`).text(response[4])
+                    $(`#document_respondent_${id_}`).text(response[5])
+                    $(`#document_petitioner_adv_${id_}`).text(response[6])
+                    $(`#document_respondent_adv_${id_}`).text(response[7])
+                    $(`#document_judgement_by_${id_}`).text(response[8])
+                    $(`#document_order_${id_}`).text(response?.[9])
+                    
+                }else{
+                     
+                    $(`#document_status_${id_}`).text(response[1]);
+                    $(`#document_case_number_${id_}`).text(response[2]);
+                    $(`#document_petitioner_info_${id_}`).text(response[3]);
+                    $(`#document_respondent_info_${id_}`).text(response[4]);
+                    $(`#document_judges_${id_}`).text(response[5]);
+                    $(`#document_date_${id_}`).text(response[6]);
+                    const judgement = response[7];
+                    const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                    $(`#document_judgement_${id_}`).html(paragraphs);
+                   
+                }
+
 
 
             },
@@ -143,5 +152,3 @@ echo($target);
 
     //$(".downloadDoc").click()
 </script>
-
-

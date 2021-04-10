@@ -122,7 +122,7 @@ class DashboardController extends TController
     {
         $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court;
-        return $this->render('_dataTable', []); 
+        return $this->render('_dataTable', []);
     }
     public function actionFullInfo($court = null)
     {
@@ -137,21 +137,21 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-  
+
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = $form_model->getByWeek(
-            ['target' =>trim($target),   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+            ['target' => trim($target),   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
         );
-//echo "<pre>";
-  
-       
+        //echo "<pre>";
+
+
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
 
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
-               /*  print_r($result );
+                /*  print_r($result );
                 die; */
                 $empRows = array();
                 $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
@@ -172,8 +172,8 @@ class DashboardController extends TController
                 $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA";
                 $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA";
                 $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']] :  "NA";
-                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA"; 
-                
+                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA";
+
 
                 $TEMP_LINK = "";
                 if (isset($result[$columnNames['Link']]) && strpos($result[$columnNames['Link']], 'http') !== false) {
@@ -181,13 +181,15 @@ class DashboardController extends TController
                     $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
-                }
-                 $contentUrl = Yii::$app->params[trim($target) ==="SUDO" ?  'loadConetentOrders' : 'pdfSupremeCourt' ] . $result[9] ; 
-                $empRows[] =   $this->renderPartial('_modal_order',['id_num'=>uniqid() , 'url'=> $contentUrl  ,'target'=>$target ]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
+                } 
+                $contentUrl = Yii::$app->params[trim($target) === "SUDO" ?  'loadConetentOrders' : 'pdfSupremeCourt'] . $result[9];
+                #setting for orders and jusgements 
+                $viewFile=   trim($target) ===  "SUDO" ?   '_modal_judgements' :'_modal_order';   
+                $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }
- 
+
         $output = array(
             "iTotalRecords"    =>     $numRows,
             "iTotalDisplayRecords"    =>  10,
@@ -200,7 +202,7 @@ class DashboardController extends TController
     public function actionFullDataIndex()
     {
         $target = $_REQUEST['court'];
-       
+
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
@@ -215,7 +217,7 @@ class DashboardController extends TController
             $TEMP_LINK = "";
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
-                $empRows = array(); 
+                $empRows = array();
                 foreach ($result as $key => $value) {
                     if ($key == 6) { //Doc Link
                         if (strpos($value, 'http') !== false) {
