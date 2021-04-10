@@ -5,12 +5,12 @@ use yii\helpers\Url;
 //die(Url::toRoute(['/dashboard/data-index'])."?court=SUJU");
 
 $modelClass = new ScrapperForm();
-
+//echo"<pre>";
 function searchForId($id, $array)
 {
     foreach ($array as $key => $val) {
 
-        if (strcmp(trim($val), trim($id))) {
+        if (trim($val) === trim($id)) {
             return $key;
         }
     }
@@ -18,10 +18,8 @@ function searchForId($id, $array)
 }
 $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClass->stateListFixer()); // array_search(trim( Yii::$app->request->queryParams['court']), $modelClass->stateListFixer());
 
-/* print_r($modelClass->stateListFixer());
-
-echo($target);
- */
+//print_r($modelClass->stateListFixer());
+//die(trim(Yii::$app->request->queryParams['court']) ."---".$target);
 ?>
 <style>
     div#example_wrapper {
@@ -115,8 +113,8 @@ echo($target);
                 console.log('--------------', response);
                 $(`#loading_${id_}`).toggleClass('invisible')
                 $(`.document_${id_}`).css('display', 'inline')
-                if (target?.trim() === "SUDO") {
-                    $(`#document_date_${id_}`).text(response[1])                    
+                if ("<?= $target ?>" === "SUDO") {
+                    $(`#document_date_${id_}`).text(response[1])
                     $(`#document_reportable_${id_}`).text(response[2])
                     $(`#document_case_number_${id_}`).text(response[3])
                     $(`#document_appellant_${id_}`).text(response[4])
@@ -124,10 +122,8 @@ echo($target);
                     $(`#document_petitioner_adv_${id_}`).text(response[6])
                     $(`#document_respondent_adv_${id_}`).text(response[7])
                     $(`#document_judgement_by_${id_}`).text(response[8])
-                    $(`#document_order_${id_}`).text(response?.[9])
-                    
-                }else{
-                     
+                    $(`#document_order_${id_}`).text(response?. [9])
+                } else {
                     $(`#document_status_${id_}`).text(response[1]);
                     $(`#document_case_number_${id_}`).text(response[2]);
                     $(`#document_petitioner_info_${id_}`).text(response[3]);
@@ -137,7 +133,6 @@ echo($target);
                     const judgement = response[7];
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                     $(`#document_judgement_${id_}`).html(paragraphs);
-                   
                 }
 
 
