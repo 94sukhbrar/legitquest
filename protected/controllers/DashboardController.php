@@ -137,16 +137,18 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-//die($target);
+  
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = $form_model->getByWeek(
-            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+            ['target' =>trim($target),   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
         );
+//echo "<pre>";
+  
        
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
         if (isset($allData)) {
-//echo "<pre>";
+
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
                /*  print_r($result );

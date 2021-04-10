@@ -5,8 +5,22 @@ use yii\helpers\Url;
 //die(Url::toRoute(['/dashboard/data-index'])."?court=SUJU");
 
 $modelClass = new ScrapperForm();
-$target =  array_search(Yii::$app->getRequest()->getQueryParam('court'), $modelClass->stateListFixer());
-//die($target);
+
+function searchForId($id, $array) {
+    foreach ($array as $key => $val) {
+           
+         if(strcmp( trim( $val),trim( $id))){
+              return $key ;
+         }
+    }
+    return null;
+ }
+ $target = searchForId(trim( Yii::$app->request->queryParams['court']),$modelClass->stateListFixer());// array_search(trim( Yii::$app->request->queryParams['court']), $modelClass->stateListFixer());
+ 
+/* print_r($modelClass->stateListFixer());
+
+echo($target);
+ */
 ?>
 <style>
     div#example_wrapper {

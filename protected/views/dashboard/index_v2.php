@@ -41,7 +41,7 @@ use yii\helpers\Url;
                                             </td>
 
                                             <td>
-                                                <card-item :urltogo="`<?= Url::to(['dashboard/court','court' => '']) ?>${item}`"   :url="`${targetFinder(item)}`"></card-item>
+                                                <card-item :urltogo="`<?= Url::to(['dashboard/court']) ?>?court=${item}`"   :url="`${targetFinder(item)}`"></card-item>
 
                                             </td>
 
@@ -84,7 +84,7 @@ use yii\helpers\Url;
             fetchByUrl: async function(url) {
                 return await fetch(url)
             },
-            targetFinder: function(item) {
+            targetFinder: function(item) { 
                 let toReturn ="NA"
                 Object.keys(this.stateList)?.map(court=>{
                     if(this.stateList[court] ===item){
