@@ -137,20 +137,26 @@ class DashboardController extends TController
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
         $form_model = new ScrapperForm();
-        //die($target);
+
+        $urlAndViewFile = $form_model->apiUrlDecider($target);
+        /* print_r($urlAndViewFile);
+        die($target); */
         $columnNames = Yii::$app->params['constants']['columnNames'];
-        $allData = $form_model->getByWeek(
-            ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-        );
- 
+        $allData = [];
+        try {
+            $allData = $form_model->getByWeek(
+                ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
+            );
+        } catch (\Throwable $th) {
+        }
+
+
         $numRows = array_sum(isset($allData) ? (array)$allData :  []);
         $resultData = [];
-        if (isset($allData)) {
-            //echo "<pre>";
+        if (isset($allData)) { 
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
-                /*  print_r($result );
-                die; */
+                 
                 $empRows = array();
                 $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
                 $empRows[] =  isset($result[$columnNames['DiaryNumber']]) ?   $result[$columnNames['DiaryNumber']] : "NA";
@@ -161,7 +167,7 @@ class DashboardController extends TController
                 $empRows[] =  isset($result[$columnNames['Bench']])  ?  $result[$columnNames['Bench']] : "NA";
                 $empRows[] =  isset($result[$columnNames['JudgementBy']])  ?  $result[$columnNames['JudgementBy']] : "NA";
 
-                $empRows[] =  isset($result[$columnNames['OrderDate']])  ?  $result[$columnNames['OrderDate']] : ( isset($result[$columnNames['OrderDate']]) ? $result[$columnNames['OrderDate']] : "NA");
+                $empRows[] =  isset($result[$columnNames['OrderDate']])  ?  $result[$columnNames['OrderDate']] : (isset($result[$columnNames['OrderDate']]) ? $result[$columnNames['OrderDate']] : "NA");
 
                 $empRows[] =  isset($result[$columnNames['CaseType']])  ?  $result[$columnNames['CaseType']] : "NA";
                 $empRows[] =  isset($result[$columnNames['CaseYear']])  ?  $result[$columnNames['CaseYear']] : "NA";
@@ -180,9 +186,11 @@ class DashboardController extends TController
                 } else {
                     $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                 }
-                $contentUrl = Yii::$app->params[trim($target) === "SUDO" ?  'loadConetentOrders' : 'pdfSupremeCourt'] . $result[9];
-                $viewFile = $target ===  "SUDO" ? '_modal_judgements' : '_modal_order';
-                $empRows[] =   $this->renderPartial($viewFile , ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
+
+
+                $contentUrl = $urlAndViewFile['url'] . $result[9];
+                $viewFile =  $urlAndViewFile['viewFile']; 
+                $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
         }

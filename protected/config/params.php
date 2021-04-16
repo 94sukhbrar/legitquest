@@ -130,7 +130,7 @@ return [
         "DL1112" => "DLDO",
 
     ],
-
+    'pdfContentExtract'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_punjab_court?s3url=",
     'apiUrladdationalInfoForJudgesAndConetent' => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=",
     'maxScrapDays' => 30,
     'getPDFdocURL' => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/fetch-links?",

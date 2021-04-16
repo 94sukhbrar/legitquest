@@ -152,7 +152,7 @@ class ScrapperForm extends Model
 
 	public function hitCurlApi($url)
 	{
-	 
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -316,7 +316,7 @@ class ScrapperForm extends Model
 		foreach ($newDateRanges as $key => $date_params) {
 			$urls[] =  Yii::$app->params['recordByCourtApiUrl'] . $this->senitizeParams(array_merge($opt, $date_params));
 		}
-			/* echo"<pre>";
+		/* echo"<pre>";
 		print_r($urls);
 die; */
 		$data =  $this->asyncall($urls);
@@ -462,7 +462,20 @@ die; */
 		return json_decode($result);
 	}
 
+	public function apiUrlDecider($case)
+	{
 
+		switch ($case) {
+			case "SUDO":
+				return	['url' => Yii::$app->params['loadConetentOrders'], 'viewFile' => '_modal_judgements'];
+			case "PU1111":
+				return	['url' => Yii::$app->params['pdfContentExtract'], 'viewFile' => '_modal_punjab_haryana'];
+			default:
+				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
+
+				break;
+		}
+	}
 	public function stateListFixer($addArr = [])
 	{
 		$items = Yii::$app->params['stateList'];
@@ -588,7 +601,7 @@ die; */
 
 	public function isOrderType($term, $query = "Order")
 	{
-		 return	str_contains($term, $query);
+		return	str_contains($term, $query);
 	}
 
 	public function isJudgementsType($term, $query = "Judgements")
