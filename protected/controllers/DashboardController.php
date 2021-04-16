@@ -133,6 +133,8 @@ class DashboardController extends TController
 
     public function actionDataIndex()
     {
+        ini_set('memory_limit', '8192M'); 
+
         $target = $_REQUEST['court'];
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
         $higher_date = isset($_REQUEST['higher_date']) ?  $_REQUEST['higher_date'] : date('Y-m-d', strtotime(date('Y-m-d') . ' + 15 days'));
