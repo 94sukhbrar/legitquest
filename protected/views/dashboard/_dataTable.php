@@ -136,6 +136,25 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                     $(`#document_judgement_${id_}`).html(paragraphs);
 
+                }
+                else if("<?= $target ?>" === 'WB1611'){
+
+                    $(`#document_date_${id_}`).text(response[1]); 
+                    $(`#document_case_number_${id_}`).text(response[3]);
+                    $(`#document_petitioner_info_${id_}`).text(response[4]);
+                    $(`#document_respondent_info_${id_}`).text(response[5]); 
+                    const NewKeys =Object.keys(response[6])
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6][NewKeys[0]]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[6][NewKeys[1]]);
+                    
+                    
+                    console.log("NewKeys",NewKeys, "response[6]",response[6][NewKeys[0]]);
+                    $(`#document_judges_${id_}`).text(response[8]);
+
+                    const judgement = response[9];
+                    const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                    $(`#document_judgement_${id_}`).html(paragraphs);
+
                 } else {
                     $(`#document_status_${id_}`).text(response[1]);
                     $(`#document_case_number_${id_}`).text(response[2]);

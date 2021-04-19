@@ -470,6 +470,9 @@ die; */
 				return	['url' => Yii::$app->params['loadConetentOrders'], 'viewFile' => '_modal_judgements'];
 			case "PU1111":
 				return	['url' => Yii::$app->params['pdfContentExtract'], 'viewFile' => '_modal_punjab_haryana'];
+			case "WB1611":
+					return	['url' => Yii::$app->params['pdfContentExtractCalcutta'], 'viewFile' => '_modal_calcutta'];
+				
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 
