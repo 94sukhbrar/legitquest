@@ -472,7 +472,15 @@ die; */
 				return	['url' => Yii::$app->params['pdfContentExtract'], 'viewFile' => '_modal_punjab_haryana'];
 			case "WB1611":
 					return	['url' => Yii::$app->params['pdfContentExtractCalcutta'], 'viewFile' => '_modal_calcutta'];
-				
+			case "BB1111" :
+			case "BB1112" :
+			case "BB1113" :
+			case "BB1114" :
+			case "BB1115" :
+			case "BB1116" :
+			case "BB1117" :
+						return	['url' => Yii::$app->params['pdfContentExtractBomby'], 'viewFile' => '_modal_bomby'];
+							
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 
