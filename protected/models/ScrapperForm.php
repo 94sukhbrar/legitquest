@@ -480,7 +480,9 @@ die; */
 			case "BB1116" :
 			case "BB1117" :
 						return	['url' => Yii::$app->params['pdfContentExtractBomby'], 'viewFile' => '_modal_bomby'];
-							
+			case "DL1112":
+			case "DL1111":				
+				return	['url' => Yii::$app->params['pdfContentExtractDelhi'], 'viewFile' => '_modal_delhi'];
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 
