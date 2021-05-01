@@ -485,6 +485,10 @@ die; */
 				return	['url' => Yii::$app->params['pdfContentExtractDelhi'], 'viewFile' => '_modal_delhi']; 
 			case "GJ1111":				
 					return	['url' => Yii::$app->params['pdfContentExtractGujarat'], 'viewFile' => '_modal_gujarat'];  
+			case "TN1111":	 
+			case "TN1112" :
+			case "TN1113" : 
+				return	['url' => Yii::$app->params['pdfContentExtractMadras'], 'viewFile' => '_modal_madras'];   
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 

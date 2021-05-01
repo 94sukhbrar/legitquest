@@ -130,6 +130,7 @@ return [
         "DL1112" => "DLDO",
 
     ],
+    'pdfContentExtractMadras'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_madras_judgement?s3url=",
     'pdfContentExtractGujarat'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_guj?s3url=",
     'pdfContentExtractDelhi'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_delhi?s3url=",
     'pdfContentExtractBomby'=> "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_bombay_civil?s3url=",
