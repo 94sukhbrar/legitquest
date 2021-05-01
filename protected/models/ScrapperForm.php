@@ -489,6 +489,8 @@ die; */
 			case "TN1112" :
 			case "TN1113" : 
 				return	['url' => Yii::$app->params['pdfContentExtractMadras'], 'viewFile' => '_modal_madras'];   
+			case "MP1111" :	
+				return	['url' => Yii::$app->params['pdfContentExtractMP'], 'viewFile' => '_modal_mp'];   
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 

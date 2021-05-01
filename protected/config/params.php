@@ -122,7 +122,7 @@ return [
         "TL1111" => "Telangana High Court",
         "TN1111" => "Madras High Court [Orders]",
         'TN1112' => "Madurai Bench [Orders]",
-        "TN1113" => "Madras + Madurai High Court [Judgements]"
+        "TN1113" => "Madras-Madurai High Court [Judgements]"
 
     ],
     "expeptionalCases" => [ #for highe courts only 
@@ -130,6 +130,7 @@ return [
         "DL1112" => "DLDO",
 
     ],
+    "pdfContentExtractMP"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_mp?s3url=",
     'pdfContentExtractMadras'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_madras_judgement?s3url=",
     'pdfContentExtractGujarat'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_guj?s3url=",
     'pdfContentExtractDelhi'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_delhi?s3url=",
