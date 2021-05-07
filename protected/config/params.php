@@ -127,9 +127,10 @@ return [
     ],
     "expeptionalCases" => [ #for highe courts only 
         "DL1111" => "DLJU",
-        "DL1112" => "DLDO",
-
+        "DL1112" => "DLDO", 
     ],
+    "pdfContentExtractJaipur" =>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_jaipur?s3url=",
+    "pdfContentExtractOrrisa"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_orrisa?s3url=",
     "pdfContentExtractKarnataka"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_karnataka?s3url=",
     "pdfContentExtractMP"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_mp?s3url=",
     'pdfContentExtractMadras'=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_madras_judgement?s3url=",
