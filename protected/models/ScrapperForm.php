@@ -500,6 +500,14 @@ die; */
 			case  "RJ1113":
 			case  'RJ1114':
 				return	['url' => Yii::$app->params['pdfContentExtractJaipur'], 'viewFile' => '_modal_jaipur'];
+			case "KL411":
+				return	['url' => Yii::$app->params['pdfContentExtractKerla'], 'viewFile' => '_modal_kerla'];
+
+			case "HP1111":
+			case "HP1112":
+				return	['url' => Yii::$app->params['pdfContentExtractHimachal'], 'viewFile' => '_modal_himachal'];
+			case "TL1111":
+				return	['url' => Yii::$app->params['pdfContentExtractTelangana'], 'viewFile' => '_modal_telangana'];
 			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 

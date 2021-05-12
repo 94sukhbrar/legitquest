@@ -150,6 +150,45 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                     $(`#document_judgement_${id_}`).html(paragraphs);
 
+                } else if ("<?= $target ?>" === 'TL1111') {
+
+                     
+                    $(`#document_case_number_${id_}`).text(response[1]);
+                    /* $(`#document_petitioner_info_${id_}`).text(response[4]);
+                    $(`#document_respondent_info_${id_}`).text(response[5]);
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6]); */
+                    $(`#document_judges_${id_}`).text(response[2]);
+
+                    const judgement = response[3];
+                    const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                    $(`#document_judgement_${id_}`).html(paragraphs);
+
+                } else if ("<?= $target ?>" === 'HP1111' || "<?= $target ?>" === "HP1112") {
+
+                    $(`#document_date_${id_}`).text(response[1]);
+                    $(`#document_case_number_${id_}`).text(response[3]);
+                    $(`#document_petitioner_info_${id_}`).text(response[4]);
+                    $(`#document_respondent_info_${id_}`).text(response[5]);
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_judges_${id_}`).text(response[8]);
+
+                    const judgement = response[9];
+                    const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                    $(`#document_judgement_${id_}`).html(paragraphs);
+
+                } else if ("<?= $target ?>" === 'KL411') {
+
+                    $(`#document_date_${id_}`).text(response[1]);
+                    $(`#document_case_number_${id_}`).text(response[3]);
+                    $(`#document_petitioner_info_${id_}`).text(response[4]);
+                    $(`#document_respondent_info_${id_}`).text(response[5]);
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_judges_${id_}`).text(response[8]);
+
+                    const judgement = response[9];
+                    const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
+                    $(`#document_judgement_${id_}`).html(paragraphs);
+
                 } else if ("<?= $target ?>" === 'RJ1111' || "<?= $target ?>" === "RJ1112" || "<?= $target ?>" === "RJ1113" || "<?= $target ?>" === "RJ1114") {
 
                     $(`#document_date_${id_}`).text(response[1]);
