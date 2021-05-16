@@ -129,6 +129,7 @@ return [
         "DL1111" => "DLJU",
         "DL1112" => "DLDO", 
     ],
+    "pdfContentExtractAndhra"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_ap?s3url=",
     "pdfContentExtractTelangana"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_telangana?s3url=",
     "pdfContentExtractHimachal"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_hp?s3url=",
     "pdfContentExtractKerla"=>"https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_kerala?s3url=",
