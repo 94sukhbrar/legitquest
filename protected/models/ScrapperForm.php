@@ -508,17 +508,32 @@ die; */
 				return	['url' => Yii::$app->params['pdfContentExtractHimachal'], 'viewFile' => '_modal_himachal'];
 			case "TL1111":
 				return	['url' => Yii::$app->params['pdfContentExtractTelangana'], 'viewFile' => '_modal_telangana'];
-			case "AP211" :	
+			case "AP211":
 				return	['url' => Yii::$app->params['pdfContentExtractAndhra'], 'viewFile' => '_modal_andhra'];
-			case "UP1111" :	
+			case "UP1111":
 				return	['url' => Yii::$app->params['pdfContentExtractAllahabad'], 'viewFile' => '_modal_allahabad'];
-			case "BH1111" :
+			case "BH1111":
 				return	['url' => Yii::$app->params['pdfContentExtractPatna'], 'viewFile' => '_modal_patna'];
-			case "JH711" :
-					return	['url' => Yii::$app->params['pdfContentExtractJharkhand'], 'viewFile' => '_modal_jharkhand'];		
-			case "CG1811" :
-				return	['url' => Yii::$app->params['pdfContentExtractChhatisgarh'], 'viewFile' => '_modal_chhatisgarh'];		
-					default:
+			case "JH711":
+				return	['url' => Yii::$app->params['pdfContentExtractJharkhand'], 'viewFile' => '_modal_jharkhand'];
+			case "CG1811":
+				return	['url' => Yii::$app->params['pdfContentExtractChhatisgarh'], 'viewFile' => '_modal_chhatisgarh'];
+			case "MN2511":
+				return	['url' => Yii::$app->params['pdfContentExtractManipur'], 'viewFile' => '_modal_manipur'];
+			case "ML2111":
+				return	['url' => Yii::$app->params['pdfContentExtractMeghalaya'], 'viewFile' => '_modal_meghalaya'];
+			case "JK1211":
+			case "JK1212":
+				return	['url' => Yii::$app->params['pdfContentExtractJ_K'], 'viewFile' => '_modal_j_k'];
+			case "AS611":
+				return	['url' => Yii::$app->params['pdfContentExtractGuwahati'], 'viewFile' => '_modal_guwahati'];
+			case "TR2011":
+				return	['url' => Yii::$app->params['pdfContentExtractTripura'], 'viewFile' => '_modal_tripura'];
+			case "SK2411":
+				return	['url' => Yii::$app->params['pdfContentExtractSikkim'], 'viewFile' => '_modal_sikkim'];
+			case "UK1511":
+					return	['url' => Yii::$app->params['pdfContentExtractUttarakhand'], 'viewFile' => '_modal_uttarakhand'];				
+			default:
 				return	['url' => Yii::$app->params['pdfSupremeCourt'], 'viewFile' => '_modal_order'];
 
 				break;
