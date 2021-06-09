@@ -77,7 +77,7 @@ return [
         "TL1111" => ['state_name' => 'TL1111', 'state_cd' => 29, 'dist_cd' => 1, 'court_code' => 1],
         "TN1111" => ['state_name' => 'TN1111', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
         'TN1112' => ['state_name' => 'TN1112', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
-        "TN1113" => ['state_name' => 'TN1113', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
+        "TN1113" => ['state_name' => 'TN1113', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2], 
     ],
     'stateList' => [
         "HIDO" => "Supreme Court ",
@@ -129,6 +129,7 @@ return [
         "DL1111" => "DLJU",
         "DL1112" => "DLDO",
     ],
+    "pdfContentExtractGoa" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_goa?s3url=",
     "pdfContentExtractUttarakhand" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_uk?s3url=",
     "pdfContentExtractSikkim" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_sikkim?s3url=",
     "pdfContentExtractTripura" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_tripura?s3url=",
