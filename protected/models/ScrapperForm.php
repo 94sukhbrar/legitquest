@@ -516,7 +516,9 @@ die; */
 				return	['url' => Yii::$app->params['pdfContentExtractPatna'], 'viewFile' => '_modal_patna'];
 			case "JH711":
 				return	['url' => Yii::$app->params['pdfContentExtractJharkhand'], 'viewFile' => '_modal_jharkhand'];
-			case "CG1811":
+			case "CG1811" :
+			case "CG1111" :
+			case "CG1112" :
 				return	['url' => Yii::$app->params['pdfContentExtractChhatisgarh'], 'viewFile' => '_modal_chhatisgarh'];
 			case "MN2511":
 				return	['url' => Yii::$app->params['pdfContentExtractManipur'], 'viewFile' => '_modal_manipur'];
