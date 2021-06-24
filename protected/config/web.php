@@ -128,6 +128,19 @@ $config = [
 
 if (file_exists(DB_CONFIG_FILE_PATH)) {
     $config['components']['db'] = require (DB_CONFIG_FILE_PATH);
+    //SECOND DATABASE GOES HERE
+    /* $config['components']['dbLive'] = [
+                'class' => 'yii\db\Connection',
+				'dsn' => 'mysql:host=127.0.0.1;dbname=legitquest',
+				'emulatePrepare' => true,
+				'username' => 'admin',
+				'password' => 'admin123',
+				'charset' => 'utf8',
+				'tablePrefix' => 'tbl_',
+                'enableSchemaCache' => 1 ,
+                'schemaCacheDuration' => 3600,
+                'schemaCache' => 'cache',
+    ]; */
 } else {
     $config['modules']['installer'] = [
         'class' => 'app\modules\installer\Module',
