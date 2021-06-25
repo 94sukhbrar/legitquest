@@ -37,6 +37,12 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
             <thead>
                 <tr>
 
+                <?php 
+                foreach (Yii::$app->params['constants']['columns'] as $key => $value) {?>
+                       <th> <?=ucwords($value)?></th>
+                <?php }
+                ?>
+<!-- 
                     <th> case number </th>
                     <th> diary number </th>
                     <th> petitioner name </th>
@@ -57,7 +63,7 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
 
 
                     <th>PDF [Document]</th>
-                    <th>Order/Judgements</th>
+                    <th>Order/Judgements</th> -->
                 </tr>
             </thead>
         </table>

@@ -127,20 +127,20 @@ $config = [
 ];
 
 if (file_exists(DB_CONFIG_FILE_PATH)) {
-    $config['components']['db'] = require (DB_CONFIG_FILE_PATH);
-    //SECOND DATABASE GOES HERE
-    /* $config['components']['dbLive'] = [
+    $config['components']['db'] = require (DB_CONFIG_FILE_PATH); 
+    $config['components']['dbLive'] = [
                 'class' => 'yii\db\Connection',
-				'dsn' => 'mysql:host=127.0.0.1;dbname=legitquest',
+				'dsn' => 'mysql:host=database-1.ck8p0t8vhtke.ap-southeast-1.rds.amazonaws.com;dbname=supremepd;',
 				'emulatePrepare' => true,
 				'username' => 'admin',
-				'password' => 'admin123',
-				'charset' => 'utf8',
-				'tablePrefix' => 'tbl_',
+				'password' => 'cnKyXSXEHnk4T7V',
+				'charset' => 'utf8', 
                 'enableSchemaCache' => 1 ,
                 'schemaCacheDuration' => 3600,
                 'schemaCache' => 'cache',
-    ]; */
+                //'tablePrefix' => 'tbl_'  
+
+    ];
 } else {
     $config['modules']['installer'] = [
         'class' => 'app\modules\installer\Module',

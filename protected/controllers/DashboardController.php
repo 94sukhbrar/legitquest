@@ -11,6 +11,7 @@ use app\components\TController;
 use app\models\User;
 use app\components\filters\AccessControl;
 use app\components\TActiveForm;
+use app\models\ModelApiHelper;
 use app\models\ScrapperForm;
 use app\models\Setting;
 use Yii;
@@ -72,6 +73,7 @@ class DashboardController extends TController
 
     public function actionIndex($model = null)
     {
+
         $this->layout = User::LAYOUT_LEGITQUEST;
         $form_model = new ScrapperForm();
         if (!empty($model)) {
@@ -120,9 +122,15 @@ class DashboardController extends TController
     }
     public function actionCourt($court = null)
     {
+
+        $mm = new ModelApiHelper();
+        $columns= $mm->getTableSchema()->columns;
+         
         $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court;
-        return $this->render('_dataTable', []);
+        return $this->render('_dataTable', [
+            'columns'=>$columns
+        ]);
     }
     public function actionFullInfo($court = null)
     {
@@ -133,7 +141,7 @@ class DashboardController extends TController
 
     public function actionDataIndex()
     {
-        ini_set('memory_limit', '8192M'); 
+        ini_set('memory_limit', '8192M');
 
         $target = $_REQUEST['court'];
         $lower_date = isset($_REQUEST['lower_date']) ?  $_REQUEST['lower_date'] :  date('Y-m-d', strtotime(date('Y-m-d') . ' - 15 days'));
@@ -145,17 +153,66 @@ class DashboardController extends TController
         die($target); */
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = [];
-        try {
+        /*  echo $lower_date."< >". $higher_date;
+        die; */
+        $mm = new ModelApiHelper();
+        $modelssss = $mm->getDataByCourt($target, $lower_date, $higher_date);
+
+        //   echo "<pre>";
+
+        /* try {
             $allData = $form_model->getByWeek(
                 ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
             );
         } catch (\Throwable $th) {
         }
 
-
-        $numRows = array_sum(isset($allData) ? (array)$allData :  []);
+ */
+//echo "<pre>";
         $resultData = [];
-        if (isset($allData)) { 
+        $numRows = array_sum(isset($modelssss) ? (array)$modelssss :  []);
+        foreach ($modelssss as $key => $value) {
+            $empRows = array(); 
+          //  print_r($value->getTableSchema()->columns);
+            foreach (/* $value->getTableSchema()->columns */Yii::$app->params['constants']['columns']  as $key_ => $columns) {
+               
+
+                $TEMP_LINK = "";
+                if ($columns == "link"  ) {
+                    if (isset($value->{$columns}) && strpos($value->{$columns}, 'http') !== false) {
+
+                        $TEMP_LINK =  $value->{$columns}   === "/No+data"  ? '#' : $value->{$columns};
+                        $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
+                    } else {
+                        $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
+                    }
+                }else{
+                    if( $columns != "reportable_judgement")
+                        $empRows[] = isset($value->{$columns}) ?  $value->{$columns} : "NA";
+                }
+
+                if($columns =='reportable_judgement'){
+
+                    $contentUrl = $urlAndViewFile['url'] . $value->link;
+                    $viewFile =  $urlAndViewFile['viewFile'];
+                    $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);
+                }
+            }
+           /*  $contentUrl = $urlAndViewFile['url'] . $value->link;
+            $viewFile =  $urlAndViewFile['viewFile'];
+            $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]); */
+
+            $resultData[] = $empRows;
+        }
+      /*   echo "<pre>";
+           print_r( $resultData  );
+       die;   
+ */
+
+
+        /* $numRows = array_sum(isset($allData) ? (array)$allData :  []);
+        $resultData = [];
+         if (isset($allData)) { 
             foreach ($allData as $result_) {
                 $result = json_decode(json_encode($result_), true);
                  
@@ -195,7 +252,7 @@ class DashboardController extends TController
                 $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
                 $resultData[] = $empRows;
             }
-        }
+        } */
 
         $output = array(
             "iTotalRecords"    =>     $numRows,

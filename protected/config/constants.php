@@ -1,7 +1,31 @@
 <?php
 
-return [
 
+ 
+ 
+     
+ 
+return [
+    'columns' => [
+        'case_number' , 
+      'petitioner_name',
+      'respondent_name',
+      'petitioner_advocate',
+      'respondent_advocate',
+      'bench',
+      'judgement_by',
+      'order_date',
+      'case_type',
+      'case_year',
+      'order_type',
+      'corrigendum',
+      'court_number',
+      'link',//PDF [Document]	
+      'reportable_judgement'
+       
+      
+         
+    ],
     'columnNames' => [
         "IDNumber" => 1,
         "CaseType" => 2,
