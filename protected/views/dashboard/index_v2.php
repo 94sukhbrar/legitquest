@@ -27,7 +27,7 @@ use yii\helpers\Url;
                                             <th>Court Name</th>
                                             <th>Bench (If Applicable)</th>
                                             <th>Number of records</th>
-                                            <th>Full Info</th>
+                                           <!--  <th>Full Info</th> -->
                                         </tr>
                                         <tr v-for="(item, index,key) in stateList">
                                             <td> {{ key+1 }}</td>
@@ -45,9 +45,9 @@ use yii\helpers\Url;
 
                                             </td>
 
-                                            <td>
-                                             <card-item isfullinfo  :urltogo="`<?= Url::to(['dashboard/full-info','court' => '']) ?>${item}`" :url="`${targetFinder(item)}`"></card-item>  
-                                            </td>
+                                            <!-- <td>
+                                             <card-item isfullinfo  :urltogo="`< ?= Url::to(['dashboard/full-info','court' => '']) ?>${item}`" :url="`${targetFinder(item)}`"></card-item>  
+                                            </td> -->
 
 
                                         </tr>

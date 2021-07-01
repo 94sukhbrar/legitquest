@@ -18,7 +18,7 @@
           <p> <b> Case Number : </b> <span id="document_case_number_<?= $id_num ?>"></span> </p>
           <p> <b> Petitioner information : </b> <span id="document_petitioner_info_<?= $id_num ?>"></span> </p>
           <p> <b> Respondent information: </b> <span id="document_respondent_info_<?= $id_num ?>"></span> </p>
-          <p> <b> Petitioner Advocate : </b> <span id="document_petitioner_advocate_<?= $id_num ?>"></span> </p>
+          <p> <b id="advocates_<?= $id_num ?>"> Petitioner Advocate : </b> <span id="document_petitioner_advocate_<?= $id_num ?>"></span> </p>
           <p> <b> Respondent Advocate : </b> <span id="document_respondent_advocate_<?= $id_num ?>"></span> </p>
           <p> <b> Judges : </b> <span id="document_judges_<?= $id_num ?>"></span> </p>
           

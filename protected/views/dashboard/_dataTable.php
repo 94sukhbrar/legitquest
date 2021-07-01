@@ -103,6 +103,28 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
     })
 
 
+    function setAdvocatesList( response,id_) {
+
+        const NewKeys = Object.keys(response[6]) 
+                    if(Array.isArray(response[6])){
+                        
+                        $(`#document_petitioner_advocate_${id_}`).text(response[6][NewKeys[0]]); 
+                        $(`#document_respondent_advocate_${id_}`).text(response[6][NewKeys[1]]);     
+                    }else{
+                        const pp=response[6]
+                        let newElements =""
+                        Object.keys(pp).map(item=>{
+                             console.log(pp[item]) 
+                             newElements += `<span><b> ${item}</b> :${pp[item]}</span> </br>`
+                        }) 
+                        $(`#document_petitioner_advocate_${id_}`).html(newElements)  
+                        
+                         $(`#advocates_${id_}`).text("Advocates List : ")  
+                         const previousSibling = document.getElementById(`document_respondent_advocate_${id_}`)?.parentNode /*  previousSibling */?.remove() 
+                         $(`#document_respondent_advocate_${id_}`).remove() 
+                    }
+        
+    }
     $('#data_table').on('click', ".fetchContent", function() {
         var id = $(this).data("id");
         var id_ = $(this).attr("id")
@@ -214,8 +236,10 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_case_number_${id_}`).text(response[3]);
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
-                    $(`#document_petitioner_advocate_${id_}`).text(response[6]);
-                    $(`#document_respondent_advocate_${id_}`).text(response[7]);
+                    /* $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[7]); */
+
+                    setAdvocatesList(response,id_)
                     $(`#document_judges_${id_}`).text(response[8]);
                     const judgement = response[9];
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
@@ -279,10 +303,12 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                         let newElements =""
                         Object.keys(pp).map(item=>{
                              console.log(pp[item]) 
-                             newElements += `<span>${item} :${pp[item]}</span> </br>`
+                             newElements += `<span><b> ${item}</b> :${pp[item]}</span> </br>`
                         }) 
-                        $(`#document_petitioner_advocate_${id_}`).html(newElements)   
-                        const previousSibling = document.getElementById(`document_respondent_advocate_${id_}`)?.previousSibling?.remove() 
+                        $(`#document_petitioner_advocate_${id_}`).html(newElements)  
+                        
+                         $(`#advocates_${id_}`).text("Advocates List")  
+                         const previousSibling = document.getElementById(`document_respondent_advocate_${id_}`)?.parentNode /*  previousSibling */?.remove() 
                          $(`#document_respondent_advocate_${id_}`).remove() 
                     }
                     
@@ -299,7 +325,7 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_case_number_${id_}`).text(response[3]);
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
-
+ 
                    /*  const NewKeys = Object.keys(response[6]) 
                     if(Array.isArray(response[6])){
                         
@@ -359,9 +385,10 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_case_number_${id_}`).text(response[3]);
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
-                    $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6]); 
+                    $(`#document_respondent_advocate_${id_}`).text(response[7]);
                     $(`#document_judges_${id_}`).text(response[8]);
-
+ 
                     const judgement = response[9];
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                     $(`#document_judgement_${id_}`).html(paragraphs);
@@ -451,12 +478,12 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_case_number_${id_}`).text(response[3]);
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
-                    const NewKeys = Object.keys(response[6])
+                   /*  const NewKeys = Object.keys(response[6])
                     $(`#document_petitioner_advocate_${id_}`).text(response[6][NewKeys[0]]);
-                    $(`#document_respondent_advocate_${id_}`).text(response[6][NewKeys[1]]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[6][NewKeys[1]]); */
 
-
-                    console.log("NewKeys", NewKeys, "response[6]", response[6][NewKeys[0]]);
+                setAdvocatesList(response,id_)
+                     
                     $(`#document_judges_${id_}`).text(response[8]);
 
                     const judgement = response[9];
@@ -471,7 +498,7 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_respondent_info_${id_}`).text(response[5]);
                     //const NewKeys = Object.keys(response[6])
                     $(`#document_petitioner_advocate_${id_}`).text(response[6]);
-                    $(`#document_respondent_advocate_${id_}`).text(response[7]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[7]); 
 
 
 

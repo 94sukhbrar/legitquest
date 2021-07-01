@@ -18,17 +18,10 @@
           <p> <b> Case Number : </b> <span id="document_case_number_<?= $id_num ?>"></span> </p>
           <p> <b> Petitioner information : </b> <span id="document_petitioner_info_<?= $id_num ?>"></span> </p>
           <p> <b> Respondent information: </b> <span id="document_respondent_info_<?= $id_num ?>"></span> </p>
-          <p> <b> Petitioner Advocate : </b> <span id="document_petitioner_advocate_<?= $id_num ?>"></span> </p>
-          <p> <b> Respondent Advocate : </b> <span id="document_respondent_advocate_<?= $id_num ?>"></span> </p>
-          
-          <p> <b> Judges : </b> <span id="document_judges_<?= $id_num ?>"></span> </p>
-          
-          <p> <b> Judgement/Order: </b></p> <p id="document_judgement_<?= $id_num ?>"></p> 
-
-          <!-- <p><B>Judgement By :</B> <span id="document_judge_< ?= $id_num ?>"></span></p>
-          <p><B>Petitioner Advocate:</B> <span id="document_Petitioner_< ?= $id_num ?>"></span></p>
-          <p><B>Respondent advocate :</B> <span id="document_Respondent_< ?= $id_num ?>"></span></p>
-          <p><B>Judgement :</B> <span id="document_Judgement_< ? = $id_num ?>"></span></p> -->
+          <p> <b id="advocates_<?= $id_num ?>"> Petitioner Advocate : </b> <span id="document_petitioner_advocate_<?= $id_num ?>"></span> </p>
+          <p> <b> Respondent Advocate : </b> <span id="document_respondent_advocate_<?= $id_num ?>"></span> </p> 
+          <p> <b> Judges : </b> <span id="document_judges_<?= $id_num ?>"></span> </p> 
+          <p> <b> Judgement/Order: </b></p> <p id="document_judgement_<?= $id_num ?>"></p>  
         </div>
       </div>
       <div class="modal-footer">
