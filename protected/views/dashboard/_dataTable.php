@@ -13,7 +13,7 @@ function searchForId($id, $array)
         if (trim($val) === trim($id)) {
             return $key;
         }
-    }
+    } 
     return null;
 }
 $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClass->stateListFixer()); // array_search(trim( Yii::$app->request->queryParams['court']), $modelClass->stateListFixer());
@@ -400,8 +400,11 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
                     $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[7]);
+                    
+                    //  setAdvocatesList(response,id_)
                     $(`#document_judges_${id_}`).text(response[8]);
-
+ 
                     const judgement = response[9];
                     const paragraphs = "<p class=\"my_class\">" + judgement.split(/[\n\r]+/g).join("</p><p class=\"my_class\">") + "</p>";
                     $(`#document_judgement_${id_}`).html(paragraphs);
@@ -439,6 +442,7 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
                     $(`#document_petitioner_advocate_${id_}`).text(response[6]);
+                    $(`#document_respondent_advocate_${id_}`).text(response[7]);
                     $(`#document_judges_${id_}`).text(response[8]);
 
                     const judgement = response[9];
@@ -464,8 +468,9 @@ $target = searchForId(trim(Yii::$app->request->queryParams['court']), $modelClas
                     $(`#document_case_number_${id_}`).text(response[3]);
                     $(`#document_petitioner_info_${id_}`).text(response[4]);
                     $(`#document_respondent_info_${id_}`).text(response[5]);
-                    const NewKeys = Object.keys(response[6])
-                    $(`#document_petitioner_advocate_${id_}`).text(response[6][NewKeys[0]]);
+                   /*  const NewKeys = Object.keys(response[6])
+                    $(`#document_petitioner_advocate_${id_}`).text(response[6][NewKeys[0]]); */
+                    setAdvocatesList(response,id_)
                     $(`#document_judges_${id_}`).text(response[8]);
 
                     const judgement = response[9];

@@ -77,7 +77,7 @@ return [
         "TL1111" => ['state_name' => 'TL1111', 'state_cd' => 29, 'dist_cd' => 1, 'court_code' => 1],
         "TN1111" => ['state_name' => 'TN1111', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
         'TN1112' => ['state_name' => 'TN1112', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
-        "TN1113" => ['state_name' => 'TN1113', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2], 
+        "TN1113" => ['state_name' => 'TN1113', 'state_cd' => 10, 'dist_cd' => 1, 'court_code' => 2],
     ],
     'stateList' => [
         "HIDO" => "Supreme Court ",
@@ -166,7 +166,12 @@ return [
     "countApiUrl" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/count_dashboard",
     'constants' => $constants,
     'pdfSupremeCourt' => 'https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme?s3url=',
-    "loadConetentOrders" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme_order?s3url="
+    "loadConetentOrders" => "https://ffdnw92kh1.execute-api.ap-south-1.amazonaws.com/default/pdf_extraction_supreme_order?s3url=",
+    "toEncodeUrls" =>
+    [
+        'WB1611', 'AS611', 'MH115', 'JH711', 'AP211', 'JK1211', 'KL411', 'TN1011', 'MN2511', 'ML2111', 'OR1111', 'SK2411', 'TR2011', 'UK1511', 'JK1212', 'BB1111', 'BB1112', 'BB1113', 'BB1114', 'BB1115', 'BB1116', 'BB1117'
+    ]
+
 ];
 //  Judgements => JU
 //Daily Orders => DO

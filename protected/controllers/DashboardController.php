@@ -124,12 +124,12 @@ class DashboardController extends TController
     {
 
         $mm = new ModelApiHelper();
-        $columns= $mm->getTableSchema()->columns;
-         
+        $columns = $mm->getTableSchema()->columns;
+
         $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court;
         return $this->render('_dataTable', [
-            'columns'=>$columns
+            'columns' => $columns
         ]);
     }
     public function actionFullInfo($court = null)
@@ -139,6 +139,13 @@ class DashboardController extends TController
         return $this->render('_dataTable_full_info', []);
     }
 
+    public function encodUrlForPdf($TEMP_LINK)
+    {
+        $lastIndex = strrpos($TEMP_LINK, "/", -1) + 1;
+        $encoded = urlencode(substr($TEMP_LINK,  $lastIndex));
+        $TEMP_LINK = substr($TEMP_LINK, 0, $lastIndex) .  $encoded;
+        return  $TEMP_LINK;
+    }
     public function actionDataIndex()
     {
         ini_set('memory_limit', '8192M');
@@ -168,43 +175,47 @@ class DashboardController extends TController
         }
 
  */
-//echo "<pre>";
+        //echo "<pre>";
         $resultData = [];
         $numRows = array_sum(isset($modelssss) ? (array)$modelssss :  []);
         foreach ($modelssss as $key => $value) {
-            $empRows = array(); 
-          //  print_r($value->getTableSchema()->columns);
+            $empRows = array();
+            //  print_r($value->getTableSchema()->columns);
             foreach (/* $value->getTableSchema()->columns */Yii::$app->params['constants']['columns']  as $key_ => $columns) {
-               
+
 
                 $TEMP_LINK = "";
-                if ($columns == "link"  ) {
+                if ($columns == "link") {
                     if (isset($value->{$columns}) && strpos($value->{$columns}, 'http') !== false) {
 
                         $TEMP_LINK =  $value->{$columns}   === "/No+data"  ? '#' : $value->{$columns};
-                        $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
+                        if (in_array($target, Yii::$app->params['toEncodeUrls'])) {
+
+                            $TEMP_LINK = $this->encodUrlForPdf($TEMP_LINK);
+                        }
+                        $empRows[]  = "<a href='  $TEMP_LINK   ' style='color:#3051d3'>PDF [Documents]</a>";
                     } else {
                         $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
                     }
-                }else{
-                    if( $columns != "reportable_judgement")
+                } else {
+                    if ($columns != "reportable_judgement")
                         $empRows[] = isset($value->{$columns}) ?  $value->{$columns} : "NA";
                 }
 
-                if($columns =='reportable_judgement'){
+                if ($columns == 'reportable_judgement') {
 
                     $contentUrl = $urlAndViewFile['url'] . $value->link;
                     $viewFile =  $urlAndViewFile['viewFile'];
                     $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);
                 }
             }
-           /*  $contentUrl = $urlAndViewFile['url'] . $value->link;
+            /*  $contentUrl = $urlAndViewFile['url'] . $value->link;
             $viewFile =  $urlAndViewFile['viewFile'];
             $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]); */
 
             $resultData[] = $empRows;
         }
-      /*   echo "<pre>";
+        /*   echo "<pre>";
            print_r( $resultData  );
        die;   
  */
