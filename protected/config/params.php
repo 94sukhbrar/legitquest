@@ -61,6 +61,8 @@ return [
         "BB1112" => ["state_name" => "bombaycriminal", "state_cd" => 2, "dist_cd" => 1, "court_code" => 1],
         "BB1111" => ["state_name" => "bombaycivil", "state_cd" => 2, "dist_cd" => 1, "court_code" => 1],
         "PU1111" =>  ["state_name" => "Punjab", "state_cd" => 24, "dist_cd" => 1, "court_code" => 1],
+        "PU1111New" =>  ["state_name" => "Punjab", "state_cd" => 24, "dist_cd" => 1, "court_code" => 1], 
+
         "UP1111" => ["state_name" => "Allahabad", "state_cd" => 1, "dist_cd" => 1, "court_code" => 1],
         "BH1111" => ["state_name" => "BH1111",  "state_cd" => 1, "dist_cd" => 1, "court_code" => 1],
         "MP1111" => ["state_name" => "MadhyaPradesh", "state_cd" => 1, "dist_cd" => 1, "court_code" => 1],
@@ -81,6 +83,7 @@ return [
     ],
     'stateList' => [
         "HIDO" => "Supreme Court ",
+       // "HIDONew" => "Supreme Court (Judgements New) " ,
         "AP211" => "Andhra Pradesh High Court ",
         "CG1811" => "Chhattisgarh High Court ",
         "JK1211" => "High Court of Jammu and Kashmir [Jammu Wing] ",
@@ -106,6 +109,7 @@ return [
         "BB1112" => "Bombay High Court [Bombay - Appellate (Criminal)]",
         "BB1111" => "Bombay High Court [Bombay - Appellate (Civil)]",
         "PU1111" =>  "Punjab and Haryana High Court",
+        "PU1111New" => "Punjab and Haryana High Court (New)",
         "UP1111" => "Allahabad High Court",
         "BH1111" => "Patna High Court",
         "MP1111" => "Madhya Pradesh High Court ",

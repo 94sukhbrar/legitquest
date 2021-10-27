@@ -156,32 +156,19 @@ class DashboardController extends TController
         $form_model = new ScrapperForm();
 
         $urlAndViewFile = $form_model->apiUrlDecider($target);
-        /* print_r($urlAndViewFile);
-        die($target); */
+       
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = [];
-        /*  echo $lower_date."< >". $higher_date;
-        die; */
+        
         $mm = new ModelApiHelper();
         $modelssss = $mm->getDataByCourt($target, $lower_date, $higher_date);
-
-        //   echo "<pre>";
-
-        /* try {
-            $allData = $form_model->getByWeek(
-                ['target' => $target,   'lower_date' => $lower_date, 'higher_date' =>  $higher_date]
-            );
-        } catch (\Throwable $th) {
-        }
-
- */
-        //echo "<pre>";
+ 
         $resultData = [];
         $numRows = array_sum(isset($modelssss) ? (array)$modelssss :  []);
         foreach ($modelssss as $key => $value) {
             $empRows = array();
-            //  print_r($value->getTableSchema()->columns);
-            foreach (/* $value->getTableSchema()->columns */Yii::$app->params['constants']['columns']  as $key_ => $columns) {
+            
+            foreach ( Yii::$app->params['constants']['columns']  as $key_ => $columns) {
 
 
                 $TEMP_LINK = "";
@@ -209,61 +196,11 @@ class DashboardController extends TController
                     $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);
                 }
             }
-            /*  $contentUrl = $urlAndViewFile['url'] . $value->link;
-            $viewFile =  $urlAndViewFile['viewFile'];
-            $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]); */
+           
 
             $resultData[] = $empRows;
         }
-        /*   echo "<pre>";
-           print_r( $resultData  );
-       die;   
- */
-
-
-        /* $numRows = array_sum(isset($allData) ? (array)$allData :  []);
-        $resultData = [];
-         if (isset($allData)) { 
-            foreach ($allData as $result_) {
-                $result = json_decode(json_encode($result_), true);
-                 
-                $empRows = array();
-                $empRows[] =  isset($result[$columnNames['CaseNumber']])  ?  $result[$columnNames['CaseNumber']] : "NA";
-                $empRows[] =  isset($result[$columnNames['DiaryNumber']]) ?   $result[$columnNames['DiaryNumber']] : "NA";
-                $empRows[] =  isset($result[$columnNames['PetitionerName']])  ?  $result[$columnNames['PetitionerName']] : "NA";
-                $empRows[] =  isset($result[$columnNames['RespondentName']])  ?  $result[$columnNames['RespondentName']] : "NA";
-                $empRows[] =  isset($result[$columnNames['PetitionerAdvocate']])  ?  $result[$columnNames['PetitionerAdvocate']] : "NA";
-                $empRows[] =  isset($result[$columnNames['RespondentAdvocate']])  ?  $result[$columnNames['RespondentAdvocate']] : "NA";
-                $empRows[] =  isset($result[$columnNames['Bench']])  ?  $result[$columnNames['Bench']] : "NA";
-                $empRows[] =  isset($result[$columnNames['JudgementBy']])  ?  $result[$columnNames['JudgementBy']] : "NA";
-
-                $empRows[] =  isset($result[$columnNames['OrderDate']])  ?  $result[$columnNames['OrderDate']] : (isset($result[$columnNames['OrderDate']]) ? $result[$columnNames['OrderDate']] : "NA");
-
-                $empRows[] =  isset($result[$columnNames['CaseType']])  ?  $result[$columnNames['CaseType']] : "NA";
-                $empRows[] =  isset($result[$columnNames['CaseYear']])  ?  $result[$columnNames['CaseYear']] : "NA";
-                $empRows[] =  isset($result[$columnNames['OrderType']])  ?  $result[$columnNames['OrderType']] :  $form_model->getOrderType($target);
-
-                $empRows[] =  isset($result[$columnNames['PGNo']])  ?  $result[$columnNames['PGNo']] :  "NA";
-                $empRows[] =  isset($result[$columnNames['Corrigendum']])  ?  $result[$columnNames['Corrigendum']] :  "NA";
-                $empRows[] =  isset($result[$columnNames['CaseDescription']])  ?  $result[$columnNames['CaseDescription']] :  "NA";
-                $empRows[] =  isset($result[$columnNames['CourtNumber']])  ?  $result[$columnNames['CourtNumber']] :  "NA";
-
-
-                $TEMP_LINK = "";
-                if (isset($result[$columnNames['Link']]) && strpos($result[$columnNames['Link']], 'http') !== false) {
-                    $TEMP_LINK =   $result[$columnNames['Link']]  === "/No+data"  ? '#' : $result[$columnNames['Link']];
-                    $empRows[]  = "<a href='$TEMP_LINK' style='color:#3051d3'>PDF [Documents]</a>";
-                } else {
-                    $empRows[]  = "<a href='#' style='color:#3051d3'>No Document</a>";
-                }
-
-
-                $contentUrl = $urlAndViewFile['url'] . $result[9];
-                $viewFile =  $urlAndViewFile['viewFile']; 
-                $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);  //  "<a data-value='$result[9]' href='#' style='color:#3051d3' class='open_modal_for_file'>Click here to view</a>";
-                $resultData[] = $empRows;
-            }
-        } */
+         
 
         $output = array(
             "iTotalRecords"    =>     $numRows,

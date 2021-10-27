@@ -37,7 +37,18 @@ class ModelApiHelper   extends \app\components\TActiveRecord
             $this->tableSelected = "SupremeDevDO";
             $this->columnToWhere = 'judgement_date';
             $this->query ="SELECT  * FROM  $this->tableSelected  where ($this->columnToWhere  BETWEEN '$lowerDate' AND '$higherDate' )  ";
-        }else {
+        }
+        else if($courtCode == "SUJUNew"){
+            $this->tableSelected= "supremedevjudgement";     
+            $this->columnToWhere = 'judgement_date';      
+            $this->query ="SELECT  * FROM  $this->tableSelected  where ($this->columnToWhere  BETWEEN '$lowerDate' AND '$higherDate' )  ";
+        }
+
+        else if($courtCode == "PU1111New"){
+            $this->tableSelected= "punjab_order_dev";           
+            $this->query ="SELECT  * FROM  $this->tableSelected  where ($this->columnToWhere  BETWEEN '$lowerDate' AND '$higherDate' )  ";
+        }
+        else {
             $this->query ="SELECT  * FROM  $this->tableSelected  where ($this->columnToWhere  BETWEEN '$lowerDate' AND '$higherDate' ) and state='$courtCode'";
         }
         

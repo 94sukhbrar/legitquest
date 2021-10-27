@@ -547,7 +547,9 @@ die; */
 	{
 		$items = Yii::$app->params['stateList'];
 		unset($items["HIDO"]);
-		$items = array_merge(["SUJU" => "Supreme Court Judgements ", "SUDO" => "Supreme Court Orders", 'JH711' => 'Jharkhand High Court', 'WB1611' => 'Calcutta High Court'], $items, $addArr);
+		$items = array_merge(["SUJU" => "Supreme Court Judgements ",
+		"SUJUNew" => "Supreme Court Judgements (New)  ",
+		"SUDO" => "Supreme Court Orders", 'JH711' => 'Jharkhand High Court', 'WB1611' => 'Calcutta High Court'], $items, $addArr);
 		return $items;
 	}
 	/**
