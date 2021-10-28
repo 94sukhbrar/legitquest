@@ -1,30 +1,30 @@
 <?php
 
 
- 
- 
-     
- 
+
+
+
+
 return [
     'columns' => [
-        'case_number' , 
-      'petitioner_name',
-      'respondent_name',
-      'petitioner_advocate',
-      'respondent_advocate',
-      'bench',
-      'judgement_by',
-      'order_date',
-      'case_type',
-      'case_year',
-      'order_type',
-      'corrigendum',
-      'court_number',
-      'link',//PDF [Document]	
-      'reportable_judgement'
-       
-      
-         
+        'case_number',
+        'petitioner_name',
+        'respondent_name',
+        'petitioner_advocate',
+        'respondent_advocate',
+        'bench',
+        'judgement_by',
+        'order_date',
+        'case_type',
+        'case_year',
+        'order_type',
+        'corrigendum',
+        'court_number',
+        'link', //PDF [Document]	
+        'reportable_judgement'
+
+
+
     ],
     'columnNames' => [
         "IDNumber" => 1,
@@ -57,7 +57,7 @@ return [
     /**
      * sttarting from `0` 
      */
-    'columnAddationalData' => [  
+    'columnAddationalData' => [
         'ID' =>  1,
         'Case Type' => 2,
         'Case Number' => 3,
@@ -131,6 +131,34 @@ return [
         ],
 
 
+    ],
+    'columnPU1111New' => [
+        'case_number',
+        'file_uuid',
+        'petitioner_name',
+        'respondent_name',
+        'judgement_by',
+        'order_date',
+        'link',
+        'created_at',
+        'updated_at',
+    ],
+    'columnSUJUNew' => [
+        'judgement_date',
+        'diary_number',
+        'case_number',
+        'petitioner_name',
+        'respondent_name',
+        'petitioner_advocate',
+        'respondent_advocate',
+        'bench',
+        'judgement_by',
+        'disposal_date',
+        'filed_on',
+        'last_listed',
+        'status',
+        'link',
+        'lang',
     ],
 
     'SupreameCourtoptions' =>  [

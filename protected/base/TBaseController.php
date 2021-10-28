@@ -10,6 +10,7 @@
  * the property of ToXSL Technologies Pvt. Ltd. and its partners.
  * Unauthorized copying of this file, via any medium is strictly prohibited.
  */
+
 namespace app\base;
 
 use app\models\User;
@@ -50,23 +51,24 @@ class TBaseController extends Controller
 
     protected $_pageKeywords;
 
+
     public function beforeAction($action)
     {
-        if( !parent::beforeAction($action))
-        {
-           return false;
+        ini_set('memory_limit', '-1');
+        if (!parent::beforeAction($action)) {
+            return false;
         }
 
-        if (! Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $this->layout = 'main';
         }
-        
+
         return true;
     }
 
     public static function addmenu($label, $link, $icon, $visible = null, $list = null)
     {
-        if (! $visible)
+        if (!$visible)
             return null;
         $item = [
             'label' => '<i
@@ -89,7 +91,7 @@ class TBaseController extends Controller
     public function renderNav()
     {
         $this->nav_left = [
-            self::addMenu(Yii::t('app', 'Dashboard'), '//dashboard/index', 'home', ! User::isGuest()),
+            self::addMenu(Yii::t('app', 'Dashboard'), '//dashboard/index', 'home', !User::isGuest()),
             self::addMenu(Yii::t('app', 'User'), '//user', 'user', (User::isAdmin())),
 
             'Manage' => self::addMenu(Yii::t('app', 'Manage'), '#', 'tasks', User::isAdmin(), [
@@ -107,13 +109,13 @@ class TBaseController extends Controller
 
     public function renderModuleNev()
     {
-        $config = include (DB_CONFIG_PATH . 'web.php');
+        $config = include(DB_CONFIG_PATH . 'web.php');
         $nav = [];
-        if (! empty($config['modules'])) {
+        if (!empty($config['modules'])) {
             foreach ($config['modules'] as $modules) {
                 $class = isset($modules['class']) ? $modules['class'] : null;
                 if (class_exists("$class") && method_exists($class, 'subNav')) {
-                    if (! empty($class::subNav())) {
+                    if (!empty($class::subNav())) {
                         $nav[] = $class::subNav();
                     }
                 }

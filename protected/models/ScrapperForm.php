@@ -75,7 +75,15 @@ class ScrapperForm extends Model
 			$this->addError('end_date', 'End Date can not be grater then ' . Yii::$app->params['maxScrapDays'] . ' days');
 		}
 	}
-
+	public function getColumns($courtCode)
+	{
+		if ($courtCode == "SUJUNew") {
+			return Yii::$app->params['constants']['columnSUJUNew'];
+		} else if ($courtCode == "PU1111New") {
+			return Yii::$app->params['constants']['columnPU1111New'];
+		} else
+			return Yii::$app->params['constants']['columns'];
+	}
 
 	public function senitizeParams($parm)
 	{
@@ -516,9 +524,9 @@ die; */
 				return	['url' => Yii::$app->params['pdfContentExtractPatna'], 'viewFile' => '_modal_patna'];
 			case "JH711":
 				return	['url' => Yii::$app->params['pdfContentExtractJharkhand'], 'viewFile' => '_modal_jharkhand'];
-			case "CG1811" :
-			case "CG1111" :
-			case "CG1112" :
+			case "CG1811":
+			case "CG1111":
+			case "CG1112":
 				return	['url' => Yii::$app->params['pdfContentExtractChhatisgarh'], 'viewFile' => '_modal_chhatisgarh'];
 			case "MN2511":
 				return	['url' => Yii::$app->params['pdfContentExtractManipur'], 'viewFile' => '_modal_manipur'];
@@ -534,7 +542,7 @@ die; */
 			case "SK2411":
 				return	['url' => Yii::$app->params['pdfContentExtractSikkim'], 'viewFile' => '_modal_sikkim'];
 			case "UK1511":
-					return	['url' => Yii::$app->params['pdfContentExtractUttarakhand'], 'viewFile' => '_modal_uttarakhand'];				
+				return	['url' => Yii::$app->params['pdfContentExtractUttarakhand'], 'viewFile' => '_modal_uttarakhand'];
 			case "MH115":
 				return	['url' => Yii::$app->params['pdfContentExtractGoa'], 'viewFile' => '_modal_goa'];
 			default:
@@ -547,9 +555,11 @@ die; */
 	{
 		$items = Yii::$app->params['stateList'];
 		unset($items["HIDO"]);
-		$items = array_merge(["SUJU" => "Supreme Court Judgements ",
-		"SUJUNew" => "Supreme Court Judgements (New)  ",
-		"SUDO" => "Supreme Court Orders", 'JH711' => 'Jharkhand High Court', 'WB1611' => 'Calcutta High Court'], $items, $addArr);
+		$items = array_merge([
+			"SUJU" => "Supreme Court Judgements ",
+			"SUJUNew" => "Supreme Court Judgements (New)  ",
+			"SUDO" => "Supreme Court Orders", 'JH711' => 'Jharkhand High Court', 'WB1611' => 'Calcutta High Court'
+		], $items, $addArr);
 		return $items;
 	}
 	/**

@@ -146,6 +146,8 @@ class DashboardController extends TController
         $TEMP_LINK = substr($TEMP_LINK, 0, $lastIndex) .  $encoded;
         return  $TEMP_LINK;
     }
+
+
     public function actionDataIndex()
     {
         ini_set('memory_limit', '8192M');
@@ -156,19 +158,19 @@ class DashboardController extends TController
         $form_model = new ScrapperForm();
 
         $urlAndViewFile = $form_model->apiUrlDecider($target);
-       
+
         $columnNames = Yii::$app->params['constants']['columnNames'];
         $allData = [];
-        
+
         $mm = new ModelApiHelper();
         $modelssss = $mm->getDataByCourt($target, $lower_date, $higher_date);
- 
+
         $resultData = [];
         $numRows = array_sum(isset($modelssss) ? (array)$modelssss :  []);
         foreach ($modelssss as $key => $value) {
             $empRows = array();
-            
-            foreach ( Yii::$app->params['constants']['columns']  as $key_ => $columns) {
+
+            foreach ($form_model->getColumns($target)  as $key_ => $columns) {
 
 
                 $TEMP_LINK = "";
@@ -196,11 +198,11 @@ class DashboardController extends TController
                     $empRows[] =   $this->renderPartial($viewFile, ['id_num' => uniqid(), 'url' => $contentUrl, 'target' => $target]);
                 }
             }
-           
+
 
             $resultData[] = $empRows;
         }
-         
+
 
         $output = array(
             "iTotalRecords"    =>     $numRows,
