@@ -1,9 +1,10 @@
 <?php
 
 /**
-*@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
-*@author     : Ram mohamad Singh< er.amudeep@gmail.com >
-*/
+ *@copyright :Amusoftech Pvt. Ltd. < www.amusoftech.com >
+ *@author     : Ram mohamad Singh< er.amudeep@gmail.com >
+ */
+
 namespace app\components;
 
 class WebUser extends \yii\web\User
@@ -26,8 +27,7 @@ class WebUser extends \yii\web\User
 		parent::init();
 		$cookiePath = '/';
 		$path = \Yii::$app->request->baseUrl;
-		if (! empty($path))
-		{
+		if (!empty($path)) {
 			$cookiePath = $path;
 		}
 		$this->identityCookie['name'] = '_user_' . \Yii::$app->id;
@@ -64,8 +64,7 @@ class WebUser extends \yii\web\User
 	public function cleanupCookies()
 	{
 		$past = time() - 3600;
-		foreach ($_COOKIE as $key => $value)
-		{
+		foreach ($_COOKIE as $key => $value) {
 			setcookie($key, false, $past, '/');
 		}
 	}
@@ -75,10 +74,9 @@ class WebUser extends \yii\web\User
 		return parent::can($permissionName, $params, $allowCaching);
 	}
 
-	public function canRoute($module, $route = null, $allowCaching = true, $defaultValue)
+	public function canRoute($module, $route = null, $allowCaching = true, $defaultValue = null)
 	{
-		if (($accessChecker = $this->getAuthAccessChecker()) === false)
-		{
+		if (($accessChecker = $this->getAuthAccessChecker()) === false) {
 			return $defaultValue;
 		}
 
@@ -87,8 +85,7 @@ class WebUser extends \yii\web\User
 
 	public function getAuthAccessChecker()
 	{
-		if (($accessChecker = $this->getAccessChecker()) === null)
-		{
+		if (($accessChecker = $this->getAccessChecker()) === null) {
 			return false;
 		}
 

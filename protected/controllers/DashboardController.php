@@ -124,7 +124,7 @@ class DashboardController extends TController
     {
 
         $mm = new ModelApiHelper();
-        $columns = $mm->getTableSchema()->columns;
+        $columns = []; //$mm->getTableSchema()->columns;
 
         $this->layout = User::LAYOUT_LEGITQUEST;
         Yii::$app->view->params['selectedCourt'] = $court;
